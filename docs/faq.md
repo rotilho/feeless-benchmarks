@@ -39,7 +39,7 @@ The environment is fresh and disposable per scenario, but the tested storage beh
 
 ## Are these mainnet-capacity claims?
 
-No. These are controlled local measurements on one host with one voter and isolated dev/local ledgers. Public-network propagation, representative diversity, heterogeneous hardware, and adversarial traffic are absent.
+No. These are isolated single-host measurements with one voter and dev/local ledgers. Within each paired 500-account repetition, all three implementations share one host. Public-network propagation, representative diversity, and adversarial traffic are absent.
 
 ## Why can independent account lanes be faster than one serial lane?
 

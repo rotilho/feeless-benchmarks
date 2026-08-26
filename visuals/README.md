@@ -2,7 +2,7 @@
 
 `benchmark-table.html` is a self-contained 1200 × 675 benchmark range table.
 
-It shows the minimum and maximum run-level values across ten accepted 500-account runs per implementation on one dedicated computer, one run at a time. Every run contains 500 independent account chains, 100 transactions per account, 50,000 successful samples, and zero errors.
+It shows the minimum and maximum run-level values from [GitHub Actions run 33016888792](https://github.com/rotilho/feeless-benchmarks/actions/runs/33016888792). Ten paired jobs ran on ten GitHub-hosted VMs; each job ran Atto, Nano, and RSNano sequentially on the same VM, with a fresh environment for every scenario. Every run contains 500 independent account chains, 100 transactions per account, 50,000 successful samples, and zero errors.
 
 The exact aggregate, including all thirty summaries and manifests, is available as [JSON](../results/common-runner/500-account-ranges.json) and [Markdown](../results/common-runner/500-account-ranges.md).
 

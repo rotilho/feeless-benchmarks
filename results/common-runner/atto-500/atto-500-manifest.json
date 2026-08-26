@@ -1,27 +1,27 @@
 {
-  "runner_revision": "a89995b20700dfe13b11def9282087fdc251f36b-dirty-1e4d36220f9ec5157d475fc57789f67c9fe2b4372b75ea38070a6f8d5168fa90",
+  "runner_revision": "e87fe7995fd0e7fe420f608c04cb0966e42b9619",
   "fixture_hashes": {
     "atto-500-benchmark.zip": "596ceaf863456fe02cb57cc47dd4daf902b3182fdb8c95299faf788bf3e1b211",
     "atto-500-initial.zip": "dd3e8b82e259e2b1cd1ebb8dc16ab057fd0683ae07d20ed4c332e747b50787b2"
   },
   "image_digests": {
-    "ghcr.io/attocash/node:1.34-live": "sha256:971c1e84707e82145f159d02b7a684a3b4f4588a2a407398d199ebfb371ae62a",
-    "mysql:8.4": "sha256:1d6b6a8fcee8ff758ff151d017f5203cd06792a0e698f0a593c9dfcb14609cf0"
+    "ghcr.io/attocash/node:1.34-live": "sha256:eb382d2a24b07bbf649f7b1e4a9aa17ea9e19534bae298606269bfe02d4a0a40",
+    "mysql:8.4": "sha256:b3b90af2a6552ae30c266fdb7d5dd55f3afb72404bb78d37fe8a23eb857fd3fb"
   },
   "java": {
-    "vendor": "Amazon.com Inc.",
-    "version": "21.0.12",
+    "vendor": "Eclipse Adoptium",
+    "version": "21.0.12.1",
     "vm_name": "OpenJDK 64-Bit Server VM",
-    "vm_version": "21.0.12+8-LTS"
+    "vm_version": "21.0.12.1+1-LTS"
   },
   "operating_system": {
     "architecture": "amd64",
     "name": "Linux",
-    "version": "7.0.13-100.fc43.x86_64"
+    "version": "6.17.0-1022-azure"
   },
   "cpu": {
-    "logical_processor_count": 16,
-    "model": "AMD Ryzen 7 7840HS w/ Radeon 780M Graphics"
+    "logical_processor_count": 4,
+    "model": "INTEL(R) XEON(R) PLATINUM 8573C"
   },
   "storage_profile": "durable",
   "runtime_configuration": {

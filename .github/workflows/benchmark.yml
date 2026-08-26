@@ -2,6 +2,8 @@ name: Full benchmark
 
 "on":
   workflow_dispatch:
+  schedule:
+    - cron: "17 5 * * *"
 
 permissions:
   contents: read
@@ -134,6 +136,7 @@ jobs:
             ${{ runner.temp }}/feeless-benchmark-${{ github.run_id }}-serial-${{ matrix.implementation }}/${{ env.OUTPUT_NAME }}/${{ env.RESULT_STEM }}-manifest.json
           if-no-files-found: warn
           overwrite: true
+          retention-days: 5
 
       - name: Require benchmark and artifact verification to pass
         if: >-
@@ -339,6 +342,7 @@ jobs:
           path: ${{ runner.temp }}/feeless-benchmark-${{ github.run_id }}-paired-${{ matrix.run_slot }}/
           if-no-files-found: warn
           overwrite: true
+          retention-days: 5
 
       - name: Require paired benchmark and artifact verification to pass
         if: >-
@@ -414,6 +418,7 @@ jobs:
             ${{ runner.temp }}/feeless-benchmark-500-aggregate-${{ github.run_id }}/500-account-ranges.md
           if-no-files-found: error
           overwrite: true
+          retention-days: 5
 
       - name: Require matrix and aggregation to pass
         if: >-

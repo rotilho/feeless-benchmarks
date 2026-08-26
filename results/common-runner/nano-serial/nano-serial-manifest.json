@@ -1,5 +1,5 @@
 {
-  "runner_revision": "a89995b20700dfe13b11def9282087fdc251f36b-dirty-1e4d36220f9ec5157d475fc57789f67c9fe2b4372b75ea38070a6f8d5168fa90",
+  "runner_revision": "e87fe7995fd0e7fe420f608c04cb0966e42b9619",
   "fixture_hashes": {
     "nano-serial.json": "cdcc8b0dc7b30030bb34b24d6d0314667900c22a5213f8853a3cbb1c06f3a3b1"
   },
@@ -7,19 +7,19 @@
     "nanocurrency/nano:V28.2": "sha256:ae5d9421f87c4620c2285479d95e5e79a2084878058934f7ed6a6b96b6add09e"
   },
   "java": {
-    "vendor": "Amazon.com Inc.",
-    "version": "21.0.12",
+    "vendor": "Eclipse Adoptium",
+    "version": "21.0.12.1",
     "vm_name": "OpenJDK 64-Bit Server VM",
-    "vm_version": "21.0.12+8-LTS"
+    "vm_version": "21.0.12.1+1-LTS"
   },
   "operating_system": {
     "architecture": "amd64",
     "name": "Linux",
-    "version": "7.0.13-100.fc43.x86_64"
+    "version": "6.17.0-1022-azure"
   },
   "cpu": {
-    "logical_processor_count": 16,
-    "model": "AMD Ryzen 7 7840HS w/ Radeon 780M Graphics"
+    "logical_processor_count": 4,
+    "model": "AMD EPYC 9V74 80-Core Processor"
   },
   "storage_profile": "durable",
   "runtime_configuration": {

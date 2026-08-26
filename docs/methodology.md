@@ -1,6 +1,6 @@
 # Methodology
 
-This suite measures pinned implementations on one controlled local host with one voter. It does not measure a distributed production network or establish mainnet capacity.
+This suite measures pinned implementations in isolated single-host environments with one voter. Paired workflow runs place all three implementations on the same host within each repetition. It does not measure a distributed production network or establish mainnet capacity.
 
 ## Workloads and controls
 
@@ -9,7 +9,7 @@ This suite measures pinned implementations on one controlled local host with one
 | Serial | 1 account lane × 1,000 dependent items | 1,000 |
 | Independent lanes | 500 account lanes × 100 dependent items | 50,000 |
 
-The six scenarios run one after another and never overlap. Every measured block or transaction is constructed, signed, worked, and validated before measurement. Atto transaction bodies are also encoded before measurement; Nano's shared adapter encodes the RPC envelope during measured publication. Fixture generation, node/database startup, account/ledger setup, and setup publication are outside the timed path.
+Scenarios sharing a paired job run one after another and never overlap; separate workflow jobs may run concurrently on different VMs. Every measured block or transaction is constructed, signed, worked, and validated before measurement. Atto transaction bodies are also encoded before measurement; Nano's shared adapter encodes the RPC envelope during measured publication. Fixture generation, node/database startup, account/ledger setup, and setup publication are outside the timed path.
 
 Fixture construction advances one item per account per sequence round. For Atto, every account shares the round timestamp and each account's next item advances by one millisecond. The recorded `workSearchParallelism = 1` applies independently to each account lane; lanes themselves are generated concurrently.
 

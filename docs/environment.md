@@ -1,6 +1,6 @@
 # Environment notes
 
-Published results use one controlled local host, one voter per scenario, and durable storage. They describe local implementation paths, not mainnet capacity.
+Published results use GitHub-hosted runners, one voter per scenario, and durable storage. They describe the measured implementation paths, not mainnet capacity.
 
 ## Pinned toolchain
 
@@ -32,8 +32,10 @@ Useful source commits and image references are retained in [`provenance/source-r
 
 ## Published result environment
 
-All six published scenarios ran on the same host recorded by their manifests: Linux kernel `7.0.13-100.fc43.x86_64`, an AMD Ryzen 7 7840HS with 16 logical processors, and Amazon.com Inc. OpenJDK 21.0.12. Every manifest records `storage_profile = durable` and the resolved node image digest; the Atto manifests also record the MySQL 8.4 digest and default database durability.
+The published results come from [GitHub Actions run 33016888792](https://github.com/rotilho/feeless-benchmarks/actions/runs/33016888792). Ten paired jobs ran on ten GitHub-hosted VMs. Within each job, Atto, Nano, and RSNano ran sequentially on the same VM, with a fresh Testcontainers environment for every scenario. The three serial scenarios ran as independent jobs.
+
+Every runner reported Linux kernel `6.17.0-1022-azure`, four logical processors, Eclipse Adoptium OpenJDK 21.0.12 or 21.0.12.1, and one of four CPU models: AMD EPYC 7763, AMD EPYC 9V74, Intel Xeon Platinum 8573C, or Intel Xeon 6973P-C. Every manifest records `storage_profile = durable` and the resolved node image digest; the Atto manifests also record the MySQL 8.4 digest and default database durability.
 
 Published manifests: [`nano-serial`](../results/common-runner/nano-serial/nano-serial-manifest.json), [`atto-serial`](../results/common-runner/atto-serial/atto-serial-manifest.json), [`rsnano-serial`](../results/common-runner/rsnano-serial/rsnano-serial-manifest.json), [`nano-500`](../results/common-runner/nano-500/nano-500-manifest.json), [`atto-500`](../results/common-runner/atto-500/atto-500-manifest.json), and [`rsnano-500`](../results/common-runner/rsnano-500/rsnano-500-manifest.json).
 
-Hardware, container runtime, host scheduling, storage implementations, and local notification overhead affect measured values. A rerun on another host is a distinct result set even with identical tags and fixtures.
+Hardware, container runtime, host scheduling, storage implementations, and notification overhead affect measured values. GitHub-hosted runner variation remains visible between paired jobs, while running all three implementations on the same VM within each job reduces cross-implementation runner bias. A rerun is a distinct result set even with identical tags and fixtures.

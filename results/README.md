@@ -1,8 +1,8 @@
 # Results
 
-The accepted result set contains six common-runner scenarios plus a ten-run aggregate for the 500 × 100 workload. Every serial summary reports `sample_count = 1000`, `success_count = 1000`, and `error_count = 0`. Every individual 500 × 100 summary reports `sample_count = 50000`, `success_count = 50000`, and `error_count = 0`.
+The accepted result set comes from [GitHub Actions run 33016888792](https://github.com/rotilho/feeless-benchmarks/actions/runs/33016888792) and contains six common-runner scenarios plus a ten-run aggregate for the 500 × 100 workload. Every serial summary reports `sample_count = 1000`, `success_count = 1000`, and `error_count = 0`. Every individual 500 × 100 summary reports `sample_count = 50000`, `success_count = 50000`, and `error_count = 0`.
 
-The aggregate embeds the summaries and manifests from ten clean runs per implementation:
+The aggregate embeds the summaries and manifests from ten clean paired jobs on ten GitHub-hosted VMs. Each job ran all three implementations sequentially on the same VM, with a fresh environment for every scenario:
 
 - [`500-account-ranges.json`](common-runner/500-account-ranges.json) retains exact run-level values and provenance.
 - [`500-account-ranges.md`](common-runner/500-account-ranges.md) presents latency ranges in whole milliseconds.
@@ -16,7 +16,7 @@ The aggregate embeds the summaries and manifests from ten clean runs per impleme
 | `atto-500` — Atto 1.34 | 500 × 100 | [`atto-500-samples.csv`](common-runner/atto-500/atto-500-samples.csv) | [`atto-500-summary.json`](common-runner/atto-500/atto-500-summary.json) | [`atto-500-manifest.json`](common-runner/atto-500/atto-500-manifest.json) |
 | `rsnano-500` — RSNano V3.1 | 500 × 100 | [`rsnano-500-samples.csv`](common-runner/rsnano-500/rsnano-500-samples.csv) | [`rsnano-500-summary.json`](common-runner/rsnano-500/rsnano-500-summary.json) | [`rsnano-500-manifest.json`](common-runner/rsnano-500/rsnano-500-manifest.json) |
 
-The scenario name is also its published directory and file stem. RSNano uses the same `nano-serial` and `nano-500` fixture files as Nano. Each manifest records fixture hashes, resolved image digests, runner revision, host/runtime details, the durable storage profile, and sanitized configuration.
+The scenario name is also its published directory and file stem. The published 500 × 100 single-run artifacts come from paired run 01. RSNano uses the same `nano-serial` and `nano-500` fixture files as Nano. Each manifest records fixture hashes, resolved image digests, runner revision, host/runtime details, the durable storage profile, and sanitized configuration.
 
 Use a fresh output root for reproduction work:
 
