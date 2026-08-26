@@ -1,0 +1,2293 @@
+{
+  "schema": "feeless-benchmark-summary-aggregate/v1",
+  "expected_runs": 10,
+  "expected_sample_count": 50000,
+  "implementations": [
+    {
+      "implementation": "nano",
+      "scenario": "nano-500",
+      "fixture": "nano-500",
+      "run_count": 10,
+      "runs": [
+        {
+          "source": "run-01/nano-500/nano-500-summary.json",
+          "summary": {
+            "average_tps": 569.9855306898792,
+            "elapsed_ns": 87721525035,
+            "error_count": 0,
+            "latency_ns": {
+              "average": 8.7104071872592E8,
+              "count": 50000,
+              "max": 1232828886,
+              "min": 159336729,
+              "p50": 871847659,
+              "p90": 995890413,
+              "p95": 1010397361,
+              "p99": 1062341886,
+              "sum": 43552035936296
+            },
+            "peak_tps": 735,
+            "sample_count": 50000,
+            "success_count": 50000
+          },
+          "manifest": {
+            "runner_revision": "a5b13b3d122877403e0259dd472cf4bacbeef08c",
+            "fixture_hashes": {
+              "nano-500.json": "59037537dd9c877284fbace6d1f8cd5924d264cf370bdbec3a45e24034ffde30"
+            },
+            "image_digests": {
+              "nanocurrency/nano:V28.2": "sha256:ae5d9421f87c4620c2285479d95e5e79a2084878058934f7ed6a6b96b6add09e"
+            },
+            "java": {
+              "vendor": "Amazon.com Inc.",
+              "version": "21.0.12",
+              "vm_name": "OpenJDK 64-Bit Server VM",
+              "vm_version": "21.0.12+8-LTS"
+            },
+            "operating_system": {
+              "architecture": "amd64",
+              "name": "Linux",
+              "version": "7.0.13-100.fc43.x86_64"
+            },
+            "cpu": {
+              "logical_processor_count": 16,
+              "model": "AMD Ryzen 7 7840HS w/ Radeon 780M Graphics"
+            },
+            "storage_profile": "durable",
+            "runtime_configuration": {
+              "client.rpc.connectionReuse": "ktor-apache5-pool",
+              "client.rpc.engine": "ktor-apache5",
+              "client.rpc.maxConnectionsPerRoute": "500",
+              "client.rpc.maxConnectionsTotal": "500",
+              "client.rpc.requestTimeout": "disabled",
+              "client.websocket.engine": "ktor-cio",
+              "coroutine.dispatcher": "virtual",
+              "fixture": "nano-500",
+              "implementation": "nano",
+              "node.image": "nanocurrency/nano:V28.2",
+              "node.network": "dev",
+              "node.voting_key": "public dev key installed",
+              "rsnano.lmdb.sync": "not-applicable",
+              "storage.profile": "durable",
+              "timeout": "1m"
+            }
+          }
+        },
+        {
+          "source": "run-02/nano-500/nano-500-summary.json",
+          "summary": {
+            "average_tps": 331.02674571551273,
+            "elapsed_ns": 151045196943,
+            "error_count": 0,
+            "latency_ns": {
+              "average": 1.50409262626972E9,
+              "count": 50000,
+              "max": 8405449327,
+              "min": 168913264,
+              "p50": 902245807,
+              "p90": 1113255292,
+              "p95": 7794378937,
+              "p99": 8011455073,
+              "sum": 75204631313486
+            },
+            "peak_tps": 784,
+            "sample_count": 50000,
+            "success_count": 50000
+          },
+          "manifest": {
+            "runner_revision": "a5b13b3d122877403e0259dd472cf4bacbeef08c",
+            "fixture_hashes": {
+              "nano-500.json": "59037537dd9c877284fbace6d1f8cd5924d264cf370bdbec3a45e24034ffde30"
+            },
+            "image_digests": {
+              "nanocurrency/nano:V28.2": "sha256:ae5d9421f87c4620c2285479d95e5e79a2084878058934f7ed6a6b96b6add09e"
+            },
+            "java": {
+              "vendor": "Amazon.com Inc.",
+              "version": "21.0.12",
+              "vm_name": "OpenJDK 64-Bit Server VM",
+              "vm_version": "21.0.12+8-LTS"
+            },
+            "operating_system": {
+              "architecture": "amd64",
+              "name": "Linux",
+              "version": "7.0.13-100.fc43.x86_64"
+            },
+            "cpu": {
+              "logical_processor_count": 16,
+              "model": "AMD Ryzen 7 7840HS w/ Radeon 780M Graphics"
+            },
+            "storage_profile": "durable",
+            "runtime_configuration": {
+              "client.rpc.connectionReuse": "ktor-apache5-pool",
+              "client.rpc.engine": "ktor-apache5",
+              "client.rpc.maxConnectionsPerRoute": "500",
+              "client.rpc.maxConnectionsTotal": "500",
+              "client.rpc.requestTimeout": "disabled",
+              "client.websocket.engine": "ktor-cio",
+              "coroutine.dispatcher": "virtual",
+              "fixture": "nano-500",
+              "implementation": "nano",
+              "node.image": "nanocurrency/nano:V28.2",
+              "node.network": "dev",
+              "node.voting_key": "public dev key installed",
+              "rsnano.lmdb.sync": "not-applicable",
+              "storage.profile": "durable",
+              "timeout": "1m"
+            }
+          }
+        },
+        {
+          "source": "run-03/nano-500/nano-500-summary.json",
+          "summary": {
+            "average_tps": 550.2588612992432,
+            "elapsed_ns": 90866324046,
+            "error_count": 0,
+            "latency_ns": {
+              "average": 9.0324279130066E8,
+              "count": 50000,
+              "max": 1239842706,
+              "min": 199826765,
+              "p50": 904048809,
+              "p90": 1011936291,
+              "p95": 1042123743,
+              "p99": 1104639004,
+              "sum": 45162139565033
+            },
+            "peak_tps": 718,
+            "sample_count": 50000,
+            "success_count": 50000
+          },
+          "manifest": {
+            "runner_revision": "a5b13b3d122877403e0259dd472cf4bacbeef08c",
+            "fixture_hashes": {
+              "nano-500.json": "59037537dd9c877284fbace6d1f8cd5924d264cf370bdbec3a45e24034ffde30"
+            },
+            "image_digests": {
+              "nanocurrency/nano:V28.2": "sha256:ae5d9421f87c4620c2285479d95e5e79a2084878058934f7ed6a6b96b6add09e"
+            },
+            "java": {
+              "vendor": "Amazon.com Inc.",
+              "version": "21.0.12",
+              "vm_name": "OpenJDK 64-Bit Server VM",
+              "vm_version": "21.0.12+8-LTS"
+            },
+            "operating_system": {
+              "architecture": "amd64",
+              "name": "Linux",
+              "version": "7.0.13-100.fc43.x86_64"
+            },
+            "cpu": {
+              "logical_processor_count": 16,
+              "model": "AMD Ryzen 7 7840HS w/ Radeon 780M Graphics"
+            },
+            "storage_profile": "durable",
+            "runtime_configuration": {
+              "client.rpc.connectionReuse": "ktor-apache5-pool",
+              "client.rpc.engine": "ktor-apache5",
+              "client.rpc.maxConnectionsPerRoute": "500",
+              "client.rpc.maxConnectionsTotal": "500",
+              "client.rpc.requestTimeout": "disabled",
+              "client.websocket.engine": "ktor-cio",
+              "coroutine.dispatcher": "virtual",
+              "fixture": "nano-500",
+              "implementation": "nano",
+              "node.image": "nanocurrency/nano:V28.2",
+              "node.network": "dev",
+              "node.voting_key": "public dev key installed",
+              "rsnano.lmdb.sync": "not-applicable",
+              "storage.profile": "durable",
+              "timeout": "1m"
+            }
+          }
+        },
+        {
+          "source": "run-04/nano-500/nano-500-summary.json",
+          "summary": {
+            "average_tps": 549.9247014051813,
+            "elapsed_ns": 90921538662,
+            "error_count": 0,
+            "latency_ns": {
+              "average": 9.0282413102058E8,
+              "count": 50000,
+              "max": 1208757273,
+              "min": 182163343,
+              "p50": 904878391,
+              "p90": 1011488222,
+              "p95": 1042714668,
+              "p99": 1098207682,
+              "sum": 45141206551029
+            },
+            "peak_tps": 734,
+            "sample_count": 50000,
+            "success_count": 50000
+          },
+          "manifest": {
+            "runner_revision": "a5b13b3d122877403e0259dd472cf4bacbeef08c",
+            "fixture_hashes": {
+              "nano-500.json": "59037537dd9c877284fbace6d1f8cd5924d264cf370bdbec3a45e24034ffde30"
+            },
+            "image_digests": {
+              "nanocurrency/nano:V28.2": "sha256:ae5d9421f87c4620c2285479d95e5e79a2084878058934f7ed6a6b96b6add09e"
+            },
+            "java": {
+              "vendor": "Amazon.com Inc.",
+              "version": "21.0.12",
+              "vm_name": "OpenJDK 64-Bit Server VM",
+              "vm_version": "21.0.12+8-LTS"
+            },
+            "operating_system": {
+              "architecture": "amd64",
+              "name": "Linux",
+              "version": "7.0.13-100.fc43.x86_64"
+            },
+            "cpu": {
+              "logical_processor_count": 16,
+              "model": "AMD Ryzen 7 7840HS w/ Radeon 780M Graphics"
+            },
+            "storage_profile": "durable",
+            "runtime_configuration": {
+              "client.rpc.connectionReuse": "ktor-apache5-pool",
+              "client.rpc.engine": "ktor-apache5",
+              "client.rpc.maxConnectionsPerRoute": "500",
+              "client.rpc.maxConnectionsTotal": "500",
+              "client.rpc.requestTimeout": "disabled",
+              "client.websocket.engine": "ktor-cio",
+              "coroutine.dispatcher": "virtual",
+              "fixture": "nano-500",
+              "implementation": "nano",
+              "node.image": "nanocurrency/nano:V28.2",
+              "node.network": "dev",
+              "node.voting_key": "public dev key installed",
+              "rsnano.lmdb.sync": "not-applicable",
+              "storage.profile": "durable",
+              "timeout": "1m"
+            }
+          }
+        },
+        {
+          "source": "run-05/nano-500/nano-500-summary.json",
+          "summary": {
+            "average_tps": 565.5139747420466,
+            "elapsed_ns": 88415144865,
+            "error_count": 0,
+            "latency_ns": {
+              "average": 8.765634677071E8,
+              "count": 50000,
+              "max": 1155716998,
+              "min": 151779502,
+              "p50": 890501105,
+              "p90": 1001501429,
+              "p95": 1016278884,
+              "p99": 1050851268,
+              "sum": 43828173385355
+            },
+            "peak_tps": 742,
+            "sample_count": 50000,
+            "success_count": 50000
+          },
+          "manifest": {
+            "runner_revision": "a5b13b3d122877403e0259dd472cf4bacbeef08c",
+            "fixture_hashes": {
+              "nano-500.json": "59037537dd9c877284fbace6d1f8cd5924d264cf370bdbec3a45e24034ffde30"
+            },
+            "image_digests": {
+              "nanocurrency/nano:V28.2": "sha256:ae5d9421f87c4620c2285479d95e5e79a2084878058934f7ed6a6b96b6add09e"
+            },
+            "java": {
+              "vendor": "Amazon.com Inc.",
+              "version": "21.0.12",
+              "vm_name": "OpenJDK 64-Bit Server VM",
+              "vm_version": "21.0.12+8-LTS"
+            },
+            "operating_system": {
+              "architecture": "amd64",
+              "name": "Linux",
+              "version": "7.0.13-100.fc43.x86_64"
+            },
+            "cpu": {
+              "logical_processor_count": 16,
+              "model": "AMD Ryzen 7 7840HS w/ Radeon 780M Graphics"
+            },
+            "storage_profile": "durable",
+            "runtime_configuration": {
+              "client.rpc.connectionReuse": "ktor-apache5-pool",
+              "client.rpc.engine": "ktor-apache5",
+              "client.rpc.maxConnectionsPerRoute": "500",
+              "client.rpc.maxConnectionsTotal": "500",
+              "client.rpc.requestTimeout": "disabled",
+              "client.websocket.engine": "ktor-cio",
+              "coroutine.dispatcher": "virtual",
+              "fixture": "nano-500",
+              "implementation": "nano",
+              "node.image": "nanocurrency/nano:V28.2",
+              "node.network": "dev",
+              "node.voting_key": "public dev key installed",
+              "rsnano.lmdb.sync": "not-applicable",
+              "storage.profile": "durable",
+              "timeout": "1m"
+            }
+          }
+        },
+        {
+          "source": "run-06/nano-500/nano-500-summary.json",
+          "summary": {
+            "average_tps": 566.1068277325936,
+            "elapsed_ns": 88322552477,
+            "error_count": 0,
+            "latency_ns": {
+              "average": 8.7695925315282E8,
+              "count": 50000,
+              "max": 1187971674,
+              "min": 178774608,
+              "p50": 891284530,
+              "p90": 999958424,
+              "p95": 1013614810,
+              "p99": 1051906123,
+              "sum": 43847962657641
+            },
+            "peak_tps": 735,
+            "sample_count": 50000,
+            "success_count": 50000
+          },
+          "manifest": {
+            "runner_revision": "a5b13b3d122877403e0259dd472cf4bacbeef08c",
+            "fixture_hashes": {
+              "nano-500.json": "59037537dd9c877284fbace6d1f8cd5924d264cf370bdbec3a45e24034ffde30"
+            },
+            "image_digests": {
+              "nanocurrency/nano:V28.2": "sha256:ae5d9421f87c4620c2285479d95e5e79a2084878058934f7ed6a6b96b6add09e"
+            },
+            "java": {
+              "vendor": "Amazon.com Inc.",
+              "version": "21.0.12",
+              "vm_name": "OpenJDK 64-Bit Server VM",
+              "vm_version": "21.0.12+8-LTS"
+            },
+            "operating_system": {
+              "architecture": "amd64",
+              "name": "Linux",
+              "version": "7.0.13-100.fc43.x86_64"
+            },
+            "cpu": {
+              "logical_processor_count": 16,
+              "model": "AMD Ryzen 7 7840HS w/ Radeon 780M Graphics"
+            },
+            "storage_profile": "durable",
+            "runtime_configuration": {
+              "client.rpc.connectionReuse": "ktor-apache5-pool",
+              "client.rpc.engine": "ktor-apache5",
+              "client.rpc.maxConnectionsPerRoute": "500",
+              "client.rpc.maxConnectionsTotal": "500",
+              "client.rpc.requestTimeout": "disabled",
+              "client.websocket.engine": "ktor-cio",
+              "coroutine.dispatcher": "virtual",
+              "fixture": "nano-500",
+              "implementation": "nano",
+              "node.image": "nanocurrency/nano:V28.2",
+              "node.network": "dev",
+              "node.voting_key": "public dev key installed",
+              "rsnano.lmdb.sync": "not-applicable",
+              "storage.profile": "durable",
+              "timeout": "1m"
+            }
+          }
+        },
+        {
+          "source": "run-07/nano-500/nano-500-summary.json",
+          "summary": {
+            "average_tps": 561.3779603435577,
+            "elapsed_ns": 89066553253,
+            "error_count": 0,
+            "latency_ns": {
+              "average": 8.8446306567582E8,
+              "count": 50000,
+              "max": 1156741148,
+              "min": 196901565,
+              "p50": 893315083,
+              "p90": 1004932422,
+              "p95": 1031886393,
+              "p99": 1063503691,
+              "sum": 44223153283791
+            },
+            "peak_tps": 731,
+            "sample_count": 50000,
+            "success_count": 50000
+          },
+          "manifest": {
+            "runner_revision": "a5b13b3d122877403e0259dd472cf4bacbeef08c",
+            "fixture_hashes": {
+              "nano-500.json": "59037537dd9c877284fbace6d1f8cd5924d264cf370bdbec3a45e24034ffde30"
+            },
+            "image_digests": {
+              "nanocurrency/nano:V28.2": "sha256:ae5d9421f87c4620c2285479d95e5e79a2084878058934f7ed6a6b96b6add09e"
+            },
+            "java": {
+              "vendor": "Amazon.com Inc.",
+              "version": "21.0.12",
+              "vm_name": "OpenJDK 64-Bit Server VM",
+              "vm_version": "21.0.12+8-LTS"
+            },
+            "operating_system": {
+              "architecture": "amd64",
+              "name": "Linux",
+              "version": "7.0.13-100.fc43.x86_64"
+            },
+            "cpu": {
+              "logical_processor_count": 16,
+              "model": "AMD Ryzen 7 7840HS w/ Radeon 780M Graphics"
+            },
+            "storage_profile": "durable",
+            "runtime_configuration": {
+              "client.rpc.connectionReuse": "ktor-apache5-pool",
+              "client.rpc.engine": "ktor-apache5",
+              "client.rpc.maxConnectionsPerRoute": "500",
+              "client.rpc.maxConnectionsTotal": "500",
+              "client.rpc.requestTimeout": "disabled",
+              "client.websocket.engine": "ktor-cio",
+              "coroutine.dispatcher": "virtual",
+              "fixture": "nano-500",
+              "implementation": "nano",
+              "node.image": "nanocurrency/nano:V28.2",
+              "node.network": "dev",
+              "node.voting_key": "public dev key installed",
+              "rsnano.lmdb.sync": "not-applicable",
+              "storage.profile": "durable",
+              "timeout": "1m"
+            }
+          }
+        },
+        {
+          "source": "run-08/nano-500/nano-500-summary.json",
+          "summary": {
+            "average_tps": 527.4019881859292,
+            "elapsed_ns": 94804344921,
+            "error_count": 0,
+            "latency_ns": {
+              "average": 9.4172683875982E8,
+              "count": 50000,
+              "max": 1498461269,
+              "min": 202793791,
+              "p50": 925338205,
+              "p90": 1081421901,
+              "p95": 1143108623,
+              "p99": 1301064902,
+              "sum": 47086341937991
+            },
+            "peak_tps": 693,
+            "sample_count": 50000,
+            "success_count": 50000
+          },
+          "manifest": {
+            "runner_revision": "a5b13b3d122877403e0259dd472cf4bacbeef08c",
+            "fixture_hashes": {
+              "nano-500.json": "59037537dd9c877284fbace6d1f8cd5924d264cf370bdbec3a45e24034ffde30"
+            },
+            "image_digests": {
+              "nanocurrency/nano:V28.2": "sha256:ae5d9421f87c4620c2285479d95e5e79a2084878058934f7ed6a6b96b6add09e"
+            },
+            "java": {
+              "vendor": "Amazon.com Inc.",
+              "version": "21.0.12",
+              "vm_name": "OpenJDK 64-Bit Server VM",
+              "vm_version": "21.0.12+8-LTS"
+            },
+            "operating_system": {
+              "architecture": "amd64",
+              "name": "Linux",
+              "version": "7.0.13-100.fc43.x86_64"
+            },
+            "cpu": {
+              "logical_processor_count": 16,
+              "model": "AMD Ryzen 7 7840HS w/ Radeon 780M Graphics"
+            },
+            "storage_profile": "durable",
+            "runtime_configuration": {
+              "client.rpc.connectionReuse": "ktor-apache5-pool",
+              "client.rpc.engine": "ktor-apache5",
+              "client.rpc.maxConnectionsPerRoute": "500",
+              "client.rpc.maxConnectionsTotal": "500",
+              "client.rpc.requestTimeout": "disabled",
+              "client.websocket.engine": "ktor-cio",
+              "coroutine.dispatcher": "virtual",
+              "fixture": "nano-500",
+              "implementation": "nano",
+              "node.image": "nanocurrency/nano:V28.2",
+              "node.network": "dev",
+              "node.voting_key": "public dev key installed",
+              "rsnano.lmdb.sync": "not-applicable",
+              "storage.profile": "durable",
+              "timeout": "1m"
+            }
+          }
+        },
+        {
+          "source": "run-09/nano-500/nano-500-summary.json",
+          "summary": {
+            "average_tps": 527.1934301693988,
+            "elapsed_ns": 94841849573,
+            "error_count": 0,
+            "latency_ns": {
+              "average": 9.424260991611E8,
+              "count": 50000,
+              "max": 1346906300,
+              "min": 191819565,
+              "p50": 941475016,
+              "p90": 1081771434,
+              "p95": 1108933511,
+              "p99": 1188577799,
+              "sum": 47121304958055
+            },
+            "peak_tps": 690,
+            "sample_count": 50000,
+            "success_count": 50000
+          },
+          "manifest": {
+            "runner_revision": "a5b13b3d122877403e0259dd472cf4bacbeef08c",
+            "fixture_hashes": {
+              "nano-500.json": "59037537dd9c877284fbace6d1f8cd5924d264cf370bdbec3a45e24034ffde30"
+            },
+            "image_digests": {
+              "nanocurrency/nano:V28.2": "sha256:ae5d9421f87c4620c2285479d95e5e79a2084878058934f7ed6a6b96b6add09e"
+            },
+            "java": {
+              "vendor": "Amazon.com Inc.",
+              "version": "21.0.12",
+              "vm_name": "OpenJDK 64-Bit Server VM",
+              "vm_version": "21.0.12+8-LTS"
+            },
+            "operating_system": {
+              "architecture": "amd64",
+              "name": "Linux",
+              "version": "7.0.13-100.fc43.x86_64"
+            },
+            "cpu": {
+              "logical_processor_count": 16,
+              "model": "AMD Ryzen 7 7840HS w/ Radeon 780M Graphics"
+            },
+            "storage_profile": "durable",
+            "runtime_configuration": {
+              "client.rpc.connectionReuse": "ktor-apache5-pool",
+              "client.rpc.engine": "ktor-apache5",
+              "client.rpc.maxConnectionsPerRoute": "500",
+              "client.rpc.maxConnectionsTotal": "500",
+              "client.rpc.requestTimeout": "disabled",
+              "client.websocket.engine": "ktor-cio",
+              "coroutine.dispatcher": "virtual",
+              "fixture": "nano-500",
+              "implementation": "nano",
+              "node.image": "nanocurrency/nano:V28.2",
+              "node.network": "dev",
+              "node.voting_key": "public dev key installed",
+              "rsnano.lmdb.sync": "not-applicable",
+              "storage.profile": "durable",
+              "timeout": "1m"
+            }
+          }
+        },
+        {
+          "source": "run-10/nano-500/nano-500-summary.json",
+          "summary": {
+            "average_tps": 548.9938060841182,
+            "elapsed_ns": 91075708771,
+            "error_count": 0,
+            "latency_ns": {
+              "average": 9.0450134592638E8,
+              "count": 50000,
+              "max": 1344096999,
+              "min": 189255296,
+              "p50": 901861833,
+              "p90": 1027892800,
+              "p95": 1054031479,
+              "p99": 1180217866,
+              "sum": 45225067296319
+            },
+            "peak_tps": 704,
+            "sample_count": 50000,
+            "success_count": 50000
+          },
+          "manifest": {
+            "runner_revision": "a5b13b3d122877403e0259dd472cf4bacbeef08c",
+            "fixture_hashes": {
+              "nano-500.json": "59037537dd9c877284fbace6d1f8cd5924d264cf370bdbec3a45e24034ffde30"
+            },
+            "image_digests": {
+              "nanocurrency/nano:V28.2": "sha256:ae5d9421f87c4620c2285479d95e5e79a2084878058934f7ed6a6b96b6add09e"
+            },
+            "java": {
+              "vendor": "Amazon.com Inc.",
+              "version": "21.0.12",
+              "vm_name": "OpenJDK 64-Bit Server VM",
+              "vm_version": "21.0.12+8-LTS"
+            },
+            "operating_system": {
+              "architecture": "amd64",
+              "name": "Linux",
+              "version": "7.0.13-100.fc43.x86_64"
+            },
+            "cpu": {
+              "logical_processor_count": 16,
+              "model": "AMD Ryzen 7 7840HS w/ Radeon 780M Graphics"
+            },
+            "storage_profile": "durable",
+            "runtime_configuration": {
+              "client.rpc.connectionReuse": "ktor-apache5-pool",
+              "client.rpc.engine": "ktor-apache5",
+              "client.rpc.maxConnectionsPerRoute": "500",
+              "client.rpc.maxConnectionsTotal": "500",
+              "client.rpc.requestTimeout": "disabled",
+              "client.websocket.engine": "ktor-cio",
+              "coroutine.dispatcher": "virtual",
+              "fixture": "nano-500",
+              "implementation": "nano",
+              "node.image": "nanocurrency/nano:V28.2",
+              "node.network": "dev",
+              "node.voting_key": "public dev key installed",
+              "rsnano.lmdb.sync": "not-applicable",
+              "storage.profile": "durable",
+              "timeout": "1m"
+            }
+          }
+        }
+      ],
+      "metrics": {
+        "latency_ns": {
+          "average": {
+            "direction": "lower_is_better",
+            "unit": "nanoseconds",
+            "minimum": 8.7104071872592E8,
+            "maximum": 1.50409262626972E9,
+            "best": 8.7104071872592E8,
+            "worst": 1.50409262626972E9
+          },
+          "max": {
+            "direction": "lower_is_better",
+            "unit": "nanoseconds",
+            "minimum": 1155716998,
+            "maximum": 8405449327,
+            "best": 1155716998,
+            "worst": 8405449327
+          },
+          "min": {
+            "direction": "lower_is_better",
+            "unit": "nanoseconds",
+            "minimum": 151779502,
+            "maximum": 202793791,
+            "best": 151779502,
+            "worst": 202793791
+          },
+          "p50": {
+            "direction": "lower_is_better",
+            "unit": "nanoseconds",
+            "minimum": 871847659,
+            "maximum": 941475016,
+            "best": 871847659,
+            "worst": 941475016
+          },
+          "p90": {
+            "direction": "lower_is_better",
+            "unit": "nanoseconds",
+            "minimum": 995890413,
+            "maximum": 1113255292,
+            "best": 995890413,
+            "worst": 1113255292
+          },
+          "p95": {
+            "direction": "lower_is_better",
+            "unit": "nanoseconds",
+            "minimum": 1010397361,
+            "maximum": 7794378937,
+            "best": 1010397361,
+            "worst": 7794378937
+          },
+          "p99": {
+            "direction": "lower_is_better",
+            "unit": "nanoseconds",
+            "minimum": 1050851268,
+            "maximum": 8011455073,
+            "best": 1050851268,
+            "worst": 8011455073
+          },
+          "sum": {
+            "direction": "lower_is_better",
+            "unit": "nanoseconds",
+            "minimum": 43552035936296,
+            "maximum": 75204631313486,
+            "best": 43552035936296,
+            "worst": 75204631313486
+          }
+        },
+        "throughput": {
+          "average_tps": {
+            "direction": "higher_is_better",
+            "unit": "transactions_per_second",
+            "minimum": 331.02674571551273,
+            "maximum": 569.9855306898792,
+            "best": 569.9855306898792,
+            "worst": 331.02674571551273
+          },
+          "elapsed_ns": {
+            "direction": "lower_is_better",
+            "unit": "nanoseconds",
+            "minimum": 87721525035,
+            "maximum": 151045196943,
+            "best": 87721525035,
+            "worst": 151045196943
+          },
+          "peak_tps": {
+            "direction": "higher_is_better",
+            "unit": "transactions_per_second",
+            "minimum": 690,
+            "maximum": 784,
+            "best": 784,
+            "worst": 690
+          }
+        }
+      }
+    },
+    {
+      "implementation": "atto",
+      "scenario": "atto-500",
+      "fixture": "atto-500",
+      "run_count": 10,
+      "runs": [
+        {
+          "source": "run-01/atto-500/atto-500-summary.json",
+          "summary": {
+            "average_tps": 3098.3212904797733,
+            "elapsed_ns": 16137771171,
+            "error_count": 0,
+            "latency_ns": {
+              "average": 1.6001438190456E8,
+              "count": 50000,
+              "max": 437025625,
+              "min": 43879408,
+              "p50": 134722873,
+              "p90": 262507245,
+              "p95": 289161699,
+              "p99": 354431323,
+              "sum": 8000719095228
+            },
+            "peak_tps": 4004,
+            "sample_count": 50000,
+            "success_count": 50000
+          },
+          "manifest": {
+            "runner_revision": "a5b13b3d122877403e0259dd472cf4bacbeef08c",
+            "fixture_hashes": {
+              "atto-500-benchmark.zip": "596ceaf863456fe02cb57cc47dd4daf902b3182fdb8c95299faf788bf3e1b211",
+              "atto-500-initial.zip": "dd3e8b82e259e2b1cd1ebb8dc16ab057fd0683ae07d20ed4c332e747b50787b2"
+            },
+            "image_digests": {
+              "ghcr.io/attocash/node:1.34-live": "sha256:971c1e84707e82145f159d02b7a684a3b4f4588a2a407398d199ebfb371ae62a",
+              "mysql:8.4": "sha256:1d6b6a8fcee8ff758ff151d017f5203cd06792a0e698f0a593c9dfcb14609cf0"
+            },
+            "java": {
+              "vendor": "Amazon.com Inc.",
+              "version": "21.0.12",
+              "vm_name": "OpenJDK 64-Bit Server VM",
+              "vm_version": "21.0.12+8-LTS"
+            },
+            "operating_system": {
+              "architecture": "amd64",
+              "name": "Linux",
+              "version": "7.0.13-100.fc43.x86_64"
+            },
+            "cpu": {
+              "logical_processor_count": 16,
+              "model": "AMD Ryzen 7 7840HS w/ Radeon 780M Graphics"
+            },
+            "storage_profile": "durable",
+            "runtime_configuration": {
+              "client.connectionReuse": "ktor-apache5-pool",
+              "client.maxConnectionsPerRoute": "500",
+              "client.requestTimeout": "disabled",
+              "coroutine.dispatcher": "virtual",
+              "database.durability": "mysql-defaults",
+              "database.image": "mysql:8.4",
+              "database.name": "atto",
+              "database.password": "<redacted>",
+              "database.storage": "durable",
+              "database.user": "atto",
+              "fixture": "atto-500",
+              "implementation": "atto",
+              "node.forceApi": "true",
+              "node.image": "ghcr.io/attocash/node:1.34-live",
+              "node.logging": "cash.atto.node=INFO",
+              "node.profile": "local",
+              "node.voters": "1",
+              "pullImages": "true",
+              "timeout": "1m"
+            }
+          }
+        },
+        {
+          "source": "run-02/atto-500/atto-500-summary.json",
+          "summary": {
+            "average_tps": 3172.6989160805956,
+            "elapsed_ns": 15759453173,
+            "error_count": 0,
+            "latency_ns": {
+              "average": 1.5686055712382E8,
+              "count": 50000,
+              "max": 407751220,
+              "min": 36991271,
+              "p50": 131476610,
+              "p90": 244054766,
+              "p95": 270960439,
+              "p99": 301049870,
+              "sum": 7843027856191
+            },
+            "peak_tps": 4052,
+            "sample_count": 50000,
+            "success_count": 50000
+          },
+          "manifest": {
+            "runner_revision": "a5b13b3d122877403e0259dd472cf4bacbeef08c",
+            "fixture_hashes": {
+              "atto-500-benchmark.zip": "596ceaf863456fe02cb57cc47dd4daf902b3182fdb8c95299faf788bf3e1b211",
+              "atto-500-initial.zip": "dd3e8b82e259e2b1cd1ebb8dc16ab057fd0683ae07d20ed4c332e747b50787b2"
+            },
+            "image_digests": {
+              "ghcr.io/attocash/node:1.34-live": "sha256:971c1e84707e82145f159d02b7a684a3b4f4588a2a407398d199ebfb371ae62a",
+              "mysql:8.4": "sha256:1d6b6a8fcee8ff758ff151d017f5203cd06792a0e698f0a593c9dfcb14609cf0"
+            },
+            "java": {
+              "vendor": "Amazon.com Inc.",
+              "version": "21.0.12",
+              "vm_name": "OpenJDK 64-Bit Server VM",
+              "vm_version": "21.0.12+8-LTS"
+            },
+            "operating_system": {
+              "architecture": "amd64",
+              "name": "Linux",
+              "version": "7.0.13-100.fc43.x86_64"
+            },
+            "cpu": {
+              "logical_processor_count": 16,
+              "model": "AMD Ryzen 7 7840HS w/ Radeon 780M Graphics"
+            },
+            "storage_profile": "durable",
+            "runtime_configuration": {
+              "client.connectionReuse": "ktor-apache5-pool",
+              "client.maxConnectionsPerRoute": "500",
+              "client.requestTimeout": "disabled",
+              "coroutine.dispatcher": "virtual",
+              "database.durability": "mysql-defaults",
+              "database.image": "mysql:8.4",
+              "database.name": "atto",
+              "database.password": "<redacted>",
+              "database.storage": "durable",
+              "database.user": "atto",
+              "fixture": "atto-500",
+              "implementation": "atto",
+              "node.forceApi": "true",
+              "node.image": "ghcr.io/attocash/node:1.34-live",
+              "node.logging": "cash.atto.node=INFO",
+              "node.profile": "local",
+              "node.voters": "1",
+              "pullImages": "true",
+              "timeout": "1m"
+            }
+          }
+        },
+        {
+          "source": "run-03/atto-500/atto-500-summary.json",
+          "summary": {
+            "average_tps": 3026.600607938942,
+            "elapsed_ns": 16520184351,
+            "error_count": 0,
+            "latency_ns": {
+              "average": 1.6398156467778E8,
+              "count": 50000,
+              "max": 456989804,
+              "min": 43062018,
+              "p50": 138346812,
+              "p90": 245543270,
+              "p95": 282149341,
+              "p99": 383572408,
+              "sum": 8199078233889
+            },
+            "peak_tps": 3783,
+            "sample_count": 50000,
+            "success_count": 50000
+          },
+          "manifest": {
+            "runner_revision": "a5b13b3d122877403e0259dd472cf4bacbeef08c",
+            "fixture_hashes": {
+              "atto-500-benchmark.zip": "596ceaf863456fe02cb57cc47dd4daf902b3182fdb8c95299faf788bf3e1b211",
+              "atto-500-initial.zip": "dd3e8b82e259e2b1cd1ebb8dc16ab057fd0683ae07d20ed4c332e747b50787b2"
+            },
+            "image_digests": {
+              "ghcr.io/attocash/node:1.34-live": "sha256:971c1e84707e82145f159d02b7a684a3b4f4588a2a407398d199ebfb371ae62a",
+              "mysql:8.4": "sha256:1d6b6a8fcee8ff758ff151d017f5203cd06792a0e698f0a593c9dfcb14609cf0"
+            },
+            "java": {
+              "vendor": "Amazon.com Inc.",
+              "version": "21.0.12",
+              "vm_name": "OpenJDK 64-Bit Server VM",
+              "vm_version": "21.0.12+8-LTS"
+            },
+            "operating_system": {
+              "architecture": "amd64",
+              "name": "Linux",
+              "version": "7.0.13-100.fc43.x86_64"
+            },
+            "cpu": {
+              "logical_processor_count": 16,
+              "model": "AMD Ryzen 7 7840HS w/ Radeon 780M Graphics"
+            },
+            "storage_profile": "durable",
+            "runtime_configuration": {
+              "client.connectionReuse": "ktor-apache5-pool",
+              "client.maxConnectionsPerRoute": "500",
+              "client.requestTimeout": "disabled",
+              "coroutine.dispatcher": "virtual",
+              "database.durability": "mysql-defaults",
+              "database.image": "mysql:8.4",
+              "database.name": "atto",
+              "database.password": "<redacted>",
+              "database.storage": "durable",
+              "database.user": "atto",
+              "fixture": "atto-500",
+              "implementation": "atto",
+              "node.forceApi": "true",
+              "node.image": "ghcr.io/attocash/node:1.34-live",
+              "node.logging": "cash.atto.node=INFO",
+              "node.profile": "local",
+              "node.voters": "1",
+              "pullImages": "true",
+              "timeout": "1m"
+            }
+          }
+        },
+        {
+          "source": "run-04/atto-500/atto-500-summary.json",
+          "summary": {
+            "average_tps": 3130.8333781426554,
+            "elapsed_ns": 15970188752,
+            "error_count": 0,
+            "latency_ns": {
+              "average": 1.5853191122768E8,
+              "count": 50000,
+              "max": 438589371,
+              "min": 46510329,
+              "p50": 134178394,
+              "p90": 244207962,
+              "p95": 287171847,
+              "p99": 338102275,
+              "sum": 7926595561384
+            },
+            "peak_tps": 4000,
+            "sample_count": 50000,
+            "success_count": 50000
+          },
+          "manifest": {
+            "runner_revision": "a5b13b3d122877403e0259dd472cf4bacbeef08c",
+            "fixture_hashes": {
+              "atto-500-benchmark.zip": "596ceaf863456fe02cb57cc47dd4daf902b3182fdb8c95299faf788bf3e1b211",
+              "atto-500-initial.zip": "dd3e8b82e259e2b1cd1ebb8dc16ab057fd0683ae07d20ed4c332e747b50787b2"
+            },
+            "image_digests": {
+              "ghcr.io/attocash/node:1.34-live": "sha256:971c1e84707e82145f159d02b7a684a3b4f4588a2a407398d199ebfb371ae62a",
+              "mysql:8.4": "sha256:1d6b6a8fcee8ff758ff151d017f5203cd06792a0e698f0a593c9dfcb14609cf0"
+            },
+            "java": {
+              "vendor": "Amazon.com Inc.",
+              "version": "21.0.12",
+              "vm_name": "OpenJDK 64-Bit Server VM",
+              "vm_version": "21.0.12+8-LTS"
+            },
+            "operating_system": {
+              "architecture": "amd64",
+              "name": "Linux",
+              "version": "7.0.13-100.fc43.x86_64"
+            },
+            "cpu": {
+              "logical_processor_count": 16,
+              "model": "AMD Ryzen 7 7840HS w/ Radeon 780M Graphics"
+            },
+            "storage_profile": "durable",
+            "runtime_configuration": {
+              "client.connectionReuse": "ktor-apache5-pool",
+              "client.maxConnectionsPerRoute": "500",
+              "client.requestTimeout": "disabled",
+              "coroutine.dispatcher": "virtual",
+              "database.durability": "mysql-defaults",
+              "database.image": "mysql:8.4",
+              "database.name": "atto",
+              "database.password": "<redacted>",
+              "database.storage": "durable",
+              "database.user": "atto",
+              "fixture": "atto-500",
+              "implementation": "atto",
+              "node.forceApi": "true",
+              "node.image": "ghcr.io/attocash/node:1.34-live",
+              "node.logging": "cash.atto.node=INFO",
+              "node.profile": "local",
+              "node.voters": "1",
+              "pullImages": "true",
+              "timeout": "1m"
+            }
+          }
+        },
+        {
+          "source": "run-05/atto-500/atto-500-summary.json",
+          "summary": {
+            "average_tps": 3023.296158504849,
+            "elapsed_ns": 16538240840,
+            "error_count": 0,
+            "latency_ns": {
+              "average": 1.6384416058788E8,
+              "count": 50000,
+              "max": 549938237,
+              "min": 32644640,
+              "p50": 136906217,
+              "p90": 263126294,
+              "p95": 298791014,
+              "p99": 371370672,
+              "sum": 8192208029394
+            },
+            "peak_tps": 3834,
+            "sample_count": 50000,
+            "success_count": 50000
+          },
+          "manifest": {
+            "runner_revision": "a5b13b3d122877403e0259dd472cf4bacbeef08c",
+            "fixture_hashes": {
+              "atto-500-benchmark.zip": "596ceaf863456fe02cb57cc47dd4daf902b3182fdb8c95299faf788bf3e1b211",
+              "atto-500-initial.zip": "dd3e8b82e259e2b1cd1ebb8dc16ab057fd0683ae07d20ed4c332e747b50787b2"
+            },
+            "image_digests": {
+              "ghcr.io/attocash/node:1.34-live": "sha256:971c1e84707e82145f159d02b7a684a3b4f4588a2a407398d199ebfb371ae62a",
+              "mysql:8.4": "sha256:1d6b6a8fcee8ff758ff151d017f5203cd06792a0e698f0a593c9dfcb14609cf0"
+            },
+            "java": {
+              "vendor": "Amazon.com Inc.",
+              "version": "21.0.12",
+              "vm_name": "OpenJDK 64-Bit Server VM",
+              "vm_version": "21.0.12+8-LTS"
+            },
+            "operating_system": {
+              "architecture": "amd64",
+              "name": "Linux",
+              "version": "7.0.13-100.fc43.x86_64"
+            },
+            "cpu": {
+              "logical_processor_count": 16,
+              "model": "AMD Ryzen 7 7840HS w/ Radeon 780M Graphics"
+            },
+            "storage_profile": "durable",
+            "runtime_configuration": {
+              "client.connectionReuse": "ktor-apache5-pool",
+              "client.maxConnectionsPerRoute": "500",
+              "client.requestTimeout": "disabled",
+              "coroutine.dispatcher": "virtual",
+              "database.durability": "mysql-defaults",
+              "database.image": "mysql:8.4",
+              "database.name": "atto",
+              "database.password": "<redacted>",
+              "database.storage": "durable",
+              "database.user": "atto",
+              "fixture": "atto-500",
+              "implementation": "atto",
+              "node.forceApi": "true",
+              "node.image": "ghcr.io/attocash/node:1.34-live",
+              "node.logging": "cash.atto.node=INFO",
+              "node.profile": "local",
+              "node.voters": "1",
+              "pullImages": "true",
+              "timeout": "1m"
+            }
+          }
+        },
+        {
+          "source": "run-06/atto-500/atto-500-summary.json",
+          "summary": {
+            "average_tps": 3098.0167903503484,
+            "elapsed_ns": 16139357332,
+            "error_count": 0,
+            "latency_ns": {
+              "average": 1.6072157738414E8,
+              "count": 50000,
+              "max": 475082032,
+              "min": 42342722,
+              "p50": 131663006,
+              "p90": 245220455,
+              "p95": 286715622,
+              "p99": 337716871,
+              "sum": 8036078869207
+            },
+            "peak_tps": 4000,
+            "sample_count": 50000,
+            "success_count": 50000
+          },
+          "manifest": {
+            "runner_revision": "a5b13b3d122877403e0259dd472cf4bacbeef08c",
+            "fixture_hashes": {
+              "atto-500-benchmark.zip": "596ceaf863456fe02cb57cc47dd4daf902b3182fdb8c95299faf788bf3e1b211",
+              "atto-500-initial.zip": "dd3e8b82e259e2b1cd1ebb8dc16ab057fd0683ae07d20ed4c332e747b50787b2"
+            },
+            "image_digests": {
+              "ghcr.io/attocash/node:1.34-live": "sha256:971c1e84707e82145f159d02b7a684a3b4f4588a2a407398d199ebfb371ae62a",
+              "mysql:8.4": "sha256:1d6b6a8fcee8ff758ff151d017f5203cd06792a0e698f0a593c9dfcb14609cf0"
+            },
+            "java": {
+              "vendor": "Amazon.com Inc.",
+              "version": "21.0.12",
+              "vm_name": "OpenJDK 64-Bit Server VM",
+              "vm_version": "21.0.12+8-LTS"
+            },
+            "operating_system": {
+              "architecture": "amd64",
+              "name": "Linux",
+              "version": "7.0.13-100.fc43.x86_64"
+            },
+            "cpu": {
+              "logical_processor_count": 16,
+              "model": "AMD Ryzen 7 7840HS w/ Radeon 780M Graphics"
+            },
+            "storage_profile": "durable",
+            "runtime_configuration": {
+              "client.connectionReuse": "ktor-apache5-pool",
+              "client.maxConnectionsPerRoute": "500",
+              "client.requestTimeout": "disabled",
+              "coroutine.dispatcher": "virtual",
+              "database.durability": "mysql-defaults",
+              "database.image": "mysql:8.4",
+              "database.name": "atto",
+              "database.password": "<redacted>",
+              "database.storage": "durable",
+              "database.user": "atto",
+              "fixture": "atto-500",
+              "implementation": "atto",
+              "node.forceApi": "true",
+              "node.image": "ghcr.io/attocash/node:1.34-live",
+              "node.logging": "cash.atto.node=INFO",
+              "node.profile": "local",
+              "node.voters": "1",
+              "pullImages": "true",
+              "timeout": "1m"
+            }
+          }
+        },
+        {
+          "source": "run-07/atto-500/atto-500-summary.json",
+          "summary": {
+            "average_tps": 3102.6795436532066,
+            "elapsed_ns": 16115102864,
+            "error_count": 0,
+            "latency_ns": {
+              "average": 1.6038591752088E8,
+              "count": 50000,
+              "max": 454028293,
+              "min": 30608252,
+              "p50": 137425774,
+              "p90": 243079661,
+              "p95": 277931839,
+              "p99": 355478000,
+              "sum": 8019295876044
+            },
+            "peak_tps": 3855,
+            "sample_count": 50000,
+            "success_count": 50000
+          },
+          "manifest": {
+            "runner_revision": "a5b13b3d122877403e0259dd472cf4bacbeef08c",
+            "fixture_hashes": {
+              "atto-500-benchmark.zip": "596ceaf863456fe02cb57cc47dd4daf902b3182fdb8c95299faf788bf3e1b211",
+              "atto-500-initial.zip": "dd3e8b82e259e2b1cd1ebb8dc16ab057fd0683ae07d20ed4c332e747b50787b2"
+            },
+            "image_digests": {
+              "ghcr.io/attocash/node:1.34-live": "sha256:971c1e84707e82145f159d02b7a684a3b4f4588a2a407398d199ebfb371ae62a",
+              "mysql:8.4": "sha256:1d6b6a8fcee8ff758ff151d017f5203cd06792a0e698f0a593c9dfcb14609cf0"
+            },
+            "java": {
+              "vendor": "Amazon.com Inc.",
+              "version": "21.0.12",
+              "vm_name": "OpenJDK 64-Bit Server VM",
+              "vm_version": "21.0.12+8-LTS"
+            },
+            "operating_system": {
+              "architecture": "amd64",
+              "name": "Linux",
+              "version": "7.0.13-100.fc43.x86_64"
+            },
+            "cpu": {
+              "logical_processor_count": 16,
+              "model": "AMD Ryzen 7 7840HS w/ Radeon 780M Graphics"
+            },
+            "storage_profile": "durable",
+            "runtime_configuration": {
+              "client.connectionReuse": "ktor-apache5-pool",
+              "client.maxConnectionsPerRoute": "500",
+              "client.requestTimeout": "disabled",
+              "coroutine.dispatcher": "virtual",
+              "database.durability": "mysql-defaults",
+              "database.image": "mysql:8.4",
+              "database.name": "atto",
+              "database.password": "<redacted>",
+              "database.storage": "durable",
+              "database.user": "atto",
+              "fixture": "atto-500",
+              "implementation": "atto",
+              "node.forceApi": "true",
+              "node.image": "ghcr.io/attocash/node:1.34-live",
+              "node.logging": "cash.atto.node=INFO",
+              "node.profile": "local",
+              "node.voters": "1",
+              "pullImages": "true",
+              "timeout": "1m"
+            }
+          }
+        },
+        {
+          "source": "run-08/atto-500/atto-500-summary.json",
+          "summary": {
+            "average_tps": 2348.7401561626016,
+            "elapsed_ns": 21288008326,
+            "error_count": 0,
+            "latency_ns": {
+              "average": 2.110768893906E8,
+              "count": 50000,
+              "max": 649633900,
+              "min": 49611901,
+              "p50": 187865704,
+              "p90": 306143879,
+              "p95": 333466887,
+              "p99": 477097906,
+              "sum": 10553844469530
+            },
+            "peak_tps": 3061,
+            "sample_count": 50000,
+            "success_count": 50000
+          },
+          "manifest": {
+            "runner_revision": "a5b13b3d122877403e0259dd472cf4bacbeef08c",
+            "fixture_hashes": {
+              "atto-500-benchmark.zip": "596ceaf863456fe02cb57cc47dd4daf902b3182fdb8c95299faf788bf3e1b211",
+              "atto-500-initial.zip": "dd3e8b82e259e2b1cd1ebb8dc16ab057fd0683ae07d20ed4c332e747b50787b2"
+            },
+            "image_digests": {
+              "ghcr.io/attocash/node:1.34-live": "sha256:971c1e84707e82145f159d02b7a684a3b4f4588a2a407398d199ebfb371ae62a",
+              "mysql:8.4": "sha256:1d6b6a8fcee8ff758ff151d017f5203cd06792a0e698f0a593c9dfcb14609cf0"
+            },
+            "java": {
+              "vendor": "Amazon.com Inc.",
+              "version": "21.0.12",
+              "vm_name": "OpenJDK 64-Bit Server VM",
+              "vm_version": "21.0.12+8-LTS"
+            },
+            "operating_system": {
+              "architecture": "amd64",
+              "name": "Linux",
+              "version": "7.0.13-100.fc43.x86_64"
+            },
+            "cpu": {
+              "logical_processor_count": 16,
+              "model": "AMD Ryzen 7 7840HS w/ Radeon 780M Graphics"
+            },
+            "storage_profile": "durable",
+            "runtime_configuration": {
+              "client.connectionReuse": "ktor-apache5-pool",
+              "client.maxConnectionsPerRoute": "500",
+              "client.requestTimeout": "disabled",
+              "coroutine.dispatcher": "virtual",
+              "database.durability": "mysql-defaults",
+              "database.image": "mysql:8.4",
+              "database.name": "atto",
+              "database.password": "<redacted>",
+              "database.storage": "durable",
+              "database.user": "atto",
+              "fixture": "atto-500",
+              "implementation": "atto",
+              "node.forceApi": "true",
+              "node.image": "ghcr.io/attocash/node:1.34-live",
+              "node.logging": "cash.atto.node=INFO",
+              "node.profile": "local",
+              "node.voters": "1",
+              "pullImages": "true",
+              "timeout": "1m"
+            }
+          }
+        },
+        {
+          "source": "run-09/atto-500/atto-500-summary.json",
+          "summary": {
+            "average_tps": 2473.9757099331114,
+            "elapsed_ns": 20210384362,
+            "error_count": 0,
+            "latency_ns": {
+              "average": 2.0045364483234E8,
+              "count": 50000,
+              "max": 723561701,
+              "min": 44901984,
+              "p50": 185977770,
+              "p90": 273933352,
+              "p95": 303880708,
+              "p99": 445265531,
+              "sum": 10022682241617
+            },
+            "peak_tps": 3290,
+            "sample_count": 50000,
+            "success_count": 50000
+          },
+          "manifest": {
+            "runner_revision": "a5b13b3d122877403e0259dd472cf4bacbeef08c",
+            "fixture_hashes": {
+              "atto-500-benchmark.zip": "596ceaf863456fe02cb57cc47dd4daf902b3182fdb8c95299faf788bf3e1b211",
+              "atto-500-initial.zip": "dd3e8b82e259e2b1cd1ebb8dc16ab057fd0683ae07d20ed4c332e747b50787b2"
+            },
+            "image_digests": {
+              "ghcr.io/attocash/node:1.34-live": "sha256:971c1e84707e82145f159d02b7a684a3b4f4588a2a407398d199ebfb371ae62a",
+              "mysql:8.4": "sha256:1d6b6a8fcee8ff758ff151d017f5203cd06792a0e698f0a593c9dfcb14609cf0"
+            },
+            "java": {
+              "vendor": "Amazon.com Inc.",
+              "version": "21.0.12",
+              "vm_name": "OpenJDK 64-Bit Server VM",
+              "vm_version": "21.0.12+8-LTS"
+            },
+            "operating_system": {
+              "architecture": "amd64",
+              "name": "Linux",
+              "version": "7.0.13-100.fc43.x86_64"
+            },
+            "cpu": {
+              "logical_processor_count": 16,
+              "model": "AMD Ryzen 7 7840HS w/ Radeon 780M Graphics"
+            },
+            "storage_profile": "durable",
+            "runtime_configuration": {
+              "client.connectionReuse": "ktor-apache5-pool",
+              "client.maxConnectionsPerRoute": "500",
+              "client.requestTimeout": "disabled",
+              "coroutine.dispatcher": "virtual",
+              "database.durability": "mysql-defaults",
+              "database.image": "mysql:8.4",
+              "database.name": "atto",
+              "database.password": "<redacted>",
+              "database.storage": "durable",
+              "database.user": "atto",
+              "fixture": "atto-500",
+              "implementation": "atto",
+              "node.forceApi": "true",
+              "node.image": "ghcr.io/attocash/node:1.34-live",
+              "node.logging": "cash.atto.node=INFO",
+              "node.profile": "local",
+              "node.voters": "1",
+              "pullImages": "true",
+              "timeout": "1m"
+            }
+          }
+        },
+        {
+          "source": "run-10/atto-500/atto-500-summary.json",
+          "summary": {
+            "average_tps": 2405.4103800736193,
+            "elapsed_ns": 20786473865,
+            "error_count": 0,
+            "latency_ns": {
+              "average": 2.0630840618102E8,
+              "count": 50000,
+              "max": 563025873,
+              "min": 57195765,
+              "p50": 190862992,
+              "p90": 303453495,
+              "p95": 329946187,
+              "p99": 376780235,
+              "sum": 10315420309051
+            },
+            "peak_tps": 3026,
+            "sample_count": 50000,
+            "success_count": 50000
+          },
+          "manifest": {
+            "runner_revision": "a5b13b3d122877403e0259dd472cf4bacbeef08c",
+            "fixture_hashes": {
+              "atto-500-benchmark.zip": "596ceaf863456fe02cb57cc47dd4daf902b3182fdb8c95299faf788bf3e1b211",
+              "atto-500-initial.zip": "dd3e8b82e259e2b1cd1ebb8dc16ab057fd0683ae07d20ed4c332e747b50787b2"
+            },
+            "image_digests": {
+              "ghcr.io/attocash/node:1.34-live": "sha256:971c1e84707e82145f159d02b7a684a3b4f4588a2a407398d199ebfb371ae62a",
+              "mysql:8.4": "sha256:1d6b6a8fcee8ff758ff151d017f5203cd06792a0e698f0a593c9dfcb14609cf0"
+            },
+            "java": {
+              "vendor": "Amazon.com Inc.",
+              "version": "21.0.12",
+              "vm_name": "OpenJDK 64-Bit Server VM",
+              "vm_version": "21.0.12+8-LTS"
+            },
+            "operating_system": {
+              "architecture": "amd64",
+              "name": "Linux",
+              "version": "7.0.13-100.fc43.x86_64"
+            },
+            "cpu": {
+              "logical_processor_count": 16,
+              "model": "AMD Ryzen 7 7840HS w/ Radeon 780M Graphics"
+            },
+            "storage_profile": "durable",
+            "runtime_configuration": {
+              "client.connectionReuse": "ktor-apache5-pool",
+              "client.maxConnectionsPerRoute": "500",
+              "client.requestTimeout": "disabled",
+              "coroutine.dispatcher": "virtual",
+              "database.durability": "mysql-defaults",
+              "database.image": "mysql:8.4",
+              "database.name": "atto",
+              "database.password": "<redacted>",
+              "database.storage": "durable",
+              "database.user": "atto",
+              "fixture": "atto-500",
+              "implementation": "atto",
+              "node.forceApi": "true",
+              "node.image": "ghcr.io/attocash/node:1.34-live",
+              "node.logging": "cash.atto.node=INFO",
+              "node.profile": "local",
+              "node.voters": "1",
+              "pullImages": "true",
+              "timeout": "1m"
+            }
+          }
+        }
+      ],
+      "metrics": {
+        "latency_ns": {
+          "average": {
+            "direction": "lower_is_better",
+            "unit": "nanoseconds",
+            "minimum": 1.5686055712382E8,
+            "maximum": 2.110768893906E8,
+            "best": 1.5686055712382E8,
+            "worst": 2.110768893906E8
+          },
+          "max": {
+            "direction": "lower_is_better",
+            "unit": "nanoseconds",
+            "minimum": 407751220,
+            "maximum": 723561701,
+            "best": 407751220,
+            "worst": 723561701
+          },
+          "min": {
+            "direction": "lower_is_better",
+            "unit": "nanoseconds",
+            "minimum": 30608252,
+            "maximum": 57195765,
+            "best": 30608252,
+            "worst": 57195765
+          },
+          "p50": {
+            "direction": "lower_is_better",
+            "unit": "nanoseconds",
+            "minimum": 131476610,
+            "maximum": 190862992,
+            "best": 131476610,
+            "worst": 190862992
+          },
+          "p90": {
+            "direction": "lower_is_better",
+            "unit": "nanoseconds",
+            "minimum": 243079661,
+            "maximum": 306143879,
+            "best": 243079661,
+            "worst": 306143879
+          },
+          "p95": {
+            "direction": "lower_is_better",
+            "unit": "nanoseconds",
+            "minimum": 270960439,
+            "maximum": 333466887,
+            "best": 270960439,
+            "worst": 333466887
+          },
+          "p99": {
+            "direction": "lower_is_better",
+            "unit": "nanoseconds",
+            "minimum": 301049870,
+            "maximum": 477097906,
+            "best": 301049870,
+            "worst": 477097906
+          },
+          "sum": {
+            "direction": "lower_is_better",
+            "unit": "nanoseconds",
+            "minimum": 7843027856191,
+            "maximum": 10553844469530,
+            "best": 7843027856191,
+            "worst": 10553844469530
+          }
+        },
+        "throughput": {
+          "average_tps": {
+            "direction": "higher_is_better",
+            "unit": "transactions_per_second",
+            "minimum": 2348.7401561626016,
+            "maximum": 3172.6989160805956,
+            "best": 3172.6989160805956,
+            "worst": 2348.7401561626016
+          },
+          "elapsed_ns": {
+            "direction": "lower_is_better",
+            "unit": "nanoseconds",
+            "minimum": 15759453173,
+            "maximum": 21288008326,
+            "best": 15759453173,
+            "worst": 21288008326
+          },
+          "peak_tps": {
+            "direction": "higher_is_better",
+            "unit": "transactions_per_second",
+            "minimum": 3026,
+            "maximum": 4052,
+            "best": 4052,
+            "worst": 3026
+          }
+        }
+      }
+    },
+    {
+      "implementation": "rsnano",
+      "scenario": "rsnano-500",
+      "fixture": "nano-500",
+      "run_count": 10,
+      "runs": [
+        {
+          "source": "run-01/rsnano-500/rsnano-500-summary.json",
+          "summary": {
+            "average_tps": 526.6064043742421,
+            "elapsed_ns": 94947572959,
+            "error_count": 0,
+            "latency_ns": {
+              "average": 9.384122367229E8,
+              "count": 50000,
+              "max": 2894287109,
+              "min": 99052693,
+              "p50": 877053057,
+              "p90": 1506265035,
+              "p95": 1691004427,
+              "p99": 2111862807,
+              "sum": 46920611836145
+            },
+            "peak_tps": 984,
+            "sample_count": 50000,
+            "success_count": 50000
+          },
+          "manifest": {
+            "runner_revision": "a5b13b3d122877403e0259dd472cf4bacbeef08c",
+            "fixture_hashes": {
+              "nano-500.json": "59037537dd9c877284fbace6d1f8cd5924d264cf370bdbec3a45e24034ffde30"
+            },
+            "image_digests": {
+              "rsnano/rsnano:V3.1": "sha256:0acac4f740fb7453d704db78f686ed8b3d05e950f00b4d5e171256f3c19cf607"
+            },
+            "java": {
+              "vendor": "Amazon.com Inc.",
+              "version": "21.0.12",
+              "vm_name": "OpenJDK 64-Bit Server VM",
+              "vm_version": "21.0.12+8-LTS"
+            },
+            "operating_system": {
+              "architecture": "amd64",
+              "name": "Linux",
+              "version": "7.0.13-100.fc43.x86_64"
+            },
+            "cpu": {
+              "logical_processor_count": 16,
+              "model": "AMD Ryzen 7 7840HS w/ Radeon 780M Graphics"
+            },
+            "storage_profile": "durable",
+            "runtime_configuration": {
+              "client.rpc.connectionReuse": "ktor-apache5-pool",
+              "client.rpc.engine": "ktor-apache5",
+              "client.rpc.maxConnectionsPerRoute": "500",
+              "client.rpc.maxConnectionsTotal": "500",
+              "client.rpc.requestTimeout": "disabled",
+              "client.websocket.engine": "ktor-cio",
+              "coroutine.dispatcher": "virtual",
+              "fixture": "nano-500",
+              "implementation": "rsnano",
+              "node.image": "rsnano/rsnano:V3.1",
+              "node.network": "dev",
+              "node.voting_key": "public dev key installed",
+              "rsnano.lmdb.sync": "always",
+              "storage.profile": "durable",
+              "timeout": "1m"
+            }
+          }
+        },
+        {
+          "source": "run-02/rsnano-500/rsnano-500-summary.json",
+          "summary": {
+            "average_tps": 406.04152388188396,
+            "elapsed_ns": 123140115134,
+            "error_count": 0,
+            "latency_ns": {
+              "average": 1.22447092610748E9,
+              "count": 50000,
+              "max": 4586192692,
+              "min": 101739600,
+              "p50": 1152317428,
+              "p90": 2065740635,
+              "p95": 2292912497,
+              "p99": 2798353571,
+              "sum": 61223546305374
+            },
+            "peak_tps": 924,
+            "sample_count": 50000,
+            "success_count": 50000
+          },
+          "manifest": {
+            "runner_revision": "a5b13b3d122877403e0259dd472cf4bacbeef08c",
+            "fixture_hashes": {
+              "nano-500.json": "59037537dd9c877284fbace6d1f8cd5924d264cf370bdbec3a45e24034ffde30"
+            },
+            "image_digests": {
+              "rsnano/rsnano:V3.1": "sha256:0acac4f740fb7453d704db78f686ed8b3d05e950f00b4d5e171256f3c19cf607"
+            },
+            "java": {
+              "vendor": "Amazon.com Inc.",
+              "version": "21.0.12",
+              "vm_name": "OpenJDK 64-Bit Server VM",
+              "vm_version": "21.0.12+8-LTS"
+            },
+            "operating_system": {
+              "architecture": "amd64",
+              "name": "Linux",
+              "version": "7.0.13-100.fc43.x86_64"
+            },
+            "cpu": {
+              "logical_processor_count": 16,
+              "model": "AMD Ryzen 7 7840HS w/ Radeon 780M Graphics"
+            },
+            "storage_profile": "durable",
+            "runtime_configuration": {
+              "client.rpc.connectionReuse": "ktor-apache5-pool",
+              "client.rpc.engine": "ktor-apache5",
+              "client.rpc.maxConnectionsPerRoute": "500",
+              "client.rpc.maxConnectionsTotal": "500",
+              "client.rpc.requestTimeout": "disabled",
+              "client.websocket.engine": "ktor-cio",
+              "coroutine.dispatcher": "virtual",
+              "fixture": "nano-500",
+              "implementation": "rsnano",
+              "node.image": "rsnano/rsnano:V3.1",
+              "node.network": "dev",
+              "node.voting_key": "public dev key installed",
+              "rsnano.lmdb.sync": "always",
+              "storage.profile": "durable",
+              "timeout": "1m"
+            }
+          }
+        },
+        {
+          "source": "run-03/rsnano-500/rsnano-500-summary.json",
+          "summary": {
+            "average_tps": 543.0509137529292,
+            "elapsed_ns": 92072398248,
+            "error_count": 0,
+            "latency_ns": {
+              "average": 9.1577062191384E8,
+              "count": 50000,
+              "max": 2260830760,
+              "min": 99226248,
+              "p50": 874941467,
+              "p90": 1402689502,
+              "p95": 1529619286,
+              "p99": 1797987005,
+              "sum": 45788531095692
+            },
+            "peak_tps": 957,
+            "sample_count": 50000,
+            "success_count": 50000
+          },
+          "manifest": {
+            "runner_revision": "a5b13b3d122877403e0259dd472cf4bacbeef08c",
+            "fixture_hashes": {
+              "nano-500.json": "59037537dd9c877284fbace6d1f8cd5924d264cf370bdbec3a45e24034ffde30"
+            },
+            "image_digests": {
+              "rsnano/rsnano:V3.1": "sha256:0acac4f740fb7453d704db78f686ed8b3d05e950f00b4d5e171256f3c19cf607"
+            },
+            "java": {
+              "vendor": "Amazon.com Inc.",
+              "version": "21.0.12",
+              "vm_name": "OpenJDK 64-Bit Server VM",
+              "vm_version": "21.0.12+8-LTS"
+            },
+            "operating_system": {
+              "architecture": "amd64",
+              "name": "Linux",
+              "version": "7.0.13-100.fc43.x86_64"
+            },
+            "cpu": {
+              "logical_processor_count": 16,
+              "model": "AMD Ryzen 7 7840HS w/ Radeon 780M Graphics"
+            },
+            "storage_profile": "durable",
+            "runtime_configuration": {
+              "client.rpc.connectionReuse": "ktor-apache5-pool",
+              "client.rpc.engine": "ktor-apache5",
+              "client.rpc.maxConnectionsPerRoute": "500",
+              "client.rpc.maxConnectionsTotal": "500",
+              "client.rpc.requestTimeout": "disabled",
+              "client.websocket.engine": "ktor-cio",
+              "coroutine.dispatcher": "virtual",
+              "fixture": "nano-500",
+              "implementation": "rsnano",
+              "node.image": "rsnano/rsnano:V3.1",
+              "node.network": "dev",
+              "node.voting_key": "public dev key installed",
+              "rsnano.lmdb.sync": "always",
+              "storage.profile": "durable",
+              "timeout": "1m"
+            }
+          }
+        },
+        {
+          "source": "run-04/rsnano-500/rsnano-500-summary.json",
+          "summary": {
+            "average_tps": 446.9393196244023,
+            "elapsed_ns": 111872009923,
+            "error_count": 0,
+            "latency_ns": {
+              "average": 1.11176844274252E9,
+              "count": 50000,
+              "max": 2564600337,
+              "min": 97955200,
+              "p50": 1094986005,
+              "p90": 1617056198,
+              "p95": 1797115163,
+              "p99": 2041792004,
+              "sum": 55588422137126
+            },
+            "peak_tps": 905,
+            "sample_count": 50000,
+            "success_count": 50000
+          },
+          "manifest": {
+            "runner_revision": "a5b13b3d122877403e0259dd472cf4bacbeef08c",
+            "fixture_hashes": {
+              "nano-500.json": "59037537dd9c877284fbace6d1f8cd5924d264cf370bdbec3a45e24034ffde30"
+            },
+            "image_digests": {
+              "rsnano/rsnano:V3.1": "sha256:0acac4f740fb7453d704db78f686ed8b3d05e950f00b4d5e171256f3c19cf607"
+            },
+            "java": {
+              "vendor": "Amazon.com Inc.",
+              "version": "21.0.12",
+              "vm_name": "OpenJDK 64-Bit Server VM",
+              "vm_version": "21.0.12+8-LTS"
+            },
+            "operating_system": {
+              "architecture": "amd64",
+              "name": "Linux",
+              "version": "7.0.13-100.fc43.x86_64"
+            },
+            "cpu": {
+              "logical_processor_count": 16,
+              "model": "AMD Ryzen 7 7840HS w/ Radeon 780M Graphics"
+            },
+            "storage_profile": "durable",
+            "runtime_configuration": {
+              "client.rpc.connectionReuse": "ktor-apache5-pool",
+              "client.rpc.engine": "ktor-apache5",
+              "client.rpc.maxConnectionsPerRoute": "500",
+              "client.rpc.maxConnectionsTotal": "500",
+              "client.rpc.requestTimeout": "disabled",
+              "client.websocket.engine": "ktor-cio",
+              "coroutine.dispatcher": "virtual",
+              "fixture": "nano-500",
+              "implementation": "rsnano",
+              "node.image": "rsnano/rsnano:V3.1",
+              "node.network": "dev",
+              "node.voting_key": "public dev key installed",
+              "rsnano.lmdb.sync": "always",
+              "storage.profile": "durable",
+              "timeout": "1m"
+            }
+          }
+        },
+        {
+          "source": "run-05/rsnano-500/rsnano-500-summary.json",
+          "summary": {
+            "average_tps": 476.5966555222014,
+            "elapsed_ns": 104910513787,
+            "error_count": 0,
+            "latency_ns": {
+              "average": 1.0428836441083E9,
+              "count": 50000,
+              "max": 2420047645,
+              "min": 95263504,
+              "p50": 1013183172,
+              "p90": 1554757312,
+              "p95": 1683709390,
+              "p99": 1953972766,
+              "sum": 52144182205415
+            },
+            "peak_tps": 963,
+            "sample_count": 50000,
+            "success_count": 50000
+          },
+          "manifest": {
+            "runner_revision": "a5b13b3d122877403e0259dd472cf4bacbeef08c",
+            "fixture_hashes": {
+              "nano-500.json": "59037537dd9c877284fbace6d1f8cd5924d264cf370bdbec3a45e24034ffde30"
+            },
+            "image_digests": {
+              "rsnano/rsnano:V3.1": "sha256:0acac4f740fb7453d704db78f686ed8b3d05e950f00b4d5e171256f3c19cf607"
+            },
+            "java": {
+              "vendor": "Amazon.com Inc.",
+              "version": "21.0.12",
+              "vm_name": "OpenJDK 64-Bit Server VM",
+              "vm_version": "21.0.12+8-LTS"
+            },
+            "operating_system": {
+              "architecture": "amd64",
+              "name": "Linux",
+              "version": "7.0.13-100.fc43.x86_64"
+            },
+            "cpu": {
+              "logical_processor_count": 16,
+              "model": "AMD Ryzen 7 7840HS w/ Radeon 780M Graphics"
+            },
+            "storage_profile": "durable",
+            "runtime_configuration": {
+              "client.rpc.connectionReuse": "ktor-apache5-pool",
+              "client.rpc.engine": "ktor-apache5",
+              "client.rpc.maxConnectionsPerRoute": "500",
+              "client.rpc.maxConnectionsTotal": "500",
+              "client.rpc.requestTimeout": "disabled",
+              "client.websocket.engine": "ktor-cio",
+              "coroutine.dispatcher": "virtual",
+              "fixture": "nano-500",
+              "implementation": "rsnano",
+              "node.image": "rsnano/rsnano:V3.1",
+              "node.network": "dev",
+              "node.voting_key": "public dev key installed",
+              "rsnano.lmdb.sync": "always",
+              "storage.profile": "durable",
+              "timeout": "1m"
+            }
+          }
+        },
+        {
+          "source": "run-06/rsnano-500/rsnano-500-summary.json",
+          "summary": {
+            "average_tps": 451.79465405790154,
+            "elapsed_ns": 110669746866,
+            "error_count": 0,
+            "latency_ns": {
+              "average": 1.1009236983075E9,
+              "count": 50000,
+              "max": 2405054040,
+              "min": 99496138,
+              "p50": 1098138712,
+              "p90": 1603224816,
+              "p95": 1739234453,
+              "p99": 1996228992,
+              "sum": 55046184915375
+            },
+            "peak_tps": 872,
+            "sample_count": 50000,
+            "success_count": 50000
+          },
+          "manifest": {
+            "runner_revision": "a5b13b3d122877403e0259dd472cf4bacbeef08c",
+            "fixture_hashes": {
+              "nano-500.json": "59037537dd9c877284fbace6d1f8cd5924d264cf370bdbec3a45e24034ffde30"
+            },
+            "image_digests": {
+              "rsnano/rsnano:V3.1": "sha256:0acac4f740fb7453d704db78f686ed8b3d05e950f00b4d5e171256f3c19cf607"
+            },
+            "java": {
+              "vendor": "Amazon.com Inc.",
+              "version": "21.0.12",
+              "vm_name": "OpenJDK 64-Bit Server VM",
+              "vm_version": "21.0.12+8-LTS"
+            },
+            "operating_system": {
+              "architecture": "amd64",
+              "name": "Linux",
+              "version": "7.0.13-100.fc43.x86_64"
+            },
+            "cpu": {
+              "logical_processor_count": 16,
+              "model": "AMD Ryzen 7 7840HS w/ Radeon 780M Graphics"
+            },
+            "storage_profile": "durable",
+            "runtime_configuration": {
+              "client.rpc.connectionReuse": "ktor-apache5-pool",
+              "client.rpc.engine": "ktor-apache5",
+              "client.rpc.maxConnectionsPerRoute": "500",
+              "client.rpc.maxConnectionsTotal": "500",
+              "client.rpc.requestTimeout": "disabled",
+              "client.websocket.engine": "ktor-cio",
+              "coroutine.dispatcher": "virtual",
+              "fixture": "nano-500",
+              "implementation": "rsnano",
+              "node.image": "rsnano/rsnano:V3.1",
+              "node.network": "dev",
+              "node.voting_key": "public dev key installed",
+              "rsnano.lmdb.sync": "always",
+              "storage.profile": "durable",
+              "timeout": "1m"
+            }
+          }
+        },
+        {
+          "source": "run-07/rsnano-500/rsnano-500-summary.json",
+          "summary": {
+            "average_tps": 442.79547658504026,
+            "elapsed_ns": 112918949366,
+            "error_count": 0,
+            "latency_ns": {
+              "average": 1.11739974509104E9,
+              "count": 50000,
+              "max": 3238775264,
+              "min": 105634380,
+              "p50": 1080423333,
+              "p90": 1718417776,
+              "p95": 1903014777,
+              "p99": 2300345938,
+              "sum": 55869987254552
+            },
+            "peak_tps": 817,
+            "sample_count": 50000,
+            "success_count": 50000
+          },
+          "manifest": {
+            "runner_revision": "a5b13b3d122877403e0259dd472cf4bacbeef08c",
+            "fixture_hashes": {
+              "nano-500.json": "59037537dd9c877284fbace6d1f8cd5924d264cf370bdbec3a45e24034ffde30"
+            },
+            "image_digests": {
+              "rsnano/rsnano:V3.1": "sha256:0acac4f740fb7453d704db78f686ed8b3d05e950f00b4d5e171256f3c19cf607"
+            },
+            "java": {
+              "vendor": "Amazon.com Inc.",
+              "version": "21.0.12",
+              "vm_name": "OpenJDK 64-Bit Server VM",
+              "vm_version": "21.0.12+8-LTS"
+            },
+            "operating_system": {
+              "architecture": "amd64",
+              "name": "Linux",
+              "version": "7.0.13-100.fc43.x86_64"
+            },
+            "cpu": {
+              "logical_processor_count": 16,
+              "model": "AMD Ryzen 7 7840HS w/ Radeon 780M Graphics"
+            },
+            "storage_profile": "durable",
+            "runtime_configuration": {
+              "client.rpc.connectionReuse": "ktor-apache5-pool",
+              "client.rpc.engine": "ktor-apache5",
+              "client.rpc.maxConnectionsPerRoute": "500",
+              "client.rpc.maxConnectionsTotal": "500",
+              "client.rpc.requestTimeout": "disabled",
+              "client.websocket.engine": "ktor-cio",
+              "coroutine.dispatcher": "virtual",
+              "fixture": "nano-500",
+              "implementation": "rsnano",
+              "node.image": "rsnano/rsnano:V3.1",
+              "node.network": "dev",
+              "node.voting_key": "public dev key installed",
+              "rsnano.lmdb.sync": "always",
+              "storage.profile": "durable",
+              "timeout": "1m"
+            }
+          }
+        },
+        {
+          "source": "run-08/rsnano-500/rsnano-500-summary.json",
+          "summary": {
+            "average_tps": 393.4243873553582,
+            "elapsed_ns": 127089223767,
+            "error_count": 0,
+            "latency_ns": {
+              "average": 1.26206403856954E9,
+              "count": 50000,
+              "max": 2509640668,
+              "min": 162434459,
+              "p50": 1222934212,
+              "p90": 1900134710,
+              "p95": 2025814010,
+              "p99": 2250325066,
+              "sum": 63103201928477
+            },
+            "peak_tps": 664,
+            "sample_count": 50000,
+            "success_count": 50000
+          },
+          "manifest": {
+            "runner_revision": "a5b13b3d122877403e0259dd472cf4bacbeef08c",
+            "fixture_hashes": {
+              "nano-500.json": "59037537dd9c877284fbace6d1f8cd5924d264cf370bdbec3a45e24034ffde30"
+            },
+            "image_digests": {
+              "rsnano/rsnano:V3.1": "sha256:0acac4f740fb7453d704db78f686ed8b3d05e950f00b4d5e171256f3c19cf607"
+            },
+            "java": {
+              "vendor": "Amazon.com Inc.",
+              "version": "21.0.12",
+              "vm_name": "OpenJDK 64-Bit Server VM",
+              "vm_version": "21.0.12+8-LTS"
+            },
+            "operating_system": {
+              "architecture": "amd64",
+              "name": "Linux",
+              "version": "7.0.13-100.fc43.x86_64"
+            },
+            "cpu": {
+              "logical_processor_count": 16,
+              "model": "AMD Ryzen 7 7840HS w/ Radeon 780M Graphics"
+            },
+            "storage_profile": "durable",
+            "runtime_configuration": {
+              "client.rpc.connectionReuse": "ktor-apache5-pool",
+              "client.rpc.engine": "ktor-apache5",
+              "client.rpc.maxConnectionsPerRoute": "500",
+              "client.rpc.maxConnectionsTotal": "500",
+              "client.rpc.requestTimeout": "disabled",
+              "client.websocket.engine": "ktor-cio",
+              "coroutine.dispatcher": "virtual",
+              "fixture": "nano-500",
+              "implementation": "rsnano",
+              "node.image": "rsnano/rsnano:V3.1",
+              "node.network": "dev",
+              "node.voting_key": "public dev key installed",
+              "rsnano.lmdb.sync": "always",
+              "storage.profile": "durable",
+              "timeout": "1m"
+            }
+          }
+        },
+        {
+          "source": "run-09/rsnano-500/rsnano-500-summary.json",
+          "summary": {
+            "average_tps": 406.70513007449756,
+            "elapsed_ns": 122939191819,
+            "error_count": 0,
+            "latency_ns": {
+              "average": 1.22361267304866E9,
+              "count": 50000,
+              "max": 3243540694,
+              "min": 151228543,
+              "p50": 1204309699,
+              "p90": 1811732464,
+              "p95": 2007813937,
+              "p99": 2248845577,
+              "sum": 61180633652433
+            },
+            "peak_tps": 837,
+            "sample_count": 50000,
+            "success_count": 50000
+          },
+          "manifest": {
+            "runner_revision": "a5b13b3d122877403e0259dd472cf4bacbeef08c",
+            "fixture_hashes": {
+              "nano-500.json": "59037537dd9c877284fbace6d1f8cd5924d264cf370bdbec3a45e24034ffde30"
+            },
+            "image_digests": {
+              "rsnano/rsnano:V3.1": "sha256:0acac4f740fb7453d704db78f686ed8b3d05e950f00b4d5e171256f3c19cf607"
+            },
+            "java": {
+              "vendor": "Amazon.com Inc.",
+              "version": "21.0.12",
+              "vm_name": "OpenJDK 64-Bit Server VM",
+              "vm_version": "21.0.12+8-LTS"
+            },
+            "operating_system": {
+              "architecture": "amd64",
+              "name": "Linux",
+              "version": "7.0.13-100.fc43.x86_64"
+            },
+            "cpu": {
+              "logical_processor_count": 16,
+              "model": "AMD Ryzen 7 7840HS w/ Radeon 780M Graphics"
+            },
+            "storage_profile": "durable",
+            "runtime_configuration": {
+              "client.rpc.connectionReuse": "ktor-apache5-pool",
+              "client.rpc.engine": "ktor-apache5",
+              "client.rpc.maxConnectionsPerRoute": "500",
+              "client.rpc.maxConnectionsTotal": "500",
+              "client.rpc.requestTimeout": "disabled",
+              "client.websocket.engine": "ktor-cio",
+              "coroutine.dispatcher": "virtual",
+              "fixture": "nano-500",
+              "implementation": "rsnano",
+              "node.image": "rsnano/rsnano:V3.1",
+              "node.network": "dev",
+              "node.voting_key": "public dev key installed",
+              "rsnano.lmdb.sync": "always",
+              "storage.profile": "durable",
+              "timeout": "1m"
+            }
+          }
+        },
+        {
+          "source": "run-10/rsnano-500/rsnano-500-summary.json",
+          "summary": {
+            "average_tps": 374.8044125657106,
+            "elapsed_ns": 133402911822,
+            "error_count": 0,
+            "latency_ns": {
+              "average": 1.31618934952486E9,
+              "count": 50000,
+              "max": 3916886127,
+              "min": 98031949,
+              "p50": 1303903977,
+              "p90": 2094281346,
+              "p95": 2317478923,
+              "p99": 2761196901,
+              "sum": 65809467476243
+            },
+            "peak_tps": 966,
+            "sample_count": 50000,
+            "success_count": 50000
+          },
+          "manifest": {
+            "runner_revision": "a5b13b3d122877403e0259dd472cf4bacbeef08c",
+            "fixture_hashes": {
+              "nano-500.json": "59037537dd9c877284fbace6d1f8cd5924d264cf370bdbec3a45e24034ffde30"
+            },
+            "image_digests": {
+              "rsnano/rsnano:V3.1": "sha256:0acac4f740fb7453d704db78f686ed8b3d05e950f00b4d5e171256f3c19cf607"
+            },
+            "java": {
+              "vendor": "Amazon.com Inc.",
+              "version": "21.0.12",
+              "vm_name": "OpenJDK 64-Bit Server VM",
+              "vm_version": "21.0.12+8-LTS"
+            },
+            "operating_system": {
+              "architecture": "amd64",
+              "name": "Linux",
+              "version": "7.0.13-100.fc43.x86_64"
+            },
+            "cpu": {
+              "logical_processor_count": 16,
+              "model": "AMD Ryzen 7 7840HS w/ Radeon 780M Graphics"
+            },
+            "storage_profile": "durable",
+            "runtime_configuration": {
+              "client.rpc.connectionReuse": "ktor-apache5-pool",
+              "client.rpc.engine": "ktor-apache5",
+              "client.rpc.maxConnectionsPerRoute": "500",
+              "client.rpc.maxConnectionsTotal": "500",
+              "client.rpc.requestTimeout": "disabled",
+              "client.websocket.engine": "ktor-cio",
+              "coroutine.dispatcher": "virtual",
+              "fixture": "nano-500",
+              "implementation": "rsnano",
+              "node.image": "rsnano/rsnano:V3.1",
+              "node.network": "dev",
+              "node.voting_key": "public dev key installed",
+              "rsnano.lmdb.sync": "always",
+              "storage.profile": "durable",
+              "timeout": "1m"
+            }
+          }
+        }
+      ],
+      "metrics": {
+        "latency_ns": {
+          "average": {
+            "direction": "lower_is_better",
+            "unit": "nanoseconds",
+            "minimum": 9.1577062191384E8,
+            "maximum": 1.31618934952486E9,
+            "best": 9.1577062191384E8,
+            "worst": 1.31618934952486E9
+          },
+          "max": {
+            "direction": "lower_is_better",
+            "unit": "nanoseconds",
+            "minimum": 2260830760,
+            "maximum": 4586192692,
+            "best": 2260830760,
+            "worst": 4586192692
+          },
+          "min": {
+            "direction": "lower_is_better",
+            "unit": "nanoseconds",
+            "minimum": 95263504,
+            "maximum": 162434459,
+            "best": 95263504,
+            "worst": 162434459
+          },
+          "p50": {
+            "direction": "lower_is_better",
+            "unit": "nanoseconds",
+            "minimum": 874941467,
+            "maximum": 1303903977,
+            "best": 874941467,
+            "worst": 1303903977
+          },
+          "p90": {
+            "direction": "lower_is_better",
+            "unit": "nanoseconds",
+            "minimum": 1402689502,
+            "maximum": 2094281346,
+            "best": 1402689502,
+            "worst": 2094281346
+          },
+          "p95": {
+            "direction": "lower_is_better",
+            "unit": "nanoseconds",
+            "minimum": 1529619286,
+            "maximum": 2317478923,
+            "best": 1529619286,
+            "worst": 2317478923
+          },
+          "p99": {
+            "direction": "lower_is_better",
+            "unit": "nanoseconds",
+            "minimum": 1797987005,
+            "maximum": 2798353571,
+            "best": 1797987005,
+            "worst": 2798353571
+          },
+          "sum": {
+            "direction": "lower_is_better",
+            "unit": "nanoseconds",
+            "minimum": 45788531095692,
+            "maximum": 65809467476243,
+            "best": 45788531095692,
+            "worst": 65809467476243
+          }
+        },
+        "throughput": {
+          "average_tps": {
+            "direction": "higher_is_better",
+            "unit": "transactions_per_second",
+            "minimum": 374.8044125657106,
+            "maximum": 543.0509137529292,
+            "best": 543.0509137529292,
+            "worst": 374.8044125657106
+          },
+          "elapsed_ns": {
+            "direction": "lower_is_better",
+            "unit": "nanoseconds",
+            "minimum": 92072398248,
+            "maximum": 133402911822,
+            "best": 92072398248,
+            "worst": 133402911822
+          },
+          "peak_tps": {
+            "direction": "higher_is_better",
+            "unit": "transactions_per_second",
+            "minimum": 664,
+            "maximum": 984,
+            "best": 984,
+            "worst": 664
+          }
+        }
+      }
+    }
+  ]
+}

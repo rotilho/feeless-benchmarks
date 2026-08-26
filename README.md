@@ -38,6 +38,9 @@ Verification is split between fast checks and container smoke tests:
 
 ## Full benchmark workflow
 
+> [!WARNING]
+> The **Full benchmark** workflow is useful for reproducibility checks and detecting large regressions, but its timings are not reliable enough for the published cross-implementation comparison. [GitHub provisions a fresh hosted VM for every job](https://docs.github.com/en/actions/reference/runners/github-hosted-runners), so the thirty repeated jobs have no runner affinity and may differ in CPU scheduling, ephemeral-storage performance, virtual-network conditions, and host contention. Those differences can be mistaken for implementation differences. The ranges below were therefore collected serially on one dedicated physical computer.
+
 The manual **Full benchmark** workflow creates 33 independent GitHub-hosted runner jobs: one 1 × 1,000 serial job for each implementation, plus ten 500 × 100 jobs for each implementation. Every job starts its own runner and node/database environment. GitHub account concurrency limits may leave jobs queued.
 
 The matrix uses `fail-fast: false`, so one invalid shard does not cancel the others. The range job waits for every benchmark job and aggregates the thirty 500 × 100 shards only when all shards are valid. A missing or invalid shard leaves the workflow red and incomplete; it does not publish partial ranges. The aggregate artifact contains exact JSON values and a Markdown view with latency rounded to whole milliseconds.
@@ -50,18 +53,18 @@ The suite retains one authoritative raw row per attempted measured item. Summary
 
 ## Published results
 
-The six accepted scenarios below were run on the same controlled local host. Every summary reports its full declared sample count as successful and zero errors.
+The serial rows are one accepted run each. The 500 × 100 rows show the minimum and maximum from ten complete run summaries per implementation, collected serially on the same dedicated computer. The ranges are not calculated by pooling samples. All thirty repeated runs used fresh node/database environments, completed 50,000 samples, and reported zero errors.
 
-| Workload | Scenario | Average (ms) | p50 (ms) | p90 (ms) | p95 (ms) | p99 (ms) | Average TPS | Peak TPS | Artifacts |
-| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |
-| 1 × 1,000 serial | Nano V28.2 (`nano-serial`) | 200 | 200 | 205 | 205 | 209 | 4.99 | 6 | [CSV](results/common-runner/nano-serial/nano-serial-samples.csv) · [summary](results/common-runner/nano-serial/nano-serial-summary.json) · [manifest](results/common-runner/nano-serial/nano-serial-manifest.json) |
-| 1 × 1,000 serial | Atto 1.34 (`atto-serial`) | 16 | 16 | 21 | 23 | 28 | 60.67 | 71 | [CSV](results/common-runner/atto-serial/atto-serial-samples.csv) · [summary](results/common-runner/atto-serial/atto-serial-summary.json) · [manifest](results/common-runner/atto-serial/atto-serial-manifest.json) |
-| 1 × 1,000 serial | RSNano V3.1 (`rsnano-serial`) | 200 | 200 | 202 | 204 | 207 | 4.99 | 6 | [CSV](results/common-runner/rsnano-serial/rsnano-serial-samples.csv) · [summary](results/common-runner/rsnano-serial/rsnano-serial-summary.json) · [manifest](results/common-runner/rsnano-serial/rsnano-serial-manifest.json) |
-| 500 × 100 | Nano V28.2 (`nano-500`) | 906 | 905 | 1,036 | 1,056 | 1,136 | 548.45 | 755 | [CSV](results/common-runner/nano-500/nano-500-samples.csv) · [summary](results/common-runner/nano-500/nano-500-summary.json) · [manifest](results/common-runner/nano-500/nano-500-manifest.json) |
-| 500 × 100 | Atto 1.34 (`atto-500`) | 160 | 137 | 232 | 276 | 362 | 3,109.91 | 4,000 | [CSV](results/common-runner/atto-500/atto-500-samples.csv) · [summary](results/common-runner/atto-500/atto-500-summary.json) · [manifest](results/common-runner/atto-500/atto-500-manifest.json) |
-| 500 × 100 | RSNano V3.1 (`rsnano-500`) | 795 | 767 | 1,226 | 1,385 | 1,661 | 624.74 | 997 | [CSV](results/common-runner/rsnano-500/rsnano-500-samples.csv) · [summary](results/common-runner/rsnano-500/rsnano-500-summary.json) · [manifest](results/common-runner/rsnano-500/rsnano-500-manifest.json) |
+| Workload | Scenario | Runs | Average (ms) ↓ | p50 (ms) ↓ | p90 (ms) ↓ | p95 (ms) ↓ | p99 (ms) ↓ | Average TPS ↑ | Peak TPS ↑ | Evidence |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |
+| 1 × 1,000 serial | Nano V28.2 (`nano-serial`) | 1 | 200 | 200 | 205 | 205 | 209 | 4.99 | 6 | [CSV](results/common-runner/nano-serial/nano-serial-samples.csv) · [summary](results/common-runner/nano-serial/nano-serial-summary.json) · [manifest](results/common-runner/nano-serial/nano-serial-manifest.json) |
+| 1 × 1,000 serial | Atto 1.34 (`atto-serial`) | 1 | 16 | 16 | 21 | 23 | 28 | 60.67 | 71 | [CSV](results/common-runner/atto-serial/atto-serial-samples.csv) · [summary](results/common-runner/atto-serial/atto-serial-summary.json) · [manifest](results/common-runner/atto-serial/atto-serial-manifest.json) |
+| 1 × 1,000 serial | RSNano V3.1 (`rsnano-serial`) | 1 | 200 | 200 | 202 | 204 | 207 | 4.99 | 6 | [CSV](results/common-runner/rsnano-serial/rsnano-serial-samples.csv) · [summary](results/common-runner/rsnano-serial/rsnano-serial-summary.json) · [manifest](results/common-runner/rsnano-serial/rsnano-serial-manifest.json) |
+| 500 × 100 | Nano V28.2 (`nano-500`) | 10 | 871–1,504 | 872–941 | 996–1,113 | 1,010–7,794 | 1,051–8,011 | 331.03–569.99 | 690–784 | [range JSON](results/common-runner/500-account-ranges.json) |
+| 500 × 100 | Atto 1.34 (`atto-500`) | 10 | 157–211 | 131–191 | 243–306 | 271–333 | 301–477 | 2,348.74–3,172.70 | 3,026–4,052 | [range JSON](results/common-runner/500-account-ranges.json) |
+| 500 × 100 | RSNano V3.1 (`rsnano-500`) | 10 | 916–1,316 | 875–1,304 | 1,403–2,094 | 1,530–2,317 | 1,798–2,798 | 374.80–543.05 | 664–984 | [range JSON](results/common-runner/500-account-ranges.json) |
 
-Latency is rounded to the nearest whole millisecond for display; the linked summaries and CSVs retain the authoritative nanosecond values. Nano and RSNano complete on the exact block's post-cement event. Atto completes when the stream response returns the matching transaction. RSNano shares Nano's fixtures.
+Each range is the lowest-to-highest run-level value, not a confidence interval. Latency is rounded to the nearest whole millisecond for display; the [range report](results/common-runner/500-account-ranges.md), JSON, summaries, and CSVs retain the authoritative precision available at their respective level. Nano and RSNano complete on the exact block's post-cement event. Atto completes when the stream response returns the matching transaction. RSNano shares Nano's fixtures.
 
 ## Pinned toolchain and implementations
 

@@ -2,6 +2,20 @@
 
 These are controlled-local results, not protocol limits or mainnet-capacity claims. Latency is rounded to the nearest whole millisecond for display; the linked summaries and raw CSVs retain the authoritative nanosecond values.
 
+## Ten-run 500-account ranges
+
+Each cell is the minimum-to-maximum run-level value across ten complete runs on one dedicated computer. The 500,000 measured samples per implementation are not pooled before calculating these ranges. Every run used a fresh durable environment, completed 50,000 samples, and reported zero errors.
+
+| Scenario | Runs | Average (ms) ↓ | p50 (ms) ↓ | p90 (ms) ↓ | p95 (ms) ↓ | p99 (ms) ↓ | Average TPS ↑ | Peak TPS ↑ |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| Nano V28.2 (`nano-500`) | 10 | 871–1,504 | 872–941 | 996–1,113 | 1,010–7,794 | 1,051–8,011 | 331.03–569.99 | 690–784 |
+| Atto 1.34 (`atto-500`) | 10 | 157–211 | 131–191 | 243–306 | 271–333 | 301–477 | 2,348.74–3,172.70 | 3,026–4,052 |
+| RSNano V3.1 (`rsnano-500`) | 10 | 916–1,316 | 875–1,304 | 1,403–2,094 | 1,530–2,317 | 1,798–2,798 | 374.80–543.05 | 664–984 |
+
+The exact aggregate, including every source summary and manifest, is available as [JSON](../results/common-runner/500-account-ranges.json) and [Markdown](../results/common-runner/500-account-ranges.md).
+
+## Single-run artifacts
+
 | Workload | Scenario | Average (ms) | p50 (ms) | p90 (ms) | p95 (ms) | p99 (ms) | Average TPS | Peak TPS | Artifacts |
 | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |
 | 1 × 1,000 serial | Nano V28.2 (`nano-serial`) | 200 | 200 | 205 | 205 | 209 | 4.99 | 6 | [CSV](../results/common-runner/nano-serial/nano-serial-samples.csv) · [summary](../results/common-runner/nano-serial/nano-serial-summary.json) · [manifest](../results/common-runner/nano-serial/nano-serial-manifest.json) |
@@ -11,7 +25,7 @@ These are controlled-local results, not protocol limits or mainnet-capacity clai
 | 500 × 100 | Atto 1.34 (`atto-500`) | 160 | 137 | 232 | 276 | 362 | 3,109.91 | 4,000 | [CSV](../results/common-runner/atto-500/atto-500-samples.csv) · [summary](../results/common-runner/atto-500/atto-500-summary.json) · [manifest](../results/common-runner/atto-500/atto-500-manifest.json) |
 | 500 × 100 | RSNano V3.1 (`rsnano-500`) | 795 | 767 | 1,226 | 1,385 | 1,661 | 624.74 | 997 | [CSV](../results/common-runner/rsnano-500/rsnano-500-samples.csv) · [summary](../results/common-runner/rsnano-500/rsnano-500-summary.json) · [manifest](../results/common-runner/rsnano-500/rsnano-500-manifest.json) |
 
-The serial summaries each report 1,000 samples and the 500 × 100 summaries each report 50,000. All samples succeeded and every error count is zero. Average TPS is shown to two decimal places and peak TPS as an integer; exact values remain in the summaries.
+The serial summaries each report 1,000 samples and the representative 500 × 100 summaries each report 50,000. All samples succeeded and every error count is zero. Average TPS is shown to two decimal places and peak TPS as an integer; exact values remain in the summaries.
 
 ## Scenario and fixture names
 

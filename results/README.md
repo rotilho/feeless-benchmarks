@@ -1,6 +1,11 @@
 # Results
 
-The accepted result set contains six common-runner scenarios. Every serial summary reports `sample_count = 1000`, `success_count = 1000`, and `error_count = 0`. Every 500 × 100 summary reports `sample_count = 50000`, `success_count = 50000`, and `error_count = 0`.
+The accepted result set contains six common-runner scenarios plus a ten-run aggregate for the 500 × 100 workload. Every serial summary reports `sample_count = 1000`, `success_count = 1000`, and `error_count = 0`. Every individual 500 × 100 summary reports `sample_count = 50000`, `success_count = 50000`, and `error_count = 0`.
+
+The aggregate embeds the summaries and manifests from ten clean runs per implementation:
+
+- [`500-account-ranges.json`](common-runner/500-account-ranges.json) retains exact run-level values and provenance.
+- [`500-account-ranges.md`](common-runner/500-account-ranges.md) presents latency ranges in whole milliseconds.
 
 | Scenario | Workload | Raw samples | Summary | Manifest |
 | --- | --- | --- | --- | --- |

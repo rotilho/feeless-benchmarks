@@ -1,67 +1,452 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="robots" content="noindex,nofollow">
-  <title>500-account benchmark results</title>
-  <style>
-    :root{--bg:#111113;--surface:#1a1a1d;--surface-alt:#222225;--line:#303034;--soft:#27272a;--text:#f5f5f5;--muted:#a0a0a0;--dim:#747474;--gold:#fab005;--gold-soft:#33270d;--nano:#b9e9fd;--atto:#fab005;--rsnano:#9df0d3;font-family:"Noto Sans",Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;color-scheme:dark}
-    *{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--text)}
-    .shell{width:min(1280px,calc(100% - 32px));margin:auto;padding:24px 0 54px}
-    .note code{color:var(--gold)}
-    .stage{position:relative;width:100%;aspect-ratio:1200/675;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#0d0d0f}
-    .social-card{--scale:1;position:absolute;inset:0 auto auto 0;width:1200px;height:675px;transform:scale(var(--scale));transform-origin:top left;background:var(--bg);overflow:hidden}
-    .card-pad{height:100%;padding:24px 30px 17px;display:grid;grid-template-rows:auto 1fr auto;gap:10px}
-    .card-head{display:grid;grid-template-columns:1fr 510px;align-items:start;gap:24px}.eyebrow{margin:0 0 5px;color:var(--gold);font-size:10px;font-weight:900;letter-spacing:.15em;text-transform:uppercase}.card-head h2{margin:0;font-size:27px;line-height:1.04;letter-spacing:-.04em}.card-head h2 span{color:var(--gold)}
-    .status{border:1px solid #6f5314;border-radius:9px;background:var(--gold-soft);padding:9px 12px}.status strong{display:block;margin-bottom:3px;color:var(--gold);font-size:10px;letter-spacing:.08em;text-transform:uppercase}.status span{display:block;color:#eadfca;font-size:9px;line-height:1.42}.status code{color:#fff3cb;font-size:8px}
-    .tables{min-height:0}.panel{height:100%;border:1px solid var(--line);border-radius:10px;background:var(--surface);overflow:hidden;min-height:0}.panel-title{height:48px;display:flex;align-items:center;justify-content:space-between;gap:18px;padding:0 16px;border-bottom:1px solid var(--line);background:var(--surface-alt)}.panel-title h3{margin:0;font-size:17px;white-space:nowrap}.panel-title span{color:var(--muted);font-size:9px;font-weight:800;letter-spacing:.055em;text-align:right;text-transform:uppercase}
-    table{width:100%;height:calc(100% - 48px);border-collapse:collapse;table-layout:fixed;font-variant-numeric:tabular-nums lining-nums}col.metric-name{width:19%}col.implementation{width:27%}
-    th,td{border-right:1px solid var(--soft);border-bottom:1px solid var(--soft);text-align:center;vertical-align:middle;padding:1px 6px}th:last-child,td:last-child{border-right:0}tbody tr:last-child th,tbody tr:last-child td{border-bottom:0}
-    thead th{height:42px;background:#151517;font-size:15px;font-weight:900;letter-spacing:.025em}thead th:first-child{text-align:left;color:var(--muted);padding-left:16px;text-transform:uppercase;font-size:10px;letter-spacing:.07em}thead small{display:block;margin-top:2px;color:var(--dim);font-size:8px;font-weight:800;letter-spacing:.075em;text-transform:uppercase}.nano{color:var(--nano)}.atto{color:var(--atto)}.rsnano{color:var(--rsnano)}
-    tbody th{text-align:left;padding-left:16px;color:var(--muted);font-size:11px;font-weight:850;letter-spacing:.05em;text-transform:uppercase}tbody td{font-size:18px;font-weight:800}.unit-label{color:var(--dim);font-size:9px;font-weight:750;text-transform:none;letter-spacing:0}
-    .card-foot{display:flex;align-items:center;justify-content:space-between;gap:18px;color:var(--muted);font-size:7.5px;line-height:1.3}.card-foot strong{color:var(--text)}.scope{color:var(--gold);white-space:nowrap}
-    .notes{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px}.note{border:1px solid var(--line);border-radius:11px;background:var(--surface);padding:15px}.note h3{margin:0 0 7px;font-size:13px}.note p{margin:0;color:var(--muted);font-size:12px;line-height:1.55}
-    @media(max-width:800px){.shell{width:min(100% - 20px,1280px);padding-top:14px}.notes{grid-template-columns:1fr}.stage{border-radius:9px}}
-    @media print{.notes{display:none}.shell{width:auto;padding:0}.stage{width:1200px;height:675px;border:0;border-radius:0}.social-card{--scale:1!important}}
-  </style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="robots" content="noindex,nofollow">
+    <title>500-account benchmark ranges</title>
+    <style>
+        :root {
+            --bg: #111113;
+            --surface: #1a1a1d;
+            --surface-alt: #222225;
+            --line: #303034;
+            --soft: #27272a;
+            --text: #f5f5f5;
+            --muted: #a0a0a0;
+            --dim: #747474;
+            --gold: #fab005;
+            --gold-soft: #33270d;
+            --nano: #b9e9fd;
+            --atto: #fab005;
+            --rsnano: #9df0d3;
+            font-family: "Noto Sans", Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+            color-scheme: dark
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        html, body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--text)
+        }
+
+        .shell {
+            width: min(1280px, calc(100% - 32px));
+            margin: auto;
+            padding: 24px 0 54px
+        }
+
+        .note code {
+            color: var(--gold)
+        }
+
+        .stage {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1200/675;
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            overflow: hidden;
+            background: #0d0d0f
+        }
+
+        .social-card {
+            --scale: 1;
+            position: absolute;
+            inset: 0 auto auto 0;
+            width: 1200px;
+            height: 675px;
+            transform: scale(var(--scale));
+            transform-origin: top left;
+            background: var(--bg);
+            overflow: hidden
+        }
+
+        .card-pad {
+            height: 100%;
+            padding: 24px 30px 17px;
+            display: grid;
+            grid-template-rows:auto 1fr auto;
+            gap: 10px
+        }
+
+        .card-head {
+            display: grid;
+            grid-template-columns:1fr 510px;
+            align-items: start;
+            gap: 24px
+        }
+
+        .eyebrow {
+            margin: 0 0 5px;
+            color: var(--gold);
+            font-size: 10px;
+            font-weight: 900;
+            letter-spacing: .15em;
+            text-transform: uppercase
+        }
+
+        .card-head h2 {
+            margin: 0;
+            font-size: 27px;
+            line-height: 1.04;
+            letter-spacing: -.04em
+        }
+
+        .card-head h2 span {
+            color: var(--gold)
+        }
+
+        .status {
+            border: 1px solid #6f5314;
+            border-radius: 9px;
+            background: var(--gold-soft);
+            padding: 9px 12px
+        }
+
+        .status strong {
+            display: block;
+            margin-bottom: 3px;
+            color: var(--gold);
+            font-size: 10px;
+            letter-spacing: .08em;
+            text-transform: uppercase
+        }
+
+        .status span {
+            display: block;
+            color: #eadfca;
+            font-size: 10px;
+            line-height: 1.42
+        }
+
+        .status code {
+            color: #fff3cb;
+            font-size: 8px
+        }
+
+        .tables {
+            min-height: 0
+        }
+
+        .panel {
+            height: 100%;
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            background: var(--surface);
+            overflow: hidden;
+            min-height: 0
+        }
+
+        .panel-title {
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+            padding: 0 16px;
+            border-bottom: 1px solid var(--line);
+            background: var(--surface-alt)
+        }
+
+        .panel-title h3 {
+            margin: 0;
+            font-size: 17px;
+            white-space: nowrap
+        }
+
+        .panel-title span {
+            color: var(--muted);
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: .055em;
+            text-align: right;
+            text-transform: uppercase
+        }
+
+        table {
+            width: 100%;
+            height: calc(100% - 48px);
+            border-collapse: collapse;
+            table-layout: fixed;
+            font-variant-numeric: tabular-nums lining-nums
+        }
+
+        col.metric-name {
+            width: 19%
+        }
+
+        col.implementation {
+            width: 27%
+        }
+
+        th, td {
+            border-right: 1px solid var(--soft);
+            border-bottom: 1px solid var(--soft);
+            text-align: center;
+            vertical-align: middle;
+            padding: 1px 6px
+        }
+
+        th:last-child, td:last-child {
+            border-right: 0
+        }
+
+        tbody tr:last-child th, tbody tr:last-child td {
+            border-bottom: 0
+        }
+
+        thead th {
+            height: 42px;
+            background: #151517;
+            font-size: 15px;
+            font-weight: 900;
+            letter-spacing: .025em
+        }
+
+        thead th:first-child {
+            text-align: left;
+            color: var(--muted);
+            padding-left: 16px;
+            text-transform: uppercase;
+            font-size: 10px;
+            letter-spacing: .07em
+        }
+
+        thead small {
+            display: block;
+            margin-top: 2px;
+            color: var(--dim);
+            font-size: 8px;
+            font-weight: 800;
+            letter-spacing: .075em;
+            text-transform: uppercase
+        }
+
+        .nano {
+            color: var(--nano)
+        }
+
+        .atto {
+            color: var(--atto)
+        }
+
+        .rsnano {
+            color: var(--rsnano)
+        }
+
+        tbody th {
+            text-align: left;
+            padding-left: 16px;
+            color: var(--muted);
+            font-size: 11px;
+            font-weight: 850;
+            letter-spacing: .05em;
+            text-transform: uppercase
+        }
+
+        tbody td {
+            font-size: 18px;
+            font-weight: 800
+        }
+
+        .unit-label {
+            color: var(--dim);
+            font-size: 9px;
+            font-weight: 750;
+            text-transform: none;
+            letter-spacing: 0
+        }
+
+        .card-foot {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+            color: var(--muted);
+            font-size: 9px;
+            line-height: 1.3
+        }
+
+        .card-foot strong {
+            color: var(--text)
+        }
+
+        .scope {
+            color: var(--gold);
+            white-space: nowrap
+        }
+
+        .notes {
+            display: grid;
+            grid-template-columns:1fr 1fr;
+            gap: 14px;
+            margin-top: 18px
+        }
+
+        .note {
+            border: 1px solid var(--line);
+            border-radius: 11px;
+            background: var(--surface);
+            padding: 15px
+        }
+
+        .note h3 {
+            margin: 0 0 7px;
+            font-size: 13px
+        }
+
+        .note p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.55
+        }
+
+        @media (max-width: 800px) {
+            .shell {
+                width: min(100% - 20px, 1280px);
+                padding-top: 14px
+            }
+
+            .notes {
+                grid-template-columns:1fr
+            }
+
+            .stage {
+                border-radius: 9px
+            }
+        }
+
+        @media print {
+            .notes {
+                display: none
+            }
+
+            .shell {
+                width: auto;
+                padding: 0
+            }
+
+            .stage {
+                width: 1200px;
+                height: 675px;
+                border: 0;
+                border-radius: 0
+            }
+
+            .social-card {
+                --scale: 1 !important
+            }
+        }
+    </style>
 </head>
 <body>
-  <main class="shell">
+<main class="shell">
     <section class="stage" id="stage">
-      <article class="social-card" id="card" aria-label="Published Nano, Atto, and RSNano benchmark comparison">
-        <div class="card-pad">
-          <header class="card-head">
-            <div><p class="eyebrow">50,000 successes per implementation · zero errors</p><h2>500-account benchmark.<br><span>Client-observed completion.</span></h2></div>
-            <aside class="status"><strong>Completion boundaries</strong><span>Nano and RSNano stop at the exact post-cement event. In prior checks, cementing added about 15 ms to P50 versus confirmation-only timing; that delta is not measured here.</span></aside>
-          </header>
-          <div class="tables">
-            <section class="panel" data-workload="500 accounts">
-              <div class="panel-title"><h3>500 independent account chains</h3><span>50,000 samples · 100 transactions per account</span></div>
-              <table aria-label="500 independent account chains benchmark"><colgroup><col class="metric-name"><col class="implementation"><col class="implementation"><col class="implementation"></colgroup>
-                <thead><tr><th>Metric</th><th class="nano">Nano V28.2<small>nano-500</small></th><th class="atto">Atto 1.34<small>atto-500</small></th><th class="rsnano">RSNano V3.1<small>rsnano-500</small></th></tr></thead>
-                <tbody>
-                  <tr><th>AVG latency <span class="unit-label">(ms)</span></th><td class="nano" data-result="nano-500" data-metric="average_ms">906</td><td class="atto" data-result="atto-500" data-metric="average_ms">160</td><td class="rsnano" data-result="rsnano-500" data-metric="average_ms">795</td></tr>
-                  <tr><th>P50 latency <span class="unit-label">(ms)</span></th><td class="nano" data-result="nano-500" data-metric="p50_ms">905</td><td class="atto" data-result="atto-500" data-metric="p50_ms">137</td><td class="rsnano" data-result="rsnano-500" data-metric="p50_ms">767</td></tr>
-                  <tr><th>P90 latency <span class="unit-label">(ms)</span></th><td class="nano" data-result="nano-500" data-metric="p90_ms">1,036</td><td class="atto" data-result="atto-500" data-metric="p90_ms">232</td><td class="rsnano" data-result="rsnano-500" data-metric="p90_ms">1,226</td></tr>
-                  <tr><th>P95 latency <span class="unit-label">(ms)</span></th><td class="nano" data-result="nano-500" data-metric="p95_ms">1,056</td><td class="atto" data-result="atto-500" data-metric="p95_ms">276</td><td class="rsnano" data-result="rsnano-500" data-metric="p95_ms">1,385</td></tr>
-                  <tr><th>P99 latency <span class="unit-label">(ms)</span></th><td class="nano" data-result="nano-500" data-metric="p99_ms">1,136</td><td class="atto" data-result="atto-500" data-metric="p99_ms">362</td><td class="rsnano" data-result="rsnano-500" data-metric="p99_ms">1,661</td></tr>
-                  <tr><th>Average TPS</th><td class="nano" data-result="nano-500" data-metric="average_tps">548.45</td><td class="atto" data-result="atto-500" data-metric="average_tps">3,109.91</td><td class="rsnano" data-result="rsnano-500" data-metric="average_tps">624.74</td></tr>
-                  <tr><th>Peak TPS</th><td class="nano" data-result="nano-500" data-metric="peak_tps">755</td><td class="atto" data-result="atto-500" data-metric="peak_tps">4,000</td><td class="rsnano" data-result="rsnano-500" data-metric="peak_tps">997</td></tr>
-                </tbody>
-              </table>
-            </section>
-          </div>
-          <footer class="card-foot"><strong>Nano/RSNano: exact post-cement event · Atto: matching response</strong><span>Latency: whole-ms rounding from exact ns · TPS: summary values</span><span class="scope">Controlled local test · not a mainnet capacity claim</span></footer>
-        </div>
-      </article>
+        <article class="social-card" id="card" aria-label="Ten-run Atto, Nano, and RSNano benchmark comparison">
+            <div class="card-pad">
+                <header class="card-head">
+                    <div><p class="eyebrow">10 runs each · 500,000 transactions per implementation</p>
+                        <h2>500-account benchmark.<br><span>Ten-run ranges.</span></h2></div>
+                    <aside class="status"><strong>When timing stops</strong><span>Nano and RSNano are measured until each transaction is cemented. Atto transactions are final. In a separate check, waiting for cementing added about 15 ms to Nano's median latency.</span>
+                    </aside>
+                </header>
+                <div class="tables">
+                    <section class="panel" data-workload="500 accounts">
+                        <div class="panel-title"><h3>500 accounts in parallel</h3><span>10 runs · 50,000 transactions per run · 100 per account</span>
+                        </div>
+                        <table aria-label="500 accounts in parallel benchmark">
+                            <colgroup>
+                                <col class="metric-name">
+                                <col class="implementation">
+                                <col class="implementation">
+                                <col class="implementation">
+                            </colgroup>
+                            <thead>
+                            <tr>
+                                <th>Metric</th>
+                                <th class="atto">Atto 1.34<small>atto-500</small></th>
+                                <th class="nano">Nano V28.2<small>nano-500</small></th>
+                                <th class="rsnano">RSNano V3.1<small>rsnano-500</small></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <th>Average latency <span class="unit-label">(ms)</span></th>
+                                <td class="atto" data-result="atto-500" data-metric="average_ms">157–211</td>
+                                <td class="nano" data-result="nano-500" data-metric="average_ms">871–1,504</td>
+                                <td class="rsnano" data-result="rsnano-500" data-metric="average_ms">916–1,316</td>
+                            </tr>
+                            <tr>
+                                <th>Median latency <span class="unit-label">(P50, ms)</span></th>
+                                <td class="atto" data-result="atto-500" data-metric="p50_ms">131–191</td>
+                                <td class="nano" data-result="nano-500" data-metric="p50_ms">872–941</td>
+                                <td class="rsnano" data-result="rsnano-500" data-metric="p50_ms">875–1,304</td>
+                            </tr>
+                            <tr>
+                                <th>P90 latency <span class="unit-label">(ms)</span></th>
+                                <td class="atto" data-result="atto-500" data-metric="p90_ms">243–306</td>
+                                <td class="nano" data-result="nano-500" data-metric="p90_ms">996–1,113</td>
+                                <td class="rsnano" data-result="rsnano-500" data-metric="p90_ms">1,403–2,094</td>
+                            </tr>
+                            <tr>
+                                <th>P95 latency <span class="unit-label">(ms)</span></th>
+                                <td class="atto" data-result="atto-500" data-metric="p95_ms">271–333</td>
+                                <td class="nano" data-result="nano-500" data-metric="p95_ms">1,010–7,794</td>
+                                <td class="rsnano" data-result="rsnano-500" data-metric="p95_ms">1,530–2,317</td>
+                            </tr>
+                            <tr>
+                                <th>P99 latency <span class="unit-label">(ms)</span></th>
+                                <td class="atto" data-result="atto-500" data-metric="p99_ms">301–477</td>
+                                <td class="nano" data-result="nano-500" data-metric="p99_ms">1,051–8,011</td>
+                                <td class="rsnano" data-result="rsnano-500" data-metric="p99_ms">1,798–2,798</td>
+                            </tr>
+                            <tr>
+                                <th>Average TPS</th>
+                                <td class="atto" data-result="atto-500" data-metric="average_tps">2,348.74–3,172.70</td>
+                                <td class="nano" data-result="nano-500" data-metric="average_tps">331.03–569.99</td>
+                                <td class="rsnano" data-result="rsnano-500" data-metric="average_tps">374.80–543.05</td>
+                            </tr>
+                            <tr>
+                                <th>Peak TPS</th>
+                                <td class="atto" data-result="atto-500" data-metric="peak_tps">3,026–4,052</td>
+                                <td class="nano" data-result="nano-500" data-metric="peak_tps">690–784</td>
+                                <td class="rsnano" data-result="rsnano-500" data-metric="peak_tps">664–984</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                </div>
+                <footer class="card-foot"><strong>Nano/RSNano: cemented · Atto: final</strong><span>Lowest–highest result across 10 runs · latency rounded to ms</span><span
+                        class="scope">Dedicated test machine · not mainnet performance</span></footer>
+            </div>
+        </article>
     </section>
-    <section class="notes"><article class="note"><h3>Benchmark scope</h3><p>Each implementation published 50,000 transactions across 500 independent account chains, with zero errors. Timing starts at publication and stops at the client-observed completion boundary.</p></article><article class="note"><h3>Display precision</h3><p>Latency is rounded to whole milliseconds here; exact nanoseconds remain in each summary and CSV. Average TPS is shown to two decimal places, and peak TPS as an integer.</p></article></section>
-  </main>
-  <script>
-    const stage=document.getElementById('stage'),card=document.getElementById('card');
-    function fit(){const r=stage.getBoundingClientRect();card.style.setProperty('--scale',Math.min(r.width/1200,r.height/675));}
-    new ResizeObserver(fit).observe(stage);fit();
-  </script>
+    <section class="notes">
+        <article class="note"><h3>What was tested</h3>
+            <p>Each implementation ran ten times. Every run sent 50,000 transactions across 500 accounts, with no
+                errors. The table shows the lowest and highest result from those ten runs.</p></article>
+        <article class="note"><h3>End-to-end benchmark</h3>
+            <p>Timing covers the full client path on the local test network, from sending a transaction until the node
+                reports it complete. It includes communication with the node and node processing, not only consensus
+                time.</p></article>
+    </section>
+</main>
+<script>
+    const stage = document.getElementById('stage'), card = document.getElementById('card');
+
+    function fit() {
+        const r = stage.getBoundingClientRect();
+        card.style.setProperty('--scale', Math.min(r.width / 1200, r.height / 675));
+    }
+
+    new ResizeObserver(fit).observe(stage);
+    fit();
+</script>
 </body>
 </html>
