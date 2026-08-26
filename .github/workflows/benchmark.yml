@@ -7,64 +7,32 @@ permissions:
   contents: read
 
 jobs:
-  benchmark:
-    name: ${{ matrix.scenario.output_name }} · ${{ matrix.run_slot }}
+  serial:
+    name: ${{ matrix.output_name }} · serial
     runs-on: ubuntu-latest
     timeout-minutes: 120
     strategy:
       fail-fast: false
       matrix:
-        scenario:
-          - implementation: nano
-            fixture: nano-500
-            result_stem: nano-500
-            output_name: nano-500
-            workload: "500"
-            expected_count: "50000"
-          - implementation: atto
-            fixture: atto-500
-            result_stem: atto-500
-            output_name: atto-500
-            workload: "500"
-            expected_count: "50000"
-          - implementation: rsnano
-            fixture: nano-500
-            result_stem: rsnano-500
-            output_name: rsnano-500
-            workload: "500"
-            expected_count: "50000"
-        run_slot: ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10"]
         include:
-          - scenario:
-              implementation: nano
-              fixture: nano-serial
-              result_stem: nano-serial
-              output_name: nano-serial
-              workload: serial
-              expected_count: "1000"
-            run_slot: serial
-          - scenario:
-              implementation: atto
-              fixture: atto-serial
-              result_stem: atto-serial
-              output_name: atto-serial
-              workload: serial
-              expected_count: "1000"
-            run_slot: serial
-          - scenario:
-              implementation: rsnano
-              fixture: nano-serial
-              result_stem: rsnano-serial
-              output_name: rsnano-serial
-              workload: serial
-              expected_count: "1000"
-            run_slot: serial
+          - implementation: nano
+            fixture: nano-serial
+            result_stem: nano-serial
+            output_name: nano-serial
+          - implementation: atto
+            fixture: atto-serial
+            result_stem: atto-serial
+            output_name: atto-serial
+          - implementation: rsnano
+            fixture: nano-serial
+            result_stem: rsnano-serial
+            output_name: rsnano-serial
     env:
-      IMPLEMENTATION: ${{ matrix.scenario.implementation }}
-      FIXTURE: ${{ matrix.scenario.fixture }}
-      RESULT_STEM: ${{ matrix.scenario.result_stem }}
-      EXPECTED_COUNT: ${{ matrix.scenario.expected_count }}
-      OUTPUT_NAME: ${{ matrix.scenario.workload == '500' && format('{0}-run-{1}', matrix.scenario.output_name, matrix.run_slot) || matrix.scenario.output_name }}
+      IMPLEMENTATION: ${{ matrix.implementation }}
+      FIXTURE: ${{ matrix.fixture }}
+      RESULT_STEM: ${{ matrix.result_stem }}
+      OUTPUT_NAME: ${{ matrix.output_name }}
+      EXPECTED_COUNT: "1000"
     steps:
       - name: Check out repository
         uses: actions/checkout@v7
@@ -79,7 +47,7 @@ jobs:
       - name: Verify Docker and unique staging root
         shell: bash
         env:
-          BENCHMARK_OUTPUT_ROOT: ${{ runner.temp }}/feeless-benchmark-${{ github.run_id }}-${{ matrix.scenario.output_name }}-${{ matrix.run_slot }}
+          BENCHMARK_OUTPUT_ROOT: ${{ runner.temp }}/feeless-benchmark-${{ github.run_id }}-serial-${{ matrix.implementation }}
         run: |
           set -euo pipefail
           docker info
@@ -93,7 +61,7 @@ jobs:
         continue-on-error: true
         shell: bash
         env:
-          BENCHMARK_OUTPUT_ROOT: ${{ runner.temp }}/feeless-benchmark-${{ github.run_id }}-${{ matrix.scenario.output_name }}-${{ matrix.run_slot }}
+          BENCHMARK_OUTPUT_ROOT: ${{ runner.temp }}/feeless-benchmark-${{ github.run_id }}-serial-${{ matrix.implementation }}
         run: >-
           ./gradlew --no-daemon :app:run
           --args="run --implementation=${IMPLEMENTATION} --fixture=${FIXTURE} --output-dir=${BENCHMARK_OUTPUT_ROOT}/${OUTPUT_NAME} --timeout-seconds=60"
@@ -104,7 +72,7 @@ jobs:
         continue-on-error: true
         shell: bash
         env:
-          BENCHMARK_OUTPUT_ROOT: ${{ runner.temp }}/feeless-benchmark-${{ github.run_id }}-${{ matrix.scenario.output_name }}-${{ matrix.run_slot }}
+          BENCHMARK_OUTPUT_ROOT: ${{ runner.temp }}/feeless-benchmark-${{ github.run_id }}-serial-${{ matrix.implementation }}
         run: |
           set -uo pipefail
           failed=0
@@ -159,11 +127,11 @@ jobs:
         continue-on-error: true
         uses: actions/upload-artifact@v7
         with:
-          name: full-benchmark-${{ matrix.scenario.workload }}-${{ matrix.scenario.implementation }}-run-${{ matrix.run_slot }}-${{ github.run_id }}
+          name: full-benchmark-serial-${{ matrix.implementation }}-run-serial-${{ github.run_id }}
           path: |
-            ${{ runner.temp }}/feeless-benchmark-${{ github.run_id }}-${{ matrix.scenario.output_name }}-${{ matrix.run_slot }}/${{ env.OUTPUT_NAME }}/${{ env.RESULT_STEM }}-samples.csv
-            ${{ runner.temp }}/feeless-benchmark-${{ github.run_id }}-${{ matrix.scenario.output_name }}-${{ matrix.run_slot }}/${{ env.OUTPUT_NAME }}/${{ env.RESULT_STEM }}-summary.json
-            ${{ runner.temp }}/feeless-benchmark-${{ github.run_id }}-${{ matrix.scenario.output_name }}-${{ matrix.run_slot }}/${{ env.OUTPUT_NAME }}/${{ env.RESULT_STEM }}-manifest.json
+            ${{ runner.temp }}/feeless-benchmark-${{ github.run_id }}-serial-${{ matrix.implementation }}/${{ env.OUTPUT_NAME }}/${{ env.RESULT_STEM }}-samples.csv
+            ${{ runner.temp }}/feeless-benchmark-${{ github.run_id }}-serial-${{ matrix.implementation }}/${{ env.OUTPUT_NAME }}/${{ env.RESULT_STEM }}-summary.json
+            ${{ runner.temp }}/feeless-benchmark-${{ github.run_id }}-serial-${{ matrix.implementation }}/${{ env.OUTPUT_NAME }}/${{ env.RESULT_STEM }}-manifest.json
           if-no-files-found: warn
           overwrite: true
 
@@ -178,10 +146,215 @@ jobs:
           echo "::error::${OUTPUT_NAME} failed or produced invalid artifacts."
           exit 1
 
+  paired_500:
+    name: 500-account paired run · ${{ matrix.run_slot }} · ${{ matrix.run_order }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      max-parallel: 10
+      matrix:
+        include:
+          - run_slot: "01"
+            run_order: atto,nano,rsnano
+          - run_slot: "02"
+            run_order: nano,rsnano,atto
+          - run_slot: "03"
+            run_order: rsnano,atto,nano
+          - run_slot: "04"
+            run_order: atto,rsnano,nano
+          - run_slot: "05"
+            run_order: rsnano,nano,atto
+          - run_slot: "06"
+            run_order: nano,atto,rsnano
+          - run_slot: "07"
+            run_order: atto,nano,rsnano
+          - run_slot: "08"
+            run_order: nano,rsnano,atto
+          - run_slot: "09"
+            run_order: rsnano,atto,nano
+          - run_slot: "10"
+            run_order: atto,rsnano,nano
+    env:
+      RUN_SLOT: ${{ matrix.run_slot }}
+      RUN_ORDER: ${{ matrix.run_order }}
+      EXPECTED_COUNT: "50000"
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: gradle
+
+      - name: Verify Docker, order, and unique staging root
+        shell: bash
+        env:
+          BENCHMARK_OUTPUT_ROOT: ${{ runner.temp }}/feeless-benchmark-${{ github.run_id }}-paired-${{ matrix.run_slot }}
+        run: |
+          set -euo pipefail
+          docker info
+          if [[ -e "$BENCHMARK_OUTPUT_ROOT" ]]; then
+            echo "::error::Benchmark staging root already exists: $BENCHMARK_OUTPUT_ROOT"
+            exit 1
+          fi
+
+          declare -A seen=()
+          IFS=',' read -ra implementations <<< "$RUN_ORDER"
+          if (( ${#implementations[@]} != 3 )); then
+            echo "::error::Run order must contain exactly three implementations: $RUN_ORDER"
+            exit 1
+          fi
+          for implementation in "${implementations[@]}"; do
+            case "$implementation" in
+              atto|nano|rsnano) ;;
+              *)
+                echo "::error::Unknown implementation in run order: $implementation"
+                exit 1
+                ;;
+            esac
+            if [[ -n "${seen[$implementation]:-}" ]]; then
+              echo "::error::Duplicate implementation in run order: $implementation"
+              exit 1
+            fi
+            seen[$implementation]=1
+          done
+
+      - name: Run paired 500-account scenarios
+        id: benchmark
+        continue-on-error: true
+        shell: bash
+        env:
+          BENCHMARK_OUTPUT_ROOT: ${{ runner.temp }}/feeless-benchmark-${{ github.run_id }}-paired-${{ matrix.run_slot }}
+        run: |
+          set -uo pipefail
+          failed=0
+          IFS=',' read -ra implementations <<< "$RUN_ORDER"
+          for implementation in "${implementations[@]}"; do
+            case "$implementation" in
+              atto) fixture=atto-500 ;;
+              nano|rsnano) fixture=nano-500 ;;
+            esac
+            output_name="${implementation}-500-run-${RUN_SLOT}"
+
+            echo "::group::Run ${output_name}"
+            if ! ./gradlew --no-daemon :app:run \
+              --args="run --implementation=${implementation} --fixture=${fixture} --output-dir=${BENCHMARK_OUTPUT_ROOT}/${output_name} --timeout-seconds=60"; then
+              echo "::error::${output_name} failed"
+              failed=1
+            fi
+            echo "::endgroup::"
+          done
+          exit "$failed"
+
+      - name: Verify paired artifacts
+        id: postcheck
+        if: ${{ always() }}
+        continue-on-error: true
+        shell: bash
+        env:
+          BENCHMARK_OUTPUT_ROOT: ${{ runner.temp }}/feeless-benchmark-${{ github.run_id }}-paired-${{ matrix.run_slot }}
+        run: |
+          set -uo pipefail
+          failed=0
+          manifest_paths=()
+
+          for implementation in atto nano rsnano; do
+            case "$implementation" in
+              atto) fixture=atto-500 ;;
+              nano|rsnano) fixture=nano-500 ;;
+            esac
+            result_stem="${implementation}-500"
+            output_name="${result_stem}-run-${RUN_SLOT}"
+            output_directory="${BENCHMARK_OUTPUT_ROOT}/${output_name}"
+            csv="${output_directory}/${result_stem}-samples.csv"
+            summary="${output_directory}/${result_stem}-summary.json"
+            manifest="${output_directory}/${result_stem}-manifest.json"
+
+            for required in "$csv" "$summary" "$manifest"; do
+              if [[ ! -f "$required" ]]; then
+                echo "::error file=${required}::Missing benchmark artifact"
+                failed=1
+              fi
+            done
+
+            if [[ -f "$csv" ]]; then
+              line_count="$(wc -l < "$csv")"
+              expected_line_count="$((EXPECTED_COUNT + 1))"
+              if (( line_count != expected_line_count )); then
+                echo "::error file=${csv}::Expected ${expected_line_count} CSV lines, found ${line_count}"
+                failed=1
+              fi
+            fi
+
+            if [[ -f "$summary" ]] && ! jq -e --argjson expected "$EXPECTED_COUNT" '
+              .sample_count == $expected and
+              .success_count == $expected and
+              .error_count == 0 and
+              .latency_ns.count == $expected
+            ' "$summary" >/dev/null; then
+              echo "::error file=${summary}::Summary does not contain ${EXPECTED_COUNT} clean samples"
+              failed=1
+            fi
+
+            if [[ -f "$manifest" ]]; then
+              manifest_paths+=("$manifest")
+              if ! jq -e \
+                --arg implementation "$implementation" \
+                --arg fixture "$fixture" '
+                  (.runner_revision | type == "string" and length > 0 and (startswith("unknown") | not)) and
+                  .storage_profile == "durable" and
+                  .runtime_configuration.implementation == $implementation and
+                  .runtime_configuration.fixture == $fixture
+                ' "$manifest" >/dev/null; then
+                echo "::error file=${manifest}::Manifest lacks the expected scenario, known revision, or durable storage profile"
+                failed=1
+              fi
+            fi
+          done
+
+          if (( ${#manifest_paths[@]} == 3 )) && ! jq -e -s '
+            (map(.runner_revision) | unique | length) == 1 and
+            (map(.java) | unique | length) == 1 and
+            (map(.operating_system) | unique | length) == 1 and
+            (map(.cpu) | unique | length) == 1 and
+            (map(.storage_profile) | unique | length) == 1
+          ' "${manifest_paths[@]}" >/dev/null; then
+            echo "::error::Paired manifests do not describe the same runner environment"
+            failed=1
+          fi
+
+          exit "$failed"
+
+      - name: Upload paired artifacts
+        id: artifact-upload
+        if: ${{ always() }}
+        continue-on-error: true
+        uses: actions/upload-artifact@v7
+        with:
+          name: full-benchmark-500-paired-run-${{ matrix.run_slot }}-${{ github.run_id }}
+          path: ${{ runner.temp }}/feeless-benchmark-${{ github.run_id }}-paired-${{ matrix.run_slot }}/
+          if-no-files-found: warn
+          overwrite: true
+
+      - name: Require paired benchmark and artifact verification to pass
+        if: >-
+          ${{ always() &&
+              (steps.benchmark.outcome != 'success' ||
+               steps.postcheck.outcome != 'success' ||
+               steps.artifact-upload.outcome != 'success') }}
+        shell: bash
+        run: |
+          echo "::error::Paired run ${RUN_SLOT} (${RUN_ORDER}) failed or produced invalid artifacts."
+          exit 1
+
   aggregate:
-    name: Aggregate parallel 500-account runs
-    needs: benchmark
-    if: ${{ !cancelled() }}
+    name: Aggregate paired 500-account runs
+    needs: paired_500
+    if: ${{ needs.paired_500.result == 'success' }}
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -200,7 +373,7 @@ jobs:
         continue-on-error: true
         uses: actions/download-artifact@v8
         with:
-          pattern: full-benchmark-500-*-run-*-${{ github.run_id }}
+          pattern: full-benchmark-500-paired-run-*-${{ github.run_id }}
           path: ${{ runner.temp }}/feeless-benchmark-500-shards-${{ github.run_id }}
           merge-multiple: false
 
@@ -245,8 +418,7 @@ jobs:
       - name: Require matrix and aggregation to pass
         if: >-
           ${{ always() &&
-              (needs.benchmark.result != 'success' ||
-               steps.download.outcome != 'success' ||
+              (steps.download.outcome != 'success' ||
                steps.aggregate-results.outcome != 'success' ||
                steps.workflow-summary.outcome != 'success' ||
                steps.aggregate-upload.outcome != 'success') }}

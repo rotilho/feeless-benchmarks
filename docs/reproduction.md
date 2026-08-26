@@ -100,9 +100,9 @@ The JSON retains exact values. The Markdown rounds latency to the nearest whole 
 
 ## Run the Full benchmark workflow
 
-The manual **Full benchmark** workflow starts three 1 × 1,000 jobs and thirty independent 500 × 100 jobs, ten for each implementation. Each matrix job receives a separate GitHub-hosted runner and fresh node/database environment. GitHub account concurrency limits may queue jobs even though they are independent.
+The manual **Full benchmark** workflow starts three independent 1 × 1,000 jobs and ten paired 500 × 100 jobs. Each paired job receives one GitHub-hosted runner and executes Atto, Nano, and RSNano sequentially, with a fresh node/database environment for every scenario. Their order rotates across the ten jobs so each implementation appears first, second, and third either three or four times. GitHub account concurrency limits may queue jobs.
 
-The matrix uses `fail-fast: false`, allowing the remaining shards to finish when one fails. This does not accept a partial run: range aggregation waits for every job and runs only when all shards are valid. A missing or invalid shard leaves the final workflow red and incomplete, without `500-account-ranges.json` or `500-account-ranges.md`.
+Both matrices use `fail-fast: false`, allowing the remaining jobs to finish when one fails. A failure within a paired job also does not prevent its later scenarios from running. This does not accept a partial run: range aggregation waits for all ten paired jobs and accepts the thirty summaries only when every shard is valid. A missing or invalid shard leaves the final workflow red and incomplete, without `500-account-ranges.json` or `500-account-ranges.md`.
 
 ## Acceptance and promotion
 
