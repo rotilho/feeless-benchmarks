@@ -1,0 +1,48 @@
+{
+  "runner_revision": "a89995b20700dfe13b11def9282087fdc251f36b-dirty-1e4d36220f9ec5157d475fc57789f67c9fe2b4372b75ea38070a6f8d5168fa90",
+  "fixture_hashes": {
+    "atto-serial-benchmark.zip": "83450843bd3f82f8d3ea2f23bca5773f6be5c727867e9c3e2e31b9fb79d465f3",
+    "atto-serial-initial.zip": "c6718d99e88190f1ccdc43ca5c0ef6c4cb37f3dec91e3cab5c3cac47208c0dc3"
+  },
+  "image_digests": {
+    "ghcr.io/attocash/node:1.34-live": "sha256:971c1e84707e82145f159d02b7a684a3b4f4588a2a407398d199ebfb371ae62a",
+    "mysql:8.4": "sha256:1d6b6a8fcee8ff758ff151d017f5203cd06792a0e698f0a593c9dfcb14609cf0"
+  },
+  "java": {
+    "vendor": "Amazon.com Inc.",
+    "version": "21.0.12",
+    "vm_name": "OpenJDK 64-Bit Server VM",
+    "vm_version": "21.0.12+8-LTS"
+  },
+  "operating_system": {
+    "architecture": "amd64",
+    "name": "Linux",
+    "version": "7.0.13-100.fc43.x86_64"
+  },
+  "cpu": {
+    "logical_processor_count": 16,
+    "model": "AMD Ryzen 7 7840HS w/ Radeon 780M Graphics"
+  },
+  "storage_profile": "durable",
+  "runtime_configuration": {
+    "client.connectionReuse": "ktor-apache5-pool",
+    "client.maxConnectionsPerRoute": "500",
+    "client.requestTimeout": "disabled",
+    "coroutine.dispatcher": "virtual",
+    "database.durability": "mysql-defaults",
+    "database.image": "mysql:8.4",
+    "database.name": "atto",
+    "database.password": "<redacted>",
+    "database.storage": "durable",
+    "database.user": "atto",
+    "fixture": "atto-serial",
+    "implementation": "atto",
+    "node.forceApi": "true",
+    "node.image": "ghcr.io/attocash/node:1.34-live",
+    "node.logging": "cash.atto.node=INFO",
+    "node.profile": "local",
+    "node.voters": "1",
+    "pullImages": "true",
+    "timeout": "1m"
+  }
+}

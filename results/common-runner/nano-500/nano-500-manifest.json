@@ -1,0 +1,42 @@
+{
+  "runner_revision": "a89995b20700dfe13b11def9282087fdc251f36b-dirty-1e4d36220f9ec5157d475fc57789f67c9fe2b4372b75ea38070a6f8d5168fa90",
+  "fixture_hashes": {
+    "nano-500.json": "59037537dd9c877284fbace6d1f8cd5924d264cf370bdbec3a45e24034ffde30"
+  },
+  "image_digests": {
+    "nanocurrency/nano:V28.2": "sha256:ae5d9421f87c4620c2285479d95e5e79a2084878058934f7ed6a6b96b6add09e"
+  },
+  "java": {
+    "vendor": "Amazon.com Inc.",
+    "version": "21.0.12",
+    "vm_name": "OpenJDK 64-Bit Server VM",
+    "vm_version": "21.0.12+8-LTS"
+  },
+  "operating_system": {
+    "architecture": "amd64",
+    "name": "Linux",
+    "version": "7.0.13-100.fc43.x86_64"
+  },
+  "cpu": {
+    "logical_processor_count": 16,
+    "model": "AMD Ryzen 7 7840HS w/ Radeon 780M Graphics"
+  },
+  "storage_profile": "durable",
+  "runtime_configuration": {
+    "client.rpc.connectionReuse": "ktor-apache5-pool",
+    "client.rpc.engine": "ktor-apache5",
+    "client.rpc.maxConnectionsPerRoute": "500",
+    "client.rpc.maxConnectionsTotal": "500",
+    "client.rpc.requestTimeout": "disabled",
+    "client.websocket.engine": "ktor-cio",
+    "coroutine.dispatcher": "virtual",
+    "fixture": "nano-500",
+    "implementation": "nano",
+    "node.image": "nanocurrency/nano:V28.2",
+    "node.network": "dev",
+    "node.voting_key": "public dev key installed",
+    "rsnano.lmdb.sync": "not-applicable",
+    "storage.profile": "durable",
+    "timeout": "1m"
+  }
+}

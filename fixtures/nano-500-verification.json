@@ -1,0 +1,19 @@
+{
+  "valid": true,
+  "errors": [],
+  "fixture": "nano-500",
+  "fixture_sha256": "59037537dd9c877284fbace6d1f8cd5924d264cf370bdbec3a45e24034ffde30",
+  "source_count": 500,
+  "setup_count": 998,
+  "measured_count": 50000,
+  "unique_predicted_hashes": 50998,
+  "lane_distribution": {
+    "100": 500
+  },
+  "signature_count": 50998,
+  "work_count": 50998,
+  "chain_previous_links_valid": true,
+  "balances_valid": true,
+  "checksums_valid": true,
+  "sink_unopened": true
+}

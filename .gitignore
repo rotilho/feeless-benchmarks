@@ -1,0 +1,13 @@
+/build/
+/results/reproduction/
+/.fixture-generation-*/
+
+# Local test/build output
+**/.gradle/
+**/.kotlin/
+**/build/
+
+# Editor and OS noise
+.idea/
+.vscode/
+.DS_Store

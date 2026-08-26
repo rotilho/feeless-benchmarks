@@ -1,0 +1,65 @@
+{
+  "schema": "feeless-benchmarks-source-revisions/v1",
+  "runner": {
+    "language": "Kotlin/JVM 21",
+    "modules": [
+      "core",
+      "nano",
+      "atto",
+      "app"
+    ],
+    "gradle": "9.2.1",
+    "kotlin": "2.4.10",
+    "ktor": "3.5.2",
+    "coroutines_and_serialization": "1.11.0",
+    "testcontainers": "2.0.5"
+  },
+  "atto": {
+    "commons": {
+      "core": "cash.atto:commons-core:7.0.2",
+      "worker": "cash.atto:commons-worker:7.0.2"
+    },
+    "node": {
+      "url": "https://github.com/attocash/node",
+      "commit": "3536f163fde58e326c62414ad78b863825ea31f5",
+      "official_image": "ghcr.io/attocash/node:1.34-live",
+      "official_image_repo_digests": [
+        "ghcr.io/attocash/node@sha256:971c1e84707e82145f159d02b7a684a3b4f4588a2a407398d199ebfb371ae62a",
+        "ghcr.io/attocash/node@sha256:eb382d2a24b07bbf649f7b1e4a9aa17ea9e19534bae298606269bfe02d4a0a40"
+      ],
+      "spring_profile_override": "local"
+    },
+    "harness": {
+      "upstream_url": "https://github.com/attocash/node-benchmark",
+      "base_commit": "f23692a289a2bdde657b66dfcb6c9682d9fa2d5a"
+    }
+  },
+  "nano": {
+    "node_image": "nanocurrency/nano:V28.2",
+    "build_commit": "0d8eea4",
+    "fixture_schema": "nano-v28.2-benchmark-fixture/v2",
+    "jnano_source": {
+      "url": "https://github.com/rotilho/jnano-commons",
+      "revision": "ce2bf78a321ee98764117de5dcc230a7466c2502",
+      "license": "MIT",
+      "artifact_dependency": false
+    },
+    "work_thresholds": {
+      "source": "https://github.com/nanocurrency/nano-node/blob/V28.2/nano/lib/constants.cpp#L38-L60",
+      "epoch_0_and_1": "FE00000000000000",
+      "epoch_2_send_change": "FFC0000000000000",
+      "epoch_2_receive_epoch": "F000000000000000"
+    }
+  },
+  "rsnano": {
+    "url": "https://github.com/rsnano-node/rsnano-node",
+    "release": "V3.1",
+    "commit": "267e45a5555039d79dba3699c27c574926940681",
+    "license": "BSD-3-Clause",
+    "node_image": "rsnano/rsnano:V3.1",
+    "image_index_digest": "sha256:c702f5f81155c71b56f06b006097820927dfd786af68882c2b2841c2a8561c44",
+    "linux_amd64_manifest_digest": "sha256:0acac4f740fb7453d704db78f686ed8b3d05e950f00b4d5e171256f3c19cf607",
+    "dev_network_lmdb_sync_override": "always",
+    "fixture_source": "fixtures/nano-serial.json and fixtures/nano-500.json"
+  }
+}

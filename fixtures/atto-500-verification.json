@@ -1,0 +1,32 @@
+{
+  "fixture": "atto-500",
+  "generator": {
+    "implementation": "Kotlin/JVM deterministic Atto fixture generator",
+    "commonsVersion": "7.0.2",
+    "accountCount": 500,
+    "transactionCount": 50000,
+    "seed": 11004,
+    "baseTimestamp": "2026-01-01T00:00:00Z",
+    "workSearchParallelism": 1
+  },
+  "initial": {
+    "path": "atto-500-initial.zip",
+    "sha256": "dd3e8b82e259e2b1cd1ebb8dc16ab057fd0683ae07d20ed4c332e747b50787b2",
+    "transactionCount": 999
+  },
+  "benchmark": {
+    "path": "atto-500-benchmark.zip",
+    "sha256": "596ceaf863456fe02cb57cc47dd4daf902b3182fdb8c95299faf788bf3e1b211",
+    "transactionCount": 50000
+  },
+  "setupCount": 998,
+  "laneCount": 500,
+  "distinctTransactionsPerLane": [
+    100
+  ],
+  "uniqueBenchmarkHashes": 50000,
+  "validTransactionCount": 50999,
+  "expectedTransactionCount": 50999,
+  "errors": [],
+  "valid": true
+}

@@ -1,0 +1,7 @@
+# Large deterministic evidence artifacts should not dominate language statistics.
+fixtures/*.json linguist-generated=true
+results/**/*.csv -text linguist-generated=true whitespace=cr-at-eol
+provenance/*.patch linguist-generated=true
+
+# Compressed fixture archives are binary.
+fixtures/*.zip binary

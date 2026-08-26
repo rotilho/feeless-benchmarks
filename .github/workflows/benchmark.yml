@@ -1,0 +1,256 @@
+name: Full benchmark
+
+"on":
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  benchmark:
+    name: ${{ matrix.scenario.output_name }} · ${{ matrix.run_slot }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix:
+        scenario:
+          - implementation: nano
+            fixture: nano-500
+            result_stem: nano-500
+            output_name: nano-500
+            workload: "500"
+            expected_count: "50000"
+          - implementation: atto
+            fixture: atto-500
+            result_stem: atto-500
+            output_name: atto-500
+            workload: "500"
+            expected_count: "50000"
+          - implementation: rsnano
+            fixture: nano-500
+            result_stem: rsnano-500
+            output_name: rsnano-500
+            workload: "500"
+            expected_count: "50000"
+        run_slot: ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10"]
+        include:
+          - scenario:
+              implementation: nano
+              fixture: nano-serial
+              result_stem: nano-serial
+              output_name: nano-serial
+              workload: serial
+              expected_count: "1000"
+            run_slot: serial
+          - scenario:
+              implementation: atto
+              fixture: atto-serial
+              result_stem: atto-serial
+              output_name: atto-serial
+              workload: serial
+              expected_count: "1000"
+            run_slot: serial
+          - scenario:
+              implementation: rsnano
+              fixture: nano-serial
+              result_stem: rsnano-serial
+              output_name: rsnano-serial
+              workload: serial
+              expected_count: "1000"
+            run_slot: serial
+    env:
+      IMPLEMENTATION: ${{ matrix.scenario.implementation }}
+      FIXTURE: ${{ matrix.scenario.fixture }}
+      RESULT_STEM: ${{ matrix.scenario.result_stem }}
+      EXPECTED_COUNT: ${{ matrix.scenario.expected_count }}
+      OUTPUT_NAME: ${{ matrix.scenario.workload == '500' && format('{0}-run-{1}', matrix.scenario.output_name, matrix.run_slot) || matrix.scenario.output_name }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: gradle
+
+      - name: Verify Docker and unique staging root
+        shell: bash
+        env:
+          BENCHMARK_OUTPUT_ROOT: ${{ runner.temp }}/feeless-benchmark-${{ github.run_id }}-${{ matrix.scenario.output_name }}-${{ matrix.run_slot }}
+        run: |
+          set -euo pipefail
+          docker info
+          if [[ -e "$BENCHMARK_OUTPUT_ROOT" ]]; then
+            echo "::error::Benchmark staging root already exists: $BENCHMARK_OUTPUT_ROOT"
+            exit 1
+          fi
+
+      - name: Run ${{ env.OUTPUT_NAME }}
+        id: benchmark
+        continue-on-error: true
+        shell: bash
+        env:
+          BENCHMARK_OUTPUT_ROOT: ${{ runner.temp }}/feeless-benchmark-${{ github.run_id }}-${{ matrix.scenario.output_name }}-${{ matrix.run_slot }}
+        run: >-
+          ./gradlew --no-daemon :app:run
+          --args="run --implementation=${IMPLEMENTATION} --fixture=${FIXTURE} --output-dir=${BENCHMARK_OUTPUT_ROOT}/${OUTPUT_NAME} --timeout-seconds=60"
+
+      - name: Verify ${{ env.OUTPUT_NAME }} artifacts
+        id: postcheck
+        if: ${{ always() }}
+        continue-on-error: true
+        shell: bash
+        env:
+          BENCHMARK_OUTPUT_ROOT: ${{ runner.temp }}/feeless-benchmark-${{ github.run_id }}-${{ matrix.scenario.output_name }}-${{ matrix.run_slot }}
+        run: |
+          set -uo pipefail
+          failed=0
+          output_directory="${BENCHMARK_OUTPUT_ROOT}/${OUTPUT_NAME}"
+          csv="${output_directory}/${RESULT_STEM}-samples.csv"
+          summary="${output_directory}/${RESULT_STEM}-summary.json"
+          manifest="${output_directory}/${RESULT_STEM}-manifest.json"
+
+          for required in "$csv" "$summary" "$manifest"; do
+            if [[ ! -f "$required" ]]; then
+              echo "::error file=${required}::Missing benchmark artifact"
+              failed=1
+            fi
+          done
+
+          if [[ -f "$csv" ]]; then
+            line_count="$(wc -l < "$csv")"
+            expected_line_count="$((EXPECTED_COUNT + 1))"
+            if (( line_count != expected_line_count )); then
+              echo "::error file=${csv}::Expected ${expected_line_count} CSV lines, found ${line_count}"
+              failed=1
+            fi
+          fi
+
+          if [[ -f "$summary" ]] && ! jq -e --argjson expected "$EXPECTED_COUNT" '
+            .sample_count == $expected and
+            .success_count == $expected and
+            .error_count == 0 and
+            .latency_ns.count == $expected
+          ' "$summary" >/dev/null; then
+            echo "::error file=${summary}::Summary does not contain ${EXPECTED_COUNT} clean samples"
+            failed=1
+          fi
+
+          if [[ -f "$manifest" ]] && ! jq -e \
+            --arg implementation "$IMPLEMENTATION" \
+            --arg fixture "$FIXTURE" '
+              (.runner_revision | type == "string" and length > 0 and (startswith("unknown") | not)) and
+              .storage_profile == "durable" and
+              .runtime_configuration.implementation == $implementation and
+              .runtime_configuration.fixture == $fixture
+            ' "$manifest" >/dev/null; then
+            echo "::error file=${manifest}::Manifest lacks the expected scenario, known revision, or durable storage profile"
+            failed=1
+          fi
+
+          exit "$failed"
+
+      - name: Upload ${{ env.OUTPUT_NAME }} artifacts
+        id: artifact-upload
+        if: ${{ always() }}
+        continue-on-error: true
+        uses: actions/upload-artifact@v7
+        with:
+          name: full-benchmark-${{ matrix.scenario.workload }}-${{ matrix.scenario.implementation }}-run-${{ matrix.run_slot }}-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/feeless-benchmark-${{ github.run_id }}-${{ matrix.scenario.output_name }}-${{ matrix.run_slot }}/${{ env.OUTPUT_NAME }}/${{ env.RESULT_STEM }}-samples.csv
+            ${{ runner.temp }}/feeless-benchmark-${{ github.run_id }}-${{ matrix.scenario.output_name }}-${{ matrix.run_slot }}/${{ env.OUTPUT_NAME }}/${{ env.RESULT_STEM }}-summary.json
+            ${{ runner.temp }}/feeless-benchmark-${{ github.run_id }}-${{ matrix.scenario.output_name }}-${{ matrix.run_slot }}/${{ env.OUTPUT_NAME }}/${{ env.RESULT_STEM }}-manifest.json
+          if-no-files-found: warn
+          overwrite: true
+
+      - name: Require benchmark and artifact verification to pass
+        if: >-
+          ${{ always() &&
+              (steps.benchmark.outcome != 'success' ||
+               steps.postcheck.outcome != 'success' ||
+               steps.artifact-upload.outcome != 'success') }}
+        shell: bash
+        run: |
+          echo "::error::${OUTPUT_NAME} failed or produced invalid artifacts."
+          exit 1
+
+  aggregate:
+    name: Aggregate parallel 500-account runs
+    needs: benchmark
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: gradle
+
+      - name: Download 500-account benchmark shards
+        id: download
+        continue-on-error: true
+        uses: actions/download-artifact@v8
+        with:
+          pattern: full-benchmark-500-*-run-*-${{ github.run_id }}
+          path: ${{ runner.temp }}/feeless-benchmark-500-shards-${{ github.run_id }}
+          merge-multiple: false
+
+      - name: Aggregate 500-account benchmark shards
+        id: aggregate-results
+        continue-on-error: true
+        shell: bash
+        env:
+          AGGREGATE_INPUT_ROOT: ${{ runner.temp }}/feeless-benchmark-500-shards-${{ github.run_id }}
+          AGGREGATE_OUTPUT_DIR: ${{ runner.temp }}/feeless-benchmark-500-aggregate-${{ github.run_id }}
+        run: >-
+          ./gradlew --no-daemon :app:run
+          --args="aggregate-results --input-root=${AGGREGATE_INPUT_ROOT} --output-dir=${AGGREGATE_OUTPUT_DIR} --implementations=nano,atto,rsnano --expected-runs=10 --account-count=500"
+
+      - name: Add aggregate to workflow summary
+        id: workflow-summary
+        if: ${{ always() }}
+        continue-on-error: true
+        shell: bash
+        env:
+          AGGREGATE_MARKDOWN: ${{ runner.temp }}/feeless-benchmark-500-aggregate-${{ github.run_id }}/500-account-ranges.md
+        run: |
+          if [[ ! -f "$AGGREGATE_MARKDOWN" ]]; then
+            echo "::error file=${AGGREGATE_MARKDOWN}::Aggregate Markdown is missing"
+            exit 1
+          fi
+          cat "$AGGREGATE_MARKDOWN" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload aggregate artifacts
+        id: aggregate-upload
+        if: ${{ always() }}
+        continue-on-error: true
+        uses: actions/upload-artifact@v7
+        with:
+          name: full-benchmark-500-aggregate-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/feeless-benchmark-500-aggregate-${{ github.run_id }}/500-account-ranges.json
+            ${{ runner.temp }}/feeless-benchmark-500-aggregate-${{ github.run_id }}/500-account-ranges.md
+          if-no-files-found: error
+          overwrite: true
+
+      - name: Require matrix and aggregation to pass
+        if: >-
+          ${{ always() &&
+              (needs.benchmark.result != 'success' ||
+               steps.download.outcome != 'success' ||
+               steps.aggregate-results.outcome != 'success' ||
+               steps.workflow-summary.outcome != 'success' ||
+               steps.aggregate-upload.outcome != 'success') }}
+        shell: bash
+        run: |
+          echo "::error::One or more benchmark legs, downloads, or aggregation steps failed."
+          exit 1
