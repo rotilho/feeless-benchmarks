@@ -357,8 +357,8 @@ jobs:
 
   aggregate:
     name: Aggregate paired 500-account runs
-    needs: paired_500
-    if: ${{ needs.paired_500.result == 'success' }}
+    needs: [serial, paired_500]
+    if: ${{ needs.serial.result == 'success' && needs.paired_500.result == 'success' }}
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -381,6 +381,15 @@ jobs:
           path: ${{ runner.temp }}/feeless-benchmark-500-shards-${{ github.run_id }}
           merge-multiple: false
 
+      - name: Download serial benchmark artifacts
+        id: serial-download
+        continue-on-error: true
+        uses: actions/download-artifact@v8
+        with:
+          pattern: full-benchmark-serial-*-run-serial-${{ github.run_id }}
+          path: ${{ runner.temp }}/feeless-benchmark-serial-artifacts-${{ github.run_id }}
+          merge-multiple: false
+
       - name: Aggregate 500-account benchmark shards
         id: aggregate-results
         continue-on-error: true
@@ -390,7 +399,7 @@ jobs:
           AGGREGATE_OUTPUT_DIR: ${{ runner.temp }}/feeless-benchmark-500-aggregate-${{ github.run_id }}
         run: >-
           ./gradlew --no-daemon :app:run
-          --args="aggregate-results --input-root=${AGGREGATE_INPUT_ROOT} --output-dir=${AGGREGATE_OUTPUT_DIR} --implementations=nano,atto,rsnano --expected-runs=10 --account-count=500"
+          --args="aggregate-results --input-root=${AGGREGATE_INPUT_ROOT} --output-dir=${AGGREGATE_OUTPUT_DIR} --implementations=atto,nano,rsnano --expected-runs=10 --account-count=500"
 
       - name: Add aggregate to workflow summary
         id: workflow-summary
@@ -399,12 +408,79 @@ jobs:
         shell: bash
         env:
           AGGREGATE_MARKDOWN: ${{ runner.temp }}/feeless-benchmark-500-aggregate-${{ github.run_id }}/500-account-ranges.md
+          LC_ALL: C
+          SERIAL_INPUT_ROOT: ${{ runner.temp }}/feeless-benchmark-serial-artifacts-${{ github.run_id }}
         run: |
+          set -euo pipefail
           if [[ ! -f "$AGGREGATE_MARKDOWN" ]]; then
             echo "::error file=${AGGREGATE_MARKDOWN}::Aggregate Markdown is missing"
             exit 1
           fi
-          cat "$AGGREGATE_MARKDOWN" >> "$GITHUB_STEP_SUMMARY"
+          if [[ ! -d "$SERIAL_INPUT_ROOT" ]]; then
+            echo "::error::Serial benchmark artifact directory is missing: $SERIAL_INPUT_ROOT"
+            exit 1
+          fi
+
+          serial_rows=()
+          for implementation in atto nano rsnano; do
+            mapfile -d '' summary_paths < <(
+              find "$SERIAL_INPUT_ROOT" -type f -name "${implementation}-serial-summary.json" -print0
+            )
+            if (( ${#summary_paths[@]} != 1 )); then
+              echo "::error::Expected exactly one ${implementation} serial summary, found ${#summary_paths[@]}"
+              exit 1
+            fi
+
+            summary="${summary_paths[0]}"
+            if ! jq -e '
+              .sample_count == 1000 and
+              .success_count == 1000 and
+              .error_count == 0 and
+              .latency_ns.count == 1000 and
+              ([
+                .latency_ns.average,
+                .latency_ns.p50,
+                .latency_ns.p90,
+                .latency_ns.p95,
+                .latency_ns.p99,
+                .average_tps,
+                .peak_tps
+              ] | all(type == "number"))
+            ' "$summary" >/dev/null; then
+              echo "::error file=${summary}::Serial summary does not contain 1,000 clean samples and complete metrics"
+              exit 1
+            fi
+
+            case "$implementation" in
+              atto) display_name=Atto ;;
+              nano) display_name=Nano ;;
+              rsnano) display_name=RSNano ;;
+            esac
+            read -r average p50 p90 p95 p99 average_tps peak_tps < <(
+              jq -r '[
+                (.latency_ns.average / 1000000 | round),
+                (.latency_ns.p50 / 1000000 | round),
+                (.latency_ns.p90 / 1000000 | round),
+                (.latency_ns.p95 / 1000000 | round),
+                (.latency_ns.p99 / 1000000 | round),
+                .average_tps,
+                .peak_tps
+              ] | @tsv' "$summary"
+            )
+            serial_rows+=(
+              "$(printf '| %s | %s | %s | %s | %s | %s | %.2f | %d |' \
+                "$display_name" "$average" "$p50" "$p90" "$p95" "$p99" "$average_tps" "$peak_tps")"
+            )
+          done
+
+          {
+            cat "$AGGREGATE_MARKDOWN"
+            printf '\n## Serial benchmark\n\n'
+            printf 'One accepted 1,000-transaction run per implementation.\n\n'
+            printf '| Implementation | Average (ms) ↓ | P50 (ms) ↓ | P90 (ms) ↓ | P95 (ms) ↓ | P99 (ms) ↓ | Average TPS ↑ | Peak TPS ↑ |\n'
+            printf '| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n'
+            printf '%s\n' "${serial_rows[@]}"
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload aggregate artifacts
         id: aggregate-upload
@@ -424,6 +500,7 @@ jobs:
         if: >-
           ${{ always() &&
               (steps.download.outcome != 'success' ||
+               steps.serial-download.outcome != 'success' ||
                steps.aggregate-results.outcome != 'success' ||
                steps.workflow-summary.outcome != 'success' ||
                steps.aggregate-upload.outcome != 'success') }}

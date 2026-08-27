@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="robots" content="noindex,nofollow">
-    <title>500-account benchmark ranges</title>
+    <title>Parallel and serial transaction benchmark</title>
     <style>
         :root {
             --bg: #111113;
@@ -130,6 +130,9 @@
         }
 
         .tables {
+            display: grid;
+            grid-template-rows:repeat(2, minmax(0, 1fr));
+            gap: 8px;
             min-height: 0
         }
 
@@ -143,7 +146,7 @@
         }
 
         .panel-title {
-            height: 48px;
+            height: 35px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -155,13 +158,13 @@
 
         .panel-title h3 {
             margin: 0;
-            font-size: 17px;
+            font-size: 14px;
             white-space: nowrap
         }
 
         .panel-title span {
             color: var(--muted);
-            font-size: 9px;
+            font-size: 8px;
             font-weight: 800;
             letter-spacing: .055em;
             text-align: right;
@@ -170,7 +173,7 @@
 
         table {
             width: 100%;
-            height: calc(100% - 48px);
+            height: calc(100% - 35px);
             border-collapse: collapse;
             table-layout: fixed;
             font-variant-numeric: tabular-nums lining-nums
@@ -201,9 +204,9 @@
         }
 
         thead th {
-            height: 42px;
+            height: 31px;
             background: #151517;
-            font-size: 15px;
+            font-size: 13px;
             font-weight: 900;
             letter-spacing: .025em
         }
@@ -219,9 +222,9 @@
 
         thead small {
             display: block;
-            margin-top: 2px;
+            margin-top: 1px;
             color: var(--dim);
-            font-size: 8px;
+            font-size: 7px;
             font-weight: 800;
             letter-spacing: .075em;
             text-transform: uppercase
@@ -243,20 +246,20 @@
             text-align: left;
             padding-left: 16px;
             color: var(--muted);
-            font-size: 11px;
+            font-size: 9px;
             font-weight: 850;
             letter-spacing: .05em;
             text-transform: uppercase
         }
 
         tbody td {
-            font-size: 18px;
+            font-size: 14px;
             font-weight: 800
         }
 
         .unit-label {
             color: var(--dim);
-            font-size: 9px;
+            font-size: 8px;
             font-weight: 750;
             text-transform: none;
             letter-spacing: 0
@@ -348,11 +351,11 @@
 <body>
 <main class="shell">
     <section class="stage" id="stage">
-        <article class="social-card" id="card" aria-label="Ten-run Atto, Nano, and RSNano benchmark comparison">
+        <article class="social-card" id="card" aria-label="Parallel and serial Atto, Nano, and RSNano benchmark comparison">
             <div class="card-pad">
                 <header class="card-head">
-                    <div><p class="eyebrow">10 runs each · 500,000 transactions per implementation</p>
-                        <h2>500-account benchmark.<br><span>Ten-run ranges.</span></h2></div>
+                    <div><p class="eyebrow">10 paired parallel runs · 1 serial run</p>
+                        <h2>Transaction benchmark.<br><span>Parallel and serial.</span></h2></div>
                     <aside class="status"><strong>When timing stops</strong><span>Nano and RSNano are measured until each transaction is cemented. Atto transactions are final. In a separate check, waiting for cementing added about 15 ms to Nano's median latency.</span>
                     </aside>
                 </header>
@@ -421,16 +424,80 @@
                             </tbody>
                         </table>
                     </section>
+                    <section class="panel" data-workload="1 account">
+                        <div class="panel-title"><h3>1 account, serial</h3><span>1 run · 1,000 transactions</span>
+                        </div>
+                        <table aria-label="1 account serial benchmark">
+                            <colgroup>
+                                <col class="metric-name">
+                                <col class="implementation">
+                                <col class="implementation">
+                                <col class="implementation">
+                            </colgroup>
+                            <thead>
+                            <tr>
+                                <th>Metric</th>
+                                <th class="atto">Atto 1.34<small>atto-serial</small></th>
+                                <th class="nano">Nano V28.2<small>nano-serial</small></th>
+                                <th class="rsnano">RSNano V3.1<small>rsnano-serial</small></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <th>Average latency <span class="unit-label">(ms)</span></th>
+                                <td class="atto" data-result="atto-serial" data-metric="average_ms">22</td>
+                                <td class="nano" data-result="nano-serial" data-metric="average_ms">199</td>
+                                <td class="rsnano" data-result="rsnano-serial" data-metric="average_ms">201</td>
+                            </tr>
+                            <tr>
+                                <th>Median latency <span class="unit-label">(P50, ms)</span></th>
+                                <td class="atto" data-result="atto-serial" data-metric="p50_ms">7</td>
+                                <td class="nano" data-result="nano-serial" data-metric="p50_ms">200</td>
+                                <td class="rsnano" data-result="rsnano-serial" data-metric="p50_ms">200</td>
+                            </tr>
+                            <tr>
+                                <th>P90 latency <span class="unit-label">(ms)</span></th>
+                                <td class="atto" data-result="atto-serial" data-metric="p90_ms">59</td>
+                                <td class="nano" data-result="nano-serial" data-metric="p90_ms">200</td>
+                                <td class="rsnano" data-result="rsnano-serial" data-metric="p90_ms">201</td>
+                            </tr>
+                            <tr>
+                                <th>P95 latency <span class="unit-label">(ms)</span></th>
+                                <td class="atto" data-result="atto-serial" data-metric="p95_ms">98</td>
+                                <td class="nano" data-result="nano-serial" data-metric="p95_ms">200</td>
+                                <td class="rsnano" data-result="rsnano-serial" data-metric="p95_ms">202</td>
+                            </tr>
+                            <tr>
+                                <th>P99 latency <span class="unit-label">(ms)</span></th>
+                                <td class="atto" data-result="atto-serial" data-metric="p99_ms">215</td>
+                                <td class="nano" data-result="nano-serial" data-metric="p99_ms">201</td>
+                                <td class="rsnano" data-result="rsnano-serial" data-metric="p99_ms">221</td>
+                            </tr>
+                            <tr>
+                                <th>Average TPS</th>
+                                <td class="atto" data-result="atto-serial" data-metric="average_tps">45.08</td>
+                                <td class="nano" data-result="nano-serial" data-metric="average_tps">5.02</td>
+                                <td class="rsnano" data-result="rsnano-serial" data-metric="average_tps">4.98</td>
+                            </tr>
+                            <tr>
+                                <th>Peak TPS</th>
+                                <td class="atto" data-result="atto-serial" data-metric="peak_tps">95</td>
+                                <td class="nano" data-result="nano-serial" data-metric="peak_tps">9</td>
+                                <td class="rsnano" data-result="rsnano-serial" data-metric="peak_tps">6</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </section>
                 </div>
-                <footer class="card-foot"><strong>Nano/RSNano: cemented · Atto: final</strong><span>Lowest–highest result across 10 runs · latency rounded to ms</span><span
-                        class="scope">Paired hosted runners · not mainnet performance</span></footer>
+                <footer class="card-foot"><strong>Nano/RSNano: cemented · Atto: final</strong><span>Parallel: lowest–highest across 10 runs · serial: one run · latency rounded to ms</span><span
+                        class="scope">Hosted runners · not mainnet performance</span></footer>
             </div>
         </article>
     </section>
     <section class="notes">
         <article class="note"><h3>What was tested</h3>
-            <p>Each implementation ran ten times. Every run slot used one hosted VM for all three implementations,
-                with a fresh environment per scenario. All 50,000 transactions per scenario completed without errors.</p></article>
+            <p>The 500-account benchmark ran ten times, with 50,000 transactions per run. The serial benchmark ran
+                once, with 1,000 transactions from one account. Every transaction completed without errors.</p></article>
         <article class="note"><h3>End-to-end benchmark</h3>
             <p>Timing covers the full client path on the local test network, from sending a transaction until the node
                 reports it complete. It includes communication with the node and node processing, not only consensus
