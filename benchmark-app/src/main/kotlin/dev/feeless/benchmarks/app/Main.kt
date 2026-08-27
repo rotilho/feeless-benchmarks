@@ -19,11 +19,11 @@ internal class BenchmarkApplication(
         try {
             when (val command = CommandParser.parse(arguments)) {
                 Command.Help -> output(usage)
-                is Command.AggregateResults -> AggregateResultsService(output).aggregate(command)
+                is Command.AggregateResults -> AggregateResultsService(report = output, warning = error).aggregate(command)
                 is Command.GenerateFixtures -> FixtureService(output).generate(command)
                 is Command.ValidateFixtures -> FixtureService(output).validate(command)
-                is Command.Run -> RunService(report = output).run(command)
-                is Command.RunSuite -> RunService(report = output).runSuite(command)
+                is Command.Run -> RunService(report = output, warning = error).run(command)
+                is Command.RunSuite -> RunService(report = output, warning = error).runSuite(command)
             }
             0
         } catch (cancelled: CancellationException) {
@@ -41,7 +41,7 @@ internal class BenchmarkApplication(
 private val usage =
     """
     Usage:
-      generate-fixtures --implementation=all|atto|nano [--fixtures-dir=fixtures]
+      generate-fixtures [--implementation=all|atto|nano] [--fixtures-dir=fixtures]
       validate-fixtures [--fixtures-dir=fixtures]
       aggregate-results --input-root=... --output-dir=... [--implementations=nano,atto,rsnano] [--expected-runs=10] [--account-count=500]
       run --implementation=atto|nano|rsnano --fixture=... --output-dir=... [--timeout-seconds=60]

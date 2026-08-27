@@ -18,10 +18,10 @@ The aggregate embeds the summaries and manifests from ten clean paired jobs on t
 
 The scenario name is also its published directory and file stem. The published 500 × 100 single-run artifacts come from paired run 01. RSNano uses the same `nano-serial` and `nano-500` fixture files as Nano. Each manifest records fixture hashes, resolved image digests, runner revision, host/runtime details, the durable storage profile, and sanitized configuration.
 
-Use a fresh output root for reproduction work:
+Use a dedicated output root for reproduction work:
 
 ```bash
-./gradlew :app:run --args='run-suite --implementations=nano,atto,rsnano --output-root=results/reproduction/full-suite'
+./gradlew :app:run --args='run-suite --implementations=atto,nano,rsnano --output-root=results/reproduction/full-suite'
 ```
 
-The command refuses an existing output root and executes all scenarios serially on fresh Testcontainers environments. A promoted current result must preserve all three artifacts and contain exactly 1,000 clean serial samples or 50,000 clean 500 × 100 samples, with zero errors. Do not write exploratory or partial runs over accepted result paths.
+The command moves an existing output root to `<output-root>.previous` (then `.previous-2`, and so on) with a warning, and executes all scenarios serially on fresh Testcontainers environments. A promoted current result must preserve all three artifacts and contain exactly 1,000 clean serial samples or 50,000 clean 500 × 100 samples, with zero errors. Keep exploratory runs separate from accepted result paths.

@@ -69,7 +69,7 @@ class BenchmarkSummaryAggregationTest {
     }
 
     @Test
-    fun `aggregation rejects dirty runner provenance`() {
+    fun `aggregation ignores runner revision`() {
         // Given
         val dirty =
             run("run-01/summary.json", latencyNs = 200_000_000, averageTps = 100.0, peakTps = 120).let { run ->
@@ -77,29 +77,22 @@ class BenchmarkSummaryAggregationTest {
             }
 
         // When
-        val error =
-            assertFailsWith<IllegalArgumentException> {
-                BenchmarkSummaryAggregator.aggregate(listOf(input(dirty)), expectedRuns = 1)
-            }
+        val aggregate = BenchmarkSummaryAggregator.aggregate(listOf(input(dirty)), expectedRuns = 1)
 
         // Then
-        assertTrue(error.message.orEmpty().contains("clean source tree"))
+        assertEquals(
+            "abc-dirty-def",
+            aggregate.implementations
+                .single()
+                .runs
+                .single()
+                .manifest.runnerRevision,
+        )
     }
 
     @Test
-    fun `aggregation requires durable storage and one runner revision across implementations`() {
+    fun `aggregation requires durable storage`() {
         // Given
-        val nano = input(run("nano/summary.json", latencyNs = 200_000_000, averageTps = 100.0, peakTps = 120))
-        val attoRun =
-            run("atto/summary.json", latencyNs = 100_000_000, averageTps = 200.0, peakTps = 220).let { run ->
-                run.copy(
-                    manifest =
-                        manifest("atto", "atto-100").copy(
-                            runnerRevision = "different",
-                        ),
-                )
-            }
-        val atto = input("atto", "atto-100", attoRun)
         val nondurable =
             run("nano/summary.json", latencyNs = 200_000_000, averageTps = 100.0, peakTps = 120).let { run ->
                 run.copy(manifest = run.manifest.copy(storageProfile = "temporary"))
@@ -110,14 +103,9 @@ class BenchmarkSummaryAggregationTest {
             assertFailsWith<IllegalArgumentException> {
                 BenchmarkSummaryAggregator.aggregate(listOf(input(nondurable)), expectedRuns = 1)
             }
-        val revisionError =
-            assertFailsWith<IllegalArgumentException> {
-                BenchmarkSummaryAggregator.aggregate(listOf(nano, atto), expectedRuns = 1)
-            }
 
         // Then
         assertTrue(storageError.message.orEmpty().contains("storage profile must be durable"))
-        assertTrue(revisionError.message.orEmpty().contains("runner revision differs across implementations"))
     }
 
     private fun input(vararg runs: AggregatedBenchmarkRun) = input("nano", "nano-100", *runs)

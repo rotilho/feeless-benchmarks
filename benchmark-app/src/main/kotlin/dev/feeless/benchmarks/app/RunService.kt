@@ -13,6 +13,7 @@ import kotlin.time.Duration
 internal class RunService(
     private val repositoryRoot: Path = Path.of("").toAbsolutePath().normalize(),
     private val report: (String) -> Unit = ::println,
+    private val warning: (String) -> Unit = System.err::println,
 ) {
     private val engine = BenchmarkEngine()
 
@@ -35,7 +36,7 @@ internal class RunService(
     }
 
     suspend fun runSuite(command: Command.RunSuite) {
-        val outputRoot = FreshOutputDirectory.create(command.outputRoot)
+        val outputRoot = createSuiteOutputRoot(command.outputRoot)
         try {
             for (scenario in SuitePlan.scenarios(command.implementations)) {
                 val outputDirectory = FreshOutputDirectory.create(outputRoot.resolve(scenario.outputName))
@@ -58,6 +59,17 @@ internal class RunService(
         } catch (error: Throwable) {
             FreshOutputDirectory.removeIfEmpty(outputRoot)
             throw error
+        }
+    }
+
+    private fun createSuiteOutputRoot(path: Path): Path {
+        val absolute = path.toAbsolutePath().normalize()
+        val absoluteRepositoryRoot = repositoryRoot.toAbsolutePath().normalize()
+        if (absoluteRepositoryRoot.startsWith(absolute)) {
+            throw CliException("suite output root cannot contain the repository: $absolute")
+        }
+        return FreshOutputDirectory.createReplacingWithBackup(absolute) { existing, backup ->
+            warning("warning: moved existing output root $existing to $backup")
         }
     }
 

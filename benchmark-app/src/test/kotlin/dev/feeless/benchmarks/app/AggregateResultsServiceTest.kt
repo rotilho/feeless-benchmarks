@@ -44,7 +44,8 @@ class AggregateResultsServiceTest {
         val markdownPath = outputDirectory.resolve("500-account-ranges.md")
         assertTrue(Files.isRegularFile(jsonPath))
         assertTrue(Files.isRegularFile(markdownPath))
-        assertEquals(2, messages.size)
+        assertEquals(3, messages.size)
+        assertTrue(messages.first().contains("| Implementation | Average latency"))
         val aggregate = readBenchmarkAggregateJson(jsonPath)
         assertEquals(listOf("nano", "atto", "rsnano"), aggregate.implementations.map { it.implementation })
         assertEquals(
@@ -121,28 +122,33 @@ class AggregateResultsServiceTest {
     }
 
     @Test
-    fun `refuses an existing aggregate output directory`() {
+    fun `archives and replaces an existing aggregate output directory`() {
         // Given
         val inputRoot = Files.createDirectory(temporaryDirectory.resolve("input"))
         writeAggregationRun(inputRoot, "run-1", Implementation.NANO, 200_000_000, 100.0, 120)
         val outputDirectory = Files.createDirectory(temporaryDirectory.resolve("output"))
+        Files.writeString(outputDirectory.resolve("previous.txt"), "previous report")
+        val warnings = mutableListOf<String>()
 
         // When
-        val error =
-            assertFailsWith<CliException> {
-                AggregateResultsService {}.aggregate(
-                    Command.AggregateResults(
-                        inputRoot,
-                        outputDirectory,
-                        listOf(Implementation.NANO),
-                        expectedRuns = 1,
-                        accountCount = 500,
-                    ),
-                )
-            }
+        AggregateResultsService(report = {}, warning = warnings::add).aggregate(
+            Command.AggregateResults(
+                inputRoot,
+                outputDirectory,
+                listOf(Implementation.NANO),
+                expectedRuns = 1,
+                accountCount = 500,
+            ),
+        )
 
         // Then
-        assertTrue(error.message.orEmpty().startsWith("output path already exists:"))
+        val backup = temporaryDirectory.resolve("output.previous")
+        assertEquals("previous report", Files.readString(backup.resolve("previous.txt")))
+        assertTrue(Files.isRegularFile(outputDirectory.resolve("500-account-ranges.json")))
+        assertEquals(
+            "warning: moved existing output directory $outputDirectory to $backup",
+            warnings.single(),
+        )
     }
 
     @Test

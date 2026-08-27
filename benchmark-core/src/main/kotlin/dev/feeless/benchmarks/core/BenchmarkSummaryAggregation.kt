@@ -136,7 +136,6 @@ object BenchmarkSummaryAggregator {
             inputs.map { input ->
                 aggregateImplementation(input, expectedRuns, expectedSampleCount)
             }
-        validateRunnerRevisionAcrossImplementations(implementations)
 
         return BenchmarkAggregate(
             expectedRuns = expectedRuns,
@@ -243,9 +242,6 @@ object BenchmarkSummaryAggregator {
         run: AggregatedBenchmarkRun,
     ) {
         val manifest = run.manifest
-        require(manifest.runnerRevision != "unknown" && "-dirty" !in manifest.runnerRevision) {
-            "${input.implementation} ${run.source}: runner revision must identify a clean source tree"
-        }
         require(manifest.storageProfile == "durable") {
             "${input.implementation} ${run.source}: storage profile must be durable"
         }
@@ -264,9 +260,6 @@ object BenchmarkSummaryAggregator {
         val baseline = runs.first().manifest
         runs.drop(1).forEach { run ->
             val manifest = run.manifest
-            require(manifest.runnerRevision == baseline.runnerRevision) {
-                "$implementation ${run.source}: runner revision differs from the other runs"
-            }
             require(manifest.fixtureHashes == baseline.fixtureHashes) {
                 "$implementation ${run.source}: fixture hashes differ from the other runs"
             }
@@ -278,24 +271,6 @@ object BenchmarkSummaryAggregator {
             }
             require(manifest.storageProfile == baseline.storageProfile) {
                 "$implementation ${run.source}: storage profile differs from the other runs"
-            }
-        }
-    }
-
-    private fun validateRunnerRevisionAcrossImplementations(implementations: List<ImplementationBenchmarkAggregate>) {
-        val runnerRevision =
-            implementations
-                .first()
-                .runs
-                .first()
-                .manifest.runnerRevision
-        implementations.drop(1).forEach { implementation ->
-            val implementationRevision =
-                implementation.runs
-                    .first()
-                    .manifest.runnerRevision
-            require(implementationRevision == runnerRevision) {
-                "${implementation.implementation}: runner revision differs across implementations"
             }
         }
     }

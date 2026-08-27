@@ -13,6 +13,7 @@ import java.nio.file.StandardOpenOption
 
 internal class AggregateResultsService(
     private val report: (String) -> Unit = ::println,
+    private val warning: (String) -> Unit = System.err::println,
 ) {
     fun aggregate(command: Command.AggregateResults) {
         val inputRoot = command.inputRoot.toAbsolutePath().normalize()
@@ -33,7 +34,10 @@ internal class AggregateResultsService(
             )
         val markdown = BenchmarkAggregateMarkdown.render(aggregate, command.accountCount)
 
-        val outputDirectory = FreshOutputDirectory.create(command.outputDirectory)
+        val outputDirectory =
+            FreshOutputDirectory.createReplacingWithBackup(command.outputDirectory) { existing, backup ->
+                warning("warning: moved existing output directory $existing to $backup")
+            }
         try {
             val jsonPath = outputDirectory.resolve(jsonFileName(command.accountCount))
             val markdownPath = outputDirectory.resolve(markdownFileName(command.accountCount))
@@ -45,6 +49,7 @@ internal class AggregateResultsService(
                 StandardOpenOption.CREATE_NEW,
                 StandardOpenOption.WRITE,
             )
+            report(markdown)
             report("aggregate JSON: $jsonPath")
             report("aggregate Markdown: $markdownPath")
         } catch (error: Throwable) {

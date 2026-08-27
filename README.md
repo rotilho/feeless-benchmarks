@@ -1,8 +1,94 @@
-  # feeless-benchmarks
+# feeless-benchmarks
 
 A benchmark suite for controlled, single-host measurements of pinned feeless account-chain implementations.
 
 > These are one-voter implementation measurements. They are not protocol limits, production-network tests, or mainnet-capacity claims.
+
+## Quick start
+
+### 1. Run the full suite
+
+```bash
+./gradlew :app:run --args='run-suite --implementations=atto,nano,rsnano --output-root=results/reproduction/full-suite'
+```
+
+Run it from the repository root on Linux AMD64, or Windows AMD64 through [Docker Desktop with WSL2](https://docs.docker.com/desktop/features/wsl/) and Linux containers. It requires Docker Engine or a Docker-compatible Podman API, Java 8 or newer, network access for initial downloads, and durable local storage. You do not need to install Gradle, Kotlin, or Java 21: the wrapper downloads Gradle 9.2.1 and [provisions Java 21](https://docs.gradle.org/9.2.1/userguide/toolchains.html#sec:auto_provisioning). The first run is therefore slower.
+
+This runs the 1 account × 1,000 transactions and 500 accounts × 100 transactions workloads for Atto, Nano, and RSNano. The six scenarios run one after another, each with a fresh node/database environment. Every scenario writes:
+
+```text
+<scenario>-samples.csv
+<scenario>-summary.json
+<scenario>-manifest.json
+```
+
+If `full-suite` already exists, the command warns and moves it to `full-suite.previous` (then `full-suite.previous-2`, and so on) before starting. Add `--timeout-seconds=SECONDS` inside `--args` to change the default 60-second per-transaction timeout.
+
+### 2. Summarize the 500-account results
+
+The scenario summary JSON files are already complete results. Use this optional command to render the three 500-account summaries as one Markdown table and aggregate JSON:
+
+```bash
+./gradlew :app:run --args='aggregate-results --input-root=results/reproduction/full-suite --output-dir=results/reproduction/full-suite/ranges --expected-runs=1 --implementations=atto,nano,rsnano'
+```
+
+This prints the table and writes `500-account-ranges.json` and `500-account-ranges.md`. With one run, each range has the same minimum and maximum. For repeated benchmarks, place all completed runs under one input root and set `--expected-runs` to their count. It does not aggregate the serial scenarios.
+
+## Other commands
+
+### Run one scenario
+
+Use `run` when you only need one implementation and workload:
+
+```bash
+./gradlew :app:run --args='run --implementation=atto --fixture=atto-serial --output-dir=results/reproduction/atto-serial'
+```
+
+Choose the implementation and fixture from this table. RSNano intentionally uses Nano fixtures:
+
+| Implementation | 1 account × 1,000 transactions | 500 accounts × 100 transactions |
+| --- | --- | --- |
+| Atto | `atto-serial` | `atto-500` |
+| Nano | `nano-serial` | `nano-500` |
+| RSNano | `nano-serial` | `nano-500` |
+
+The output directory must not exist. Change `--output-dir`, `--implementation`, and `--fixture` together when adapting the example.
+
+### Check the project
+
+Use `check` for compilation, formatting checks, and unit tests. It does not start benchmark nodes:
+
+```bash
+./gradlew check
+```
+
+Use `containerIntegrationTest` for small end-to-end publications against Atto, Nano, and RSNano. It starts pinned containers but does not run the full benchmarks or write benchmark results:
+
+```bash
+./gradlew containerIntegrationTest
+```
+
+### Validate the fixtures
+
+Use `validate-fixtures` to check the committed fixture hashes, signatures, work, counts, and lane distribution. This is offline and does not change the fixtures:
+
+```bash
+./gradlew :app:run --args='validate-fixtures'
+```
+
+Add `--fixtures-dir=PATH` to check another directory.
+
+### Regenerate the fixtures
+
+The repository already contains ready-to-run fixtures. Use `generate-fixtures` only when you need to reproduce or replace them:
+
+```bash
+./gradlew :app:run --args='generate-fixtures --implementation=all'
+```
+
+Select only one protocol family with `--implementation=atto` or `--implementation=nano`. Generation creates two independent candidates, requires byte-identical output, validates them, and then atomically replaces that family in `fixtures/`. Add `--fixtures-dir=PATH` to use another destination.
+
+Standalone `run` refuses an existing output path. Like `run-suite`, `aggregate-results` archives an existing output directory with a `.previous` suffix before replacing it. Run `./gradlew :app:run --args='--help'` for compact CLI syntax, or see the [reproduction guide](docs/reproduction.md) for every option.
 
 ## Project layout
 
@@ -13,28 +99,7 @@ The root Gradle build is the only build, and `app` is the only executable.
 | [`benchmark-core`](benchmark-core/) | Typed benchmark contracts, lane execution, raw samples, statistics, CSV, summary JSON, and run manifests. It has no Ktor, Testcontainers, or cryptocurrency dependency. |
 | [`benchmark-nano`](benchmark-nano/) | Offline Nano fixture/crypto support, the shared Nano/RSNano RPC and post-cement adapter, and `NanoNodeSpec`. RSNano remains a `NanoNodeSpec` because it shares the Nano protocol and fixtures. |
 | [`benchmark-atto`](benchmark-atto/) | Deterministic Atto fixtures, the strict final-stream adapter, and the Atto node plus MySQL Testcontainers environment. |
-| [`benchmark-app`](benchmark-app/) | CLI orchestration, fixture promotion, serial suite execution, fresh-environment lifecycle, result manifests, and cross-run ranges. |
-
-## Commands
-
-Run all commands from the repository root:
-
-```bash
-./gradlew :app:run --args='generate-fixtures --implementation=all'
-./gradlew :app:run --args='validate-fixtures'
-./gradlew :app:run --args='run --implementation=nano --fixture=nano-serial --output-dir=results/reproduction/nano-serial'
-./gradlew :app:run --args='run-suite --implementations=nano,atto,rsnano --output-root=results/reproduction/full-suite'
-./gradlew :app:run --args='aggregate-results --input-root=results/reproduction/full-benchmark --output-dir=results/reproduction/full-benchmark-ranges'
-```
-
-Benchmark output paths supplied to `run` and `run-suite` must not already exist. All coroutine work uses one process-wide Java 21 virtual-thread dispatcher, recorded as `coroutine.dispatcher=virtual` in each new manifest. `run-suite` executes every selected scenario serially, with a fresh Testcontainers environment for each scenario. `aggregate-results` reads completed 500 × 100 shards; `--implementations` defaults to `nano,atto,rsnano`, `--expected-runs` to `10`, and `--account-count` to `500`. It writes exact ranges to `500-account-ranges.json` and a whole-millisecond presentation to `500-account-ranges.md`. See the [reproduction guide](docs/reproduction.md) for fixture names, optional arguments, and prerequisites.
-
-Verification is split between fast checks and container smoke tests:
-
-```bash
-./gradlew check
-./gradlew containerIntegrationTest
-```
+| [`benchmark-app`](benchmark-app/) | CLI orchestration, fixture promotion, suite execution, fresh-environment lifecycle, result manifests, and cross-run ranges. |
 
 ## Full benchmark workflow
 
