@@ -281,12 +281,13 @@
 
         .scope {
             color: var(--gold);
+            text-decoration: none;
             white-space: nowrap
         }
 
         .notes {
             display: grid;
-            grid-template-columns:1fr 1fr;
+            grid-template-columns:repeat(3, minmax(0, 1fr));
             gap: 14px;
             margin-top: 18px
         }
@@ -308,6 +309,10 @@
             color: var(--muted);
             font-size: 12px;
             line-height: 1.55
+        }
+
+        .note a {
+            color: var(--gold)
         }
 
         @media (max-width: 800px) {
@@ -381,45 +386,45 @@
                             <tbody>
                             <tr>
                                 <th>Average latency <span class="unit-label">(ms)</span></th>
-                                <td class="atto" data-result="atto-500" data-metric="average_ms">322–444</td>
-                                <td class="nano" data-result="nano-500" data-metric="average_ms">367–814</td>
-                                <td class="rsnano" data-result="rsnano-500" data-metric="average_ms">662–1,154</td>
+                                <td class="atto" data-result="atto-500" data-metric="average_ms">363–446</td>
+                                <td class="nano" data-result="nano-500" data-metric="average_ms">359–1,574</td>
+                                <td class="rsnano" data-result="rsnano-500" data-metric="average_ms">773–1,183</td>
                             </tr>
                             <tr>
                                 <th>Median latency <span class="unit-label">(P50, ms)</span></th>
-                                <td class="atto" data-result="atto-500" data-metric="p50_ms">291–416</td>
-                                <td class="nano" data-result="nano-500" data-metric="p50_ms">368–684</td>
-                                <td class="rsnano" data-result="rsnano-500" data-metric="p50_ms">696–1,090</td>
+                                <td class="atto" data-result="atto-500" data-metric="p50_ms">334–411</td>
+                                <td class="nano" data-result="nano-500" data-metric="p50_ms">357–1,252</td>
+                                <td class="rsnano" data-result="rsnano-500" data-metric="p50_ms">704–1,201</td>
                             </tr>
                             <tr>
                                 <th>P90 latency <span class="unit-label">(ms)</span></th>
-                                <td class="atto" data-result="atto-500" data-metric="p90_ms">508–642</td>
-                                <td class="nano" data-result="nano-500" data-metric="p90_ms">436–1,580</td>
-                                <td class="rsnano" data-result="rsnano-500" data-metric="p90_ms">908–1,807</td>
+                                <td class="atto" data-result="atto-500" data-metric="p90_ms">558–798</td>
+                                <td class="nano" data-result="nano-500" data-metric="p90_ms">435–3,223</td>
+                                <td class="rsnano" data-result="rsnano-500" data-metric="p90_ms">1,202–1,922</td>
                             </tr>
                             <tr>
                                 <th>P95 latency <span class="unit-label">(ms)</span></th>
-                                <td class="atto" data-result="atto-500" data-metric="p95_ms">611–747</td>
-                                <td class="nano" data-result="nano-500" data-metric="p95_ms">496–1,794</td>
-                                <td class="rsnano" data-result="rsnano-500" data-metric="p95_ms">1,006–2,057</td>
+                                <td class="atto" data-result="atto-500" data-metric="p95_ms">626–915</td>
+                                <td class="nano" data-result="nano-500" data-metric="p95_ms">493–3,878</td>
+                                <td class="rsnano" data-result="rsnano-500" data-metric="p95_ms">1,405–2,210</td>
                             </tr>
                             <tr>
                                 <th>P99 latency <span class="unit-label">(ms)</span></th>
-                                <td class="atto" data-result="atto-500" data-metric="p99_ms">743–1,093</td>
-                                <td class="nano" data-result="nano-500" data-metric="p99_ms">632–2,349</td>
-                                <td class="rsnano" data-result="rsnano-500" data-metric="p99_ms">1,109–2,536</td>
+                                <td class="atto" data-result="atto-500" data-metric="p99_ms">788–1,090</td>
+                                <td class="nano" data-result="nano-500" data-metric="p99_ms">595–5,314</td>
+                                <td class="rsnano" data-result="rsnano-500" data-metric="p99_ms">1,803–2,700</td>
                             </tr>
                             <tr>
                                 <th>Average TPS</th>
-                                <td class="atto" data-result="atto-500" data-metric="average_tps">1,104.05–1,513.81</td>
-                                <td class="nano" data-result="nano-500" data-metric="average_tps">603.37–1,320.84</td>
-                                <td class="rsnano" data-result="rsnano-500" data-metric="average_tps">429.99–749.87</td>
+                                <td class="atto" data-result="atto-500" data-metric="average_tps">1,091.92–1,350.83</td>
+                                <td class="nano" data-result="nano-500" data-metric="average_tps">314.75–1,363.82</td>
+                                <td class="rsnano" data-result="rsnano-500" data-metric="average_tps">419.27–642.61</td>
                             </tr>
                             <tr>
                                 <th>Peak TPS</th>
-                                <td class="atto" data-result="atto-500" data-metric="peak_tps">1,425–2,534</td>
-                                <td class="nano" data-result="nano-500" data-metric="peak_tps">1,629–1,902</td>
-                                <td class="rsnano" data-result="rsnano-500" data-metric="peak_tps">851–1,145</td>
+                                <td class="atto" data-result="atto-500" data-metric="peak_tps">1,459–2,123</td>
+                                <td class="nano" data-result="nano-500" data-metric="peak_tps">1,307–1,893</td>
+                                <td class="rsnano" data-result="rsnano-500" data-metric="peak_tps">799–1,091</td>
                             </tr>
                             </tbody>
                         </table>
@@ -445,52 +450,52 @@
                             <tbody>
                             <tr>
                                 <th>Average latency <span class="unit-label">(ms)</span></th>
-                                <td class="atto" data-result="atto-serial" data-metric="average_ms">22</td>
-                                <td class="nano" data-result="nano-serial" data-metric="average_ms">199</td>
-                                <td class="rsnano" data-result="rsnano-serial" data-metric="average_ms">201</td>
+                                <td class="atto" data-result="atto-serial" data-metric="average_ms">7</td>
+                                <td class="nano" data-result="nano-serial" data-metric="average_ms">145</td>
+                                <td class="rsnano" data-result="rsnano-serial" data-metric="average_ms">200</td>
                             </tr>
                             <tr>
                                 <th>Median latency <span class="unit-label">(P50, ms)</span></th>
                                 <td class="atto" data-result="atto-serial" data-metric="p50_ms">7</td>
-                                <td class="nano" data-result="nano-serial" data-metric="p50_ms">200</td>
+                                <td class="nano" data-result="nano-serial" data-metric="p50_ms">100</td>
                                 <td class="rsnano" data-result="rsnano-serial" data-metric="p50_ms">200</td>
                             </tr>
                             <tr>
                                 <th>P90 latency <span class="unit-label">(ms)</span></th>
-                                <td class="atto" data-result="atto-serial" data-metric="p90_ms">59</td>
+                                <td class="atto" data-result="atto-serial" data-metric="p90_ms">8</td>
                                 <td class="nano" data-result="nano-serial" data-metric="p90_ms">200</td>
                                 <td class="rsnano" data-result="rsnano-serial" data-metric="p90_ms">201</td>
                             </tr>
                             <tr>
                                 <th>P95 latency <span class="unit-label">(ms)</span></th>
-                                <td class="atto" data-result="atto-serial" data-metric="p95_ms">98</td>
+                                <td class="atto" data-result="atto-serial" data-metric="p95_ms">9</td>
                                 <td class="nano" data-result="nano-serial" data-metric="p95_ms">200</td>
-                                <td class="rsnano" data-result="rsnano-serial" data-metric="p95_ms">202</td>
+                                <td class="rsnano" data-result="rsnano-serial" data-metric="p95_ms">201</td>
                             </tr>
                             <tr>
                                 <th>P99 latency <span class="unit-label">(ms)</span></th>
-                                <td class="atto" data-result="atto-serial" data-metric="p99_ms">215</td>
+                                <td class="atto" data-result="atto-serial" data-metric="p99_ms">11</td>
                                 <td class="nano" data-result="nano-serial" data-metric="p99_ms">201</td>
-                                <td class="rsnano" data-result="rsnano-serial" data-metric="p99_ms">221</td>
+                                <td class="rsnano" data-result="rsnano-serial" data-metric="p99_ms">203</td>
                             </tr>
                             <tr>
                                 <th>Average TPS</th>
-                                <td class="atto" data-result="atto-serial" data-metric="average_tps">45.08</td>
-                                <td class="nano" data-result="nano-serial" data-metric="average_tps">5.02</td>
-                                <td class="rsnano" data-result="rsnano-serial" data-metric="average_tps">4.98</td>
+                                <td class="atto" data-result="atto-serial" data-metric="average_tps">137.81</td>
+                                <td class="nano" data-result="nano-serial" data-metric="average_tps">6.89</td>
+                                <td class="rsnano" data-result="rsnano-serial" data-metric="average_tps">5.00</td>
                             </tr>
                             <tr>
                                 <th>Peak TPS</th>
-                                <td class="atto" data-result="atto-serial" data-metric="peak_tps">95</td>
-                                <td class="nano" data-result="nano-serial" data-metric="peak_tps">9</td>
-                                <td class="rsnano" data-result="rsnano-serial" data-metric="peak_tps">6</td>
+                                <td class="atto" data-result="atto-serial" data-metric="peak_tps">155</td>
+                                <td class="nano" data-result="nano-serial" data-metric="peak_tps">10</td>
+                                <td class="rsnano" data-result="rsnano-serial" data-metric="peak_tps">7</td>
                             </tr>
                             </tbody>
                         </table>
                     </section>
                 </div>
-                <footer class="card-foot"><strong>Nano/RSNano: cemented · Atto: final</strong><span>Parallel: lowest–highest across 10 runs · serial: one run · latency rounded to ms</span><span
-                        class="scope">Hosted runners · not mainnet performance</span></footer>
+                <footer class="card-foot"><strong>Nano/RSNano: cemented · Atto: final</strong><span>Parallel: lowest–highest across 10 runs · serial: one run · latency rounded to ms</span><a
+                        class="scope" href="https://github.com/rotilho/feeless-benchmarks/actions/runs/33041780835">Run 33041780835 · not mainnet performance</a></footer>
             </div>
         </article>
     </section>
@@ -502,6 +507,11 @@
             <p>Timing covers the full client path on the local test network, from sending a transaction until the node
                 reports it complete. It includes communication with the node and node processing, not only consensus
                 time.</p></article>
+        <article class="note"><h3>Host sensitivity</h3>
+            <p>All runners exposed four logical processors. The paired spread is consistent with Atto benefiting more
+                from CPU performance and putting less pressure on storage, while Nano and RSNano appear more sensitive
+                to disk performance. GitHub did not record a disk benchmark, so this is an observed pattern, not a
+                controlled causal result. <a href="https://github.com/rotilho/feeless-benchmarks/actions/runs/33041780835">View the source run.</a></p></article>
     </section>
 </main>
 <script>
