@@ -12,7 +12,7 @@ class NanoNodeSmokeTest {
     fun `Nano V28_2 accepts and cements the exact regenerated fixture hashes`() = smoke("nano")
 
     @Test
-    fun `RSNano V3_1 accepts and cements the exact regenerated fixture hashes`() = smoke("rsnano")
+    fun `RSNano latest accepts and cements the exact regenerated fixture hashes`() = smoke("rsnano")
 
     private fun smoke(implementation: String) =
         runBlocking {

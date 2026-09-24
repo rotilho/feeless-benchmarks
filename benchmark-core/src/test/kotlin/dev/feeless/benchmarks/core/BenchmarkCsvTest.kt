@@ -263,7 +263,7 @@ class BenchmarkCsvTest {
                     fixture = "atto-serial",
                     expectedCount = 1_000,
                     fixtureFiles = setOf("atto-serial-initial.zip", "atto-serial-benchmark.zip"),
-                    imageReferences = setOf("ghcr.io/attocash/node:1.34-live", "mysql:8.4"),
+                    imageReferences = setOf("ghcr.io/attocash/node:1.38-live", "mysql:8.4"),
                 ),
                 CanonicalResult(
                     stem = "atto-500",
@@ -271,7 +271,7 @@ class BenchmarkCsvTest {
                     fixture = "atto-500",
                     expectedCount = 50_000,
                     fixtureFiles = setOf("atto-500-initial.zip", "atto-500-benchmark.zip"),
-                    imageReferences = setOf("ghcr.io/attocash/node:1.34-live", "mysql:8.4"),
+                    imageReferences = setOf("ghcr.io/attocash/node:1.38-live", "mysql:8.4"),
                 ),
             )
 

@@ -20,7 +20,7 @@ object NanoFixtures {
     const val DEV_GENESIS_ACCOUNT = "nano_3e3j5tkog48pnny9dmfzj1r16pg8t1e76dz5tmac6iq689wyjfpiij4txtdo"
     const val DEV_GENESIS_HASH = "04270D7F11C4B2B472F2854C5A59F2A7E84226CE9ED799DE75744BD7D85FC9D9"
     const val NANO_IMAGE = "nanocurrency/nano:V28.2"
-    const val RSNANO_IMAGE = "rsnano/rsnano:V3.1"
+    const val RSNANO_IMAGE = "rsnano/rsnano:latest"
     private const val DEV_GENESIS_BALANCE = "340282366920938463463374607431768211455"
     private const val ACCOUNT_INITIAL_BALANCE = 1_000_000L
     private const val SEND_AMOUNT = 1L

@@ -122,10 +122,10 @@ The hosted-runner reference below comes from [workflow run 33041780835](https://
 
 | Workload | Scenario | Runs | Average (ms) ↓ | p50 (ms) ↓ | p90 (ms) ↓ | p95 (ms) ↓ | p99 (ms) ↓ | Average TPS ↑ | Peak TPS ↑ | Evidence |
 | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |
-| 1 × 1,000 serial | Atto 1.34 (`atto-serial`) | 1 | 7 | 7 | 8 | 9 | 11 | 137.81 | 155 | [run report][latest-run-report] |
+| 1 × 1,000 serial | Atto 1.38 (`atto-serial`) | 1 | 7 | 7 | 8 | 9 | 11 | 137.81 | 155 | [run report][latest-run-report] |
 | 1 × 1,000 serial | Nano V28.2 (`nano-serial`) | 1 | 145 | 100 | 200 | 200 | 201 | 6.89 | 10 | [run report][latest-run-report] |
 | 1 × 1,000 serial | RSNano V3.1 (`rsnano-serial`) | 1 | 200 | 200 | 201 | 201 | 203 | 5.00 | 7 | [run report][latest-run-report] |
-| 500 × 100 | Atto 1.34 (`atto-500`) | 10 | 363–446 | 334–411 | 558–798 | 626–915 | 788–1,090 | 1,091.92–1,350.83 | 1,459–2,123 | [run report][latest-run-report] |
+| 500 × 100 | Atto 1.38 (`atto-500`) | 10 | 363–446 | 334–411 | 558–798 | 626–915 | 788–1,090 | 1,091.92–1,350.83 | 1,459–2,123 | [run report][latest-run-report] |
 | 500 × 100 | Nano V28.2 (`nano-500`) | 10 | 359–1,574 | 357–1,252 | 435–3,223 | 493–3,878 | 595–5,314 | 314.75–1,363.82 | 1,307–1,893 | [run report][latest-run-report] |
 | 500 × 100 | RSNano V3.1 (`rsnano-500`) | 10 | 773–1,183 | 704–1,201 | 1,202–1,922 | 1,405–2,210 | 1,803–2,700 | 419.27–642.61 | 799–1,091 | [run report][latest-run-report] |
 
@@ -135,9 +135,11 @@ The paired results suggest different host bottlenecks. Every runner exposed four
 
 [latest-run-report]: https://github.com/rotilho/feeless-benchmarks/actions/runs/33041780835/job/98419762656
 
-## Pinned toolchain and implementations
+The results above retain the image identities used for those accepted runs. The following references are defaults for new runs.
 
-| Component | Pin |
+## Toolchain and runtime image defaults
+
+| Component | Version or image |
 | --- | --- |
 | Gradle | 9.2.1 |
 | Kotlin | 2.4.10 |
@@ -146,11 +148,11 @@ The paired results suggest different host bottlenecks. Every runner exposed four
 | Coroutines / serialization | 1.11.0 |
 | Testcontainers | 2.0.5 |
 | Atto Commons | 7.0.2 JVM variants |
-| Atto node / database | `ghcr.io/attocash/node:1.34-live` / `mysql:8.4` |
-| Nano | `nanocurrency/nano:V28.2` on the `dev` network |
-| RSNano | `rsnano/rsnano:V3.1` on the `dev` network, LMDB `sync = "always"` |
+| Atto node / database | `ghcr.io/attocash/node:live` / `mysql:8.4` |
+| Nano | `nanocurrency/nano:V28.2` on the `dev` network; the official image has no `latest` tag |
+| RSNano | `rsnano/rsnano:latest` on the `dev` network, LMDB `sync = "always"` |
 
-Published runs use durable storage only: no tmpfs and no durability-reducing database flags.
+Atto `:live` and RSNano `:latest` are moving tags, and the runner pulls them by default for each scenario. Manifests record the configured image reference and resolved image digest. Published runs use durable storage only: no tmpfs and no durability-reducing database flags.
 
 Further documentation:
 

@@ -5,7 +5,7 @@
 - Linux AMD64 host
 - Java 8 or newer to start the Gradle wrapper; the build provisions Java 21 when needed
 - Docker Engine, or a Docker-compatible Podman API reachable by Testcontainers
-- Network access for Gradle, Java 21, Maven dependencies, and the pinned public container images
+- Network access for Gradle, Java 21, Maven dependencies, and the configured public container images
 - Enough durable local storage for fresh node/database data and output artifacts
 
 The Gradle 9.2.1 wrapper resolves all dependencies. Its checked-in daemon criteria and toolchain resolver download Java 21 into the Gradle user home when no matching local JDK is available, so Gradle, Kotlin, and Java 21 do not need to be installed separately.
@@ -24,7 +24,7 @@ Run the three implementation smoke paths separately:
 ./gradlew containerIntegrationTest
 ```
 
-The second task starts pinned Testcontainers environments for Atto, Nano, and RSNano and requires small fixture publication to reach exact-hash completion.
+The second task starts Testcontainers environments for Atto, Nano, and RSNano and requires small fixture publication to reach exact-hash completion.
 
 ## Generate and validate fixtures
 
@@ -71,7 +71,7 @@ Every run creates a fresh environment and writes:
 <scenario>-manifest.json
 ```
 
-For current runs, `<scenario>` is the output name shown above. The manifest records the fixture identifier and hashes, runner revision, resolved image digests, Java/OS/CPU details, durable storage profile, and sanitized runtime settings. The raw CSV remains the authority for every aggregate.
+For current runs, `<scenario>` is the output name shown above. The manifest records the fixture identifier and hashes, runner revision, configured image references and resolved image digests, Java/OS/CPU details, durable storage profile, and sanitized runtime settings. Atto `:live` and RSNano `:latest` are moving tags that the default runner pulls for each scenario. The official Nano image has no `latest` tag, so Nano stays on `V28.2`. Compare manifest digests when identifying the exact images used. The raw CSV remains the authority for every aggregate.
 
 ## Run the complete local suite
 

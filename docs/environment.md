@@ -16,17 +16,21 @@ Published results use GitHub-hosted runners, one voter per scenario, and durable
 | Bouncy Castle `bcprov-jdk18on` | 1.84 |
 | `net.i2p.crypto:eddsa` | 0.3.0 |
 
-## Pinned implementations
+## Runtime image defaults
+
+Image references below are defaults for new runs. Accepted result artifacts keep their original image references and resolved digests.
 
 | Implementation | Official image | Network and storage |
 | --- | --- | --- |
-| Atto | `ghcr.io/attocash/node:1.34-live` | One `local` voter backed by `mysql:8.4` on a fresh disk-backed bind mount with MySQL durability defaults. |
-| Nano | `nanocurrency/nano:V28.2` | `dev` network with a fresh on-disk LMDB data directory and default durable synchronization. |
-| RSNano | `rsnano/rsnano:V3.1` | `dev` network with a fresh on-disk LMDB data directory and `sync = "always"`. |
+| Atto | `ghcr.io/attocash/node:live` | One `local` voter backed by `mysql:8.4` on a fresh disk-backed bind mount with MySQL durability defaults. |
+| Nano | `nanocurrency/nano:V28.2` | The official image publishes no `latest` tag; uses the `dev` network with a fresh on-disk LMDB data directory and default durable synchronization. |
+| RSNano | `rsnano/rsnano:latest` | `dev` network with a fresh on-disk LMDB data directory and `sync = "always"`. |
+
+Atto `:live` and RSNano `:latest` are mutable references. The default runner pulls both images for each scenario, so each run can use a newer published image. Manifests record the configured references and resolved image digests.
 
 No published profile uses tmpfs or durability-reducing database flags. Nano's `dev` network is distinct from its `test` network; `test` defaults to live-level work and is not used.
 
-Each scenario starts a fresh Testcontainers environment and closes it afterward. Startup checks verify the expected Nano/RSNano vendor, build, `dev` network identifier, and canonical genesis frontier before installing the public dev voting key. Atto startup verifies the canonical `LOCAL` genesis before starting one official voter and its MySQL database.
+Each scenario starts a fresh Testcontainers environment and closes it afterward. Startup checks verify the Nano V28.2 vendor/build or the RSNano vendor family, plus the `dev` network identifier and canonical genesis frontier, before installing the public dev voting key. Atto startup verifies the canonical `LOCAL` genesis before starting one official voter and its MySQL database.
 
 Useful source commits and image references are retained in [`provenance/source-revisions.json`](../provenance/source-revisions.json). Each run manifest resolves the actual image digests and records Java, OS, CPU, storage, and sanitized runtime configuration beside the samples.
 

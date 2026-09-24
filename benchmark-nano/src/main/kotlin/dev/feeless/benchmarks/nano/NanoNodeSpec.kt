@@ -16,6 +16,7 @@ import org.testcontainers.containers.GenericContainer
 import org.testcontainers.containers.SelinuxContext
 import org.testcontainers.containers.startupcheck.OneShotStartupCheckStrategy
 import org.testcontainers.containers.wait.strategy.Wait
+import org.testcontainers.images.PullPolicy
 import org.testcontainers.utility.DockerImageName
 import java.nio.file.Files
 import java.nio.file.Path
@@ -62,6 +63,7 @@ data class NanoNodeSpec(
                 withCommand(*definition.command.toTypedArray())
                 waitingFor(Wait.forListeningPorts(definition.rpcPort, definition.websocketPort))
                 withStartupTimeout(startupTimeout.toJavaDuration())
+                if (implementation == "rsnano") withImagePullPolicy(PullPolicy.alwaysPull())
             }
 
         try {
@@ -164,11 +166,14 @@ data class NanoNodeSpec(
         version: JsonObject,
         definition: NanoNodeDefinition,
     ) {
-        check(version["node_vendor"]?.jsonPrimitive?.content == definition.expectedVendor) {
+        val vendor = version["node_vendor"]?.jsonPrimitive?.content.orEmpty()
+        check(definition.expectedVendor.matches(vendor)) {
             "unexpected node vendor: $version"
         }
-        check(definition.expectedBuildCommit in (version["build_info"]?.jsonPrimitive?.content ?: "")) {
-            "unexpected node build: $version"
+        definition.expectedBuildCommit?.let { expectedBuildCommit ->
+            check(expectedBuildCommit in (version["build_info"]?.jsonPrimitive?.content ?: "")) {
+                "unexpected node build: $version"
+            }
         }
         check(version["network"]?.jsonPrimitive?.content == "dev") { "node is not on the dev network: $version" }
         check(version["network_identifier"]?.jsonPrimitive?.content == NanoFixtures.DEV_GENESIS_HASH) {
@@ -182,7 +187,7 @@ data class NanoNodeSpec(
                 dataPath = "/root/NanoDev",
                 rpcPort = 45000,
                 websocketPort = 7078,
-                expectedVendor = "Nano V28.2",
+                expectedVendor = Regex("Nano V28\\.2"),
                 expectedBuildCommit = "0d8eea4",
                 command =
                     listOf(
@@ -223,8 +228,8 @@ data class NanoNodeSpec(
                 dataPath = "/home/nanocurrency/NanoDev",
                 rpcPort = 45000,
                 websocketPort = 47000,
-                expectedVendor = "RsNano V3.1",
-                expectedBuildCommit = "267e45a5555039d79dba3699c27c574926940681",
+                expectedVendor = Regex("RsNano V.+"),
+                expectedBuildCommit = null,
                 command =
                     listOf(
                         "--network",
@@ -262,8 +267,8 @@ data class NanoNodeSpec(
         val dataPath: String,
         val rpcPort: Int,
         val websocketPort: Int,
-        val expectedVendor: String,
-        val expectedBuildCommit: String,
+        val expectedVendor: Regex,
+        val expectedBuildCommit: String?,
         val command: List<String>,
     )
 

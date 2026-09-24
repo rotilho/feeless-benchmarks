@@ -10,7 +10,7 @@ No. Fixtures contain complete blocks or transactions, so fixture generation, sig
 
 ## Did Nano and RSNano receive the same blocks?
 
-Yes. The generator creates Nano V28.2 `dev`-network fixture schema v2 completely offline. Nano V28.2 and RSNano V3.1 consume those exact signed-and-worked blocks without regeneration or re-signing.
+Yes. The generator creates the Nano V28.2 `dev`-network fixture schema v2 completely offline. Nano and RSNano consume those exact signed-and-worked blocks without regeneration or re-signing; the V28.2 fixture source pin does not pin the current RSNano image.
 
 ## What does one latency sample measure?
 

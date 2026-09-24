@@ -145,7 +145,7 @@ class AttoNodeSpec(
     }
 }
 
-const val ATTO_NODE_IMAGE = "ghcr.io/attocash/node:1.34-live"
+const val ATTO_NODE_IMAGE = "ghcr.io/attocash/node:live"
 const val ATTO_MYSQL_IMAGE = "mysql:8.4"
 
 private const val GENESIS_PUBLIC_KEY = "3B6A27BCCEB6A42D62A3A8D02A6F0D73653215771DE243A63AC048A18B59DA29"

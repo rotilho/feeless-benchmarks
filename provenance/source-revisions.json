@@ -22,10 +22,10 @@
     "node": {
       "url": "https://github.com/attocash/node",
       "commit": "3536f163fde58e326c62414ad78b863825ea31f5",
-      "official_image": "ghcr.io/attocash/node:1.34-live",
+      "official_image": "ghcr.io/attocash/node:1.38-live",
       "official_image_repo_digests": [
         "ghcr.io/attocash/node@sha256:971c1e84707e82145f159d02b7a684a3b4f4588a2a407398d199ebfb371ae62a",
-        "ghcr.io/attocash/node@sha256:eb382d2a24b07bbf649f7b1e4a9aa17ea9e19534bae298606269bfe02d4a0a40"
+        "ghcr.io/attocash/node@sha256:79cf9439f838581ae02e60fb769d16a7b467a21578bbdf6d859f762489bc47ae"
       ],
       "spring_profile_override": "local"
     },

@@ -46,12 +46,14 @@ Every new Kotlin result adds `<scenario>-manifest.json` alongside `<scenario>-sa
 | --- | --- |
 | `runner_revision` | Git revision of the runner, suffixed with `-dirty` when applicable. |
 | `fixture_hashes` | SHA-256 keyed by fixture filename. |
-| `image_digests` | Resolved node and database image identities keyed by pinned image reference. |
+| `image_digests` | Resolved node and database image digests keyed by configured image reference, which may use a mutable tag. |
 | `java` | Java version/vendor and VM name/version. |
 | `operating_system` | Host OS name, version, and architecture. |
 | `cpu` | Logical processor count and host CPU model when available. |
 | `storage_profile` | Published profile; currently `durable`. |
 | `runtime_configuration` | Sorted implementation/runtime settings with credential-, password-, private-, secret-, and token-like values redacted. |
+
+The manifest does not store the node-reported runtime version or build; use the resolved image digest to identify the exact image used.
 
 ## Cross-run range JSON
 

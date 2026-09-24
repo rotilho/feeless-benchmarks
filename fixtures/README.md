@@ -1,6 +1,6 @@
 # Fixtures
 
-All benchmark items are generated completely offline. Construction, signatures, proof-of-work, fixture encoding and validation, node startup, and ledger setup finish before measured publication. Atto reuses pre-encoded request bodies; Nano's shared adapter encodes its RPC envelope during publication. Nano V28.2 and RSNano V3.1 consume the same Nano fixtures.
+All benchmark items are generated completely offline. Construction, signatures, proof-of-work, fixture encoding and validation, node startup, and ledger setup finish before measured publication. Atto reuses pre-encoded request bodies; Nano's shared adapter encodes its RPC envelope during publication. Nano and RSNano consume the same Nano fixtures, whose source/version pins remain tied to Nano V28.2.
 
 ## Canonical files
 
@@ -32,7 +32,7 @@ Generation refuses unsafe in-place overwrites while building candidates. The CLI
 Nano files declare `nano-v28.2-benchmark-fixture/v2`. The schema records:
 
 - Kotlin/JVM generator provenance and the pinned MIT-licensed JNano source revision used for the small port;
-- the Nano V28.2 image, version, and build commit;
+- Nano V28.2 fixture-generation image, version, and build commit provenance (a source pin, not a runtime image default);
 - the `dev` network and canonical dev genesis identity;
 - a threshold profile indexed by ledger epoch and block subtype;
 - the crypto trust boundary and deterministic source/sink account metadata;

@@ -1,6 +1,6 @@
 # Methodology
 
-This suite measures pinned implementations in isolated single-host environments with one voter. Paired workflow runs place all three implementations on the same host within each repetition. It does not measure a distributed production network or establish mainnet capacity.
+This suite measures configured implementations in isolated single-host environments with one voter. Paired workflow runs place all three implementations on the same host within each repetition. It does not measure a distributed production network or establish mainnet capacity.
 
 ## Workloads and controls
 
@@ -13,7 +13,7 @@ Scenarios sharing a paired job run one after another and never overlap; separate
 
 Fixture construction advances one item per account per sequence round. For Atto, every account shares the round timestamp and each account's next item advances by one millisecond. The recorded `workSearchParallelism = 1` applies independently to each account lane; lanes themselves are generated concurrently.
 
-`app` creates a fresh Testcontainers environment for every scenario. Nano V28.2 and RSNano V3.1 consume the same offline-generated Nano schema-v2 fixtures. Each uses the `dev` network, a fresh on-disk LMDB data path, and the canonical public dev voting key. RSNano explicitly uses `sync = "always"`. Atto uses one official `1.34-live` voter and MySQL 8.4 with its persistent defaults. Published scenarios never use tmpfs or durability-reducing flags.
+`app` creates a fresh Testcontainers environment for every scenario. Nano uses `nanocurrency/nano:V28.2`; the official Nano image does not publish a `latest` tag. RSNano uses the moving `rsnano/rsnano:latest` image. Both consume the same offline-generated Nano schema-v2 fixtures, whose source/version pins remain tied to Nano V28.2. Atto uses one official `ghcr.io/attocash/node:live` voter and MySQL 8.4 with its persistent defaults. The runner pulls the moving Atto and RSNano image references for each scenario by default. Each run manifest records configured image references and resolved digests. Each Nano implementation uses the `dev` network, a fresh on-disk LMDB data path, and the canonical public dev voting key. RSNano explicitly uses `sync = "always"`. Published scenarios never use tmpfs or durability-reducing flags.
 
 ## Engine and timer contract
 
@@ -36,7 +36,7 @@ The CLI caller, account lanes, HTTP/WebSocket clients, Nano/RSNano confirmation 
 
 Both implementations use the same Ktor RPC/WebSocket adapter and `NanoNodeSpec`. Before RPC `process`, the adapter registers the predicted block hash so an early notification cannot be lost. One timeout covers the RPC and confirmation wait. The RPC must return the predicted hash, and the WebSocket notification must be an exact-hash post-cement event.
 
-Startup verifies the pinned vendor/build, `dev` network identifier, and canonical genesis frontier before installing the public dev voting key. RSNano remains a Nano node specification, rather than a separate protocol runner, because the fixture and completion semantics are shared.
+Startup verifies the Nano V28.2 vendor/build or the RSNano vendor family, the `dev` network identifier, and the canonical genesis frontier before installing the public dev voting key. RSNano remains a Nano node specification, rather than a separate protocol runner, because the fixture and completion semantics are shared.
 
 ### Atto
 
@@ -62,4 +62,4 @@ See the [results](results.md), [data dictionary](data-dictionary.md), and [repro
 
 ## Limits
 
-The single host, one local voter, dev/local networks, synthetic fixtures, and implementation-specific storage paths intentionally remove many production effects. Results describe only these pinned local binaries, fixtures, storage profile, and completion contract.
+The single host, one local voter, dev/local networks, synthetic fixtures, and implementation-specific storage paths intentionally remove many production effects. Results describe only the local binaries identified by their manifest image digests, fixtures, storage profile, and completion contract.
