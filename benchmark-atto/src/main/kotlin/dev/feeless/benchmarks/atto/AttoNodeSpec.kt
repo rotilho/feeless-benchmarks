@@ -58,6 +58,7 @@ class AttoNodeSpec(
                     .withUsername(DATABASE_USER)
                     .withPassword(databasePassword)
                     .withStartupTimeout(timeout)
+                    .withCreateContainerCmdModifier { it.withUser("mysql") }
                     .apply {
                         addFileSystemBind(
                             dataDirectory.toString(),
@@ -173,7 +174,21 @@ private val ATTO_LOGGING_ENVIRONMENT =
 internal fun MySQLContainer.makeStorageHostDeletable() {
     if (!isRunning) return
 
-    val result = execInContainer("chmod", "-R", "a+rwx", MYSQL_DATA_PATH)
+    // The bind root belongs to the host; MySQL owns only its descendants.
+    val result =
+        execInContainer(
+            "find",
+            MYSQL_DATA_PATH,
+            "-mindepth",
+            "1",
+            "-type",
+            "d",
+            "-exec",
+            "chmod",
+            "a+rwx",
+            "{}",
+            "+",
+        )
     check(result.exitCode == 0) {
         "failed to make Atto MySQL storage host-deletable: ${result.stderr.trim()}"
     }
