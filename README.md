@@ -116,6 +116,8 @@ Both matrices use `fail-fast: false`. Within a paired job, a failed scenario doe
 
 The suite retains one authoritative raw row per attempted measured item. Summary JSON is calculated from those rows with arithmetic mean, nearest-rank percentiles, and a half-open one-second peak-completion window. Micrometer and node-provided timing metrics are not part of the result path. Each run adds a separate manifest with the runner revision, fixture hashes, resolved image digests, Java/OS/CPU details, the durable storage profile, and sanitized runtime configuration.
 
+When a measured transaction fails, the runner prints its account, sequence, hash, and error to stderr and saves `node.log` in the scenario's output directory before stopping the node. Atto HTTP errors include up to 16 KiB of the server's response body, with a truncation marker for larger responses. The Full benchmark workflow uploads the node log with the scenario's artifacts. Successful scenarios do not collect node logs.
+
 ## Published results
 
 The hosted-runner reference below comes from [workflow run 33041780835](https://github.com/rotilho/feeless-benchmarks/actions/runs/33041780835) at revision `8ee10a0`; its [aggregate job][latest-run-report] contains the rendered report. The serial rows are one independent hosted-runner job each. The 500 × 100 rows show the minimum and maximum from ten paired jobs; within each job, all three implementations used the same VM in rotated order and a fresh node/database environment per scenario. The ranges are not calculated by pooling samples. All thirty repeated scenarios completed 50,000 samples with zero errors, and all three serial scenarios completed 1,000 samples with zero errors.

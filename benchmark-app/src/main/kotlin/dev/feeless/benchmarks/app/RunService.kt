@@ -84,10 +84,23 @@ internal class RunService(
     ) {
         val completed =
             when (implementation) {
-                Implementation.ATTO -> runAtto(fixture, fixturesDirectory, timeout)
+                Implementation.ATTO ->
+                    runAtto(
+                        fixture = fixture,
+                        fixturesDirectory = fixturesDirectory,
+                        outputDirectory = outputDirectory,
+                        timeout = timeout,
+                    )
                 Implementation.NANO,
                 Implementation.RSNANO,
-                -> runNano(implementation, fixture, fixturesDirectory, timeout)
+                ->
+                    runNano(
+                        implementation = implementation,
+                        fixture = fixture,
+                        fixturesDirectory = fixturesDirectory,
+                        outputDirectory = outputDirectory,
+                        timeout = timeout,
+                    )
             }
         val runtimeConfiguration =
             completed.runtimeConfiguration + ("coroutine.dispatcher" to "virtual")
@@ -115,6 +128,7 @@ internal class RunService(
         implementation: Implementation,
         fixture: String,
         fixturesDirectory: Path,
+        outputDirectory: Path,
         timeout: Duration,
     ): CompletedRun {
         val fixturePath = resolveNanoFixture(fixture, fixturesDirectory)
@@ -141,6 +155,12 @@ internal class RunService(
                 } else {
                     scenario.fixture
                 }
+            RunFailureDiagnostics.capture(
+                outputDirectory = outputDirectory,
+                samples = samples,
+                nodeLogs = environment::nodeLogs,
+                warning = warning,
+            )
             CompletedRun(
                 fixture = scenario.fixture,
                 defaultOutputName = defaultOutputName,
@@ -172,6 +192,7 @@ internal class RunService(
     private suspend fun runAtto(
         fixture: String,
         fixturesDirectory: Path,
+        outputDirectory: Path,
         timeout: Duration,
     ): CompletedRun {
         val resolved = resolveAttoFixture(fixture, fixturesDirectory)
@@ -186,6 +207,12 @@ internal class RunService(
         val environment = AttoNodeSpec().start(resolved.initial)
         return environment.use {
             val samples = engine.run(scenario, environment.adapter, timeout)
+            RunFailureDiagnostics.capture(
+                outputDirectory = outputDirectory,
+                samples = samples,
+                nodeLogs = environment::nodeLogs,
+                warning = warning,
+            )
             CompletedRun(
                 fixture = scenario.fixture,
                 defaultOutputName = scenario.fixture,

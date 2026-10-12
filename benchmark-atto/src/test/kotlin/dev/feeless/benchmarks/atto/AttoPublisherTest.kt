@@ -13,10 +13,15 @@ import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.content.OutgoingContent
 import io.ktor.http.headersOf
+import io.ktor.utils.io.ByteChannel
 import io.ktor.utils.io.ByteReadChannel
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withTimeout
 import java.net.InetAddress
 import java.net.InetSocketAddress
 import java.nio.file.Path
@@ -27,6 +32,8 @@ import kotlin.test.Test
 import kotlin.test.assertContentEquals
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
 
@@ -113,6 +120,200 @@ class AttoPublisherTest {
             // Then
             assertEquals(1, requestCount)
             assertContentEquals(item.payload.copyEncodedTransaction(), requestBody)
+        }
+
+    @Test
+    fun `includes the complete multiline HTTP error body without retry`() =
+        runBlocking {
+            // Given
+            val item = fixtureItem()
+            val errorBody =
+                """
+                {
+                  "error": "validation failed",
+                  "details": {
+                    "message": "previous transaction is missing"
+                  }
+                }
+                """.trimIndent()
+            var requestCount = 0
+            val engine =
+                MockEngine {
+                    requestCount++
+                    respond(
+                        content = ByteReadChannel(errorBody.encodeToByteArray()),
+                        status = HttpStatusCode.InternalServerError,
+                    )
+                }
+
+            // When
+            val error =
+                assertFailsWith<AttoPublisherException> {
+                    AttoPublisher("http://node.example", HttpClient(engine)).use { publisher ->
+                        publisher.publish(item, 1.seconds)
+                    }
+                }
+
+            // Then
+            assertEquals(
+                "POST /transactions/stream returned status 500; expected 200\n$errorBody",
+                error.message,
+            )
+            assertEquals(1, requestCount)
+        }
+
+    @Test
+    fun `keeps the existing status message for an empty HTTP error body`() =
+        runBlocking {
+            // Given
+            val item = fixtureItem()
+            var requestCount = 0
+            val engine =
+                MockEngine {
+                    requestCount++
+                    respond(content = ByteReadChannel.Empty, status = HttpStatusCode.InternalServerError)
+                }
+
+            // When
+            val error =
+                assertFailsWith<AttoPublisherException> {
+                    AttoPublisher("http://node.example", HttpClient(engine)).use { publisher ->
+                        publisher.publish(item, 1.seconds)
+                    }
+                }
+
+            // Then
+            assertEquals("POST /transactions/stream returned status 500; expected 200", error.message)
+            assertEquals(1, requestCount)
+        }
+
+    @Test
+    fun `marks oversized HTTP error bodies as truncated and does not retry`() =
+        runBlocking {
+            // Given
+            val item = fixtureItem()
+            val tailMarker = "server-error-tail"
+            val errorBody = "x".repeat(MAX_ERROR_RESPONSE_BODY_BYTES + 1024) + tailMarker
+            var requestCount = 0
+            val engine =
+                MockEngine {
+                    requestCount++
+                    respond(
+                        content = ByteReadChannel(errorBody.encodeToByteArray()),
+                        status = HttpStatusCode.InternalServerError,
+                    )
+                }
+
+            // When
+            val error =
+                assertFailsWith<AttoPublisherException> {
+                    AttoPublisher("http://node.example", HttpClient(engine)).use { publisher ->
+                        publisher.publish(item, 1.seconds)
+                    }
+                }
+
+            // Then
+            val message = error.message.orEmpty()
+            assertTrue(message.contains("x".repeat(MAX_ERROR_RESPONSE_BODY_BYTES)))
+            assertTrue(message.endsWith("[response body truncated after $MAX_ERROR_RESPONSE_BODY_BYTES bytes]"))
+            assertFalse(message.contains(tailMarker))
+            assertEquals(1, requestCount)
+        }
+
+    @Test
+    fun `keeps HTTP status visible when reading the error body fails`() =
+        runBlocking {
+            // Given
+            val item = fixtureItem()
+            val bodyReadFailure = IllegalStateException("response stream failed")
+            val failedBody = ByteChannel().apply { cancel(bodyReadFailure) }
+            var requestCount = 0
+            val engine =
+                MockEngine {
+                    requestCount++
+                    respond(content = failedBody, status = HttpStatusCode.InternalServerError)
+                }
+
+            // When
+            val error =
+                assertFailsWith<AttoPublisherException> {
+                    AttoPublisher("http://node.example", HttpClient(engine)).use { publisher ->
+                        publisher.publish(item, 1.seconds)
+                    }
+                }
+
+            // Then
+            val message = error.message.orEmpty()
+            assertTrue(message.contains("POST /transactions/stream returned status 500; expected 200"))
+            assertTrue(message.contains("failed to read error response body"))
+            assertTrue(message.contains(bodyReadFailure.message.orEmpty()))
+            assertTrue(
+                generateSequence(error.cause) { it.cause }
+                    .any { it.message.orEmpty().contains(bodyReadFailure.message.orEmpty()) },
+            )
+            assertEquals(1, requestCount)
+        }
+
+    @Test
+    fun `times out while consuming a non-200 response body without retry`() =
+        runBlocking {
+            // Given
+            val item = fixtureItem()
+            val pendingBody = ByteChannel()
+            var requestCount = 0
+            val engine =
+                MockEngine {
+                    requestCount++
+                    respond(content = pendingBody, status = HttpStatusCode.InternalServerError)
+                }
+
+            AttoPublisher("http://node.example", HttpClient(engine)).use { publisher ->
+                // When
+                val error =
+                    assertFailsWith<AttoPublisherException> {
+                        publisher.publish(item, 100.milliseconds)
+                    }
+
+                // Then
+                val message = error.message.orEmpty()
+                assertTrue(message.contains("status 500; expected 200"))
+                assertTrue(message.contains("timed out"))
+                assertTrue(message.contains("100ms"))
+                assertTrue(message.contains("error response body"))
+                assertEquals(1, requestCount)
+            }
+        }
+
+    @Test
+    fun `propagates caller cancellation while consuming a non-200 response body`() =
+        runBlocking {
+            // Given
+            val item = fixtureItem()
+            val pendingBody = ByteChannel()
+            val responseReturned = CompletableDeferred<Unit>()
+            var requestCount = 0
+            val engine =
+                MockEngine {
+                    requestCount++
+                    responseReturned.complete(Unit)
+                    respond(content = pendingBody, status = HttpStatusCode.InternalServerError)
+                }
+
+            AttoPublisher("http://node.example", HttpClient(engine)).use { publisher ->
+                val publication =
+                    async {
+                        publisher.publish(item, 5.seconds)
+                    }
+
+                // When
+                withTimeout(2.seconds) { responseReturned.await() }
+                delay(50)
+                publication.cancel()
+                assertFailsWith<CancellationException> { publication.await() }
+
+                // Then
+                assertEquals(1, requestCount)
+            }
         }
 
     @Test

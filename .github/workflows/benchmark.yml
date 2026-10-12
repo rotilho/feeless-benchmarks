@@ -134,6 +134,7 @@ jobs:
             ${{ runner.temp }}/feeless-benchmark-${{ github.run_id }}-serial-${{ matrix.implementation }}/${{ env.OUTPUT_NAME }}/${{ env.RESULT_STEM }}-samples.csv
             ${{ runner.temp }}/feeless-benchmark-${{ github.run_id }}-serial-${{ matrix.implementation }}/${{ env.OUTPUT_NAME }}/${{ env.RESULT_STEM }}-summary.json
             ${{ runner.temp }}/feeless-benchmark-${{ github.run_id }}-serial-${{ matrix.implementation }}/${{ env.OUTPUT_NAME }}/${{ env.RESULT_STEM }}-manifest.json
+            ${{ runner.temp }}/feeless-benchmark-${{ github.run_id }}-serial-${{ matrix.implementation }}/${{ env.OUTPUT_NAME }}/node.log
           if-no-files-found: warn
           overwrite: true
           retention-days: 5

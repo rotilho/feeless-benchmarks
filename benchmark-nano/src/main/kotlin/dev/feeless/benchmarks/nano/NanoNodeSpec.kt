@@ -311,6 +311,8 @@ class NanoNodeEnvironment internal constructor(
                 .first { it.destination?.path == containerDataPath }
                 .name!!
 
+    fun nodeLogs(): String = container.logs
+
     override fun close() {
         if (!closed.compareAndSet(false, true)) return
         var failure: Throwable? = null
