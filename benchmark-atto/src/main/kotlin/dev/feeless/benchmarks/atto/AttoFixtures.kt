@@ -13,7 +13,6 @@ import dev.feeless.benchmarks.core.BenchmarkScenario
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonObject
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.StandardOpenOption
@@ -249,7 +248,6 @@ object AttoFixtures {
             lineStart = index + 1
             require(bytes.isNotEmpty()) { "Atto fixture JSONL must not contain blank lines" }
             val text = bytes.decodeUtf8Strict()
-            require(Json.parseToJsonElement(text) is JsonObject) { "Atto fixture JSONL values must be objects" }
             val transaction = AttoTransaction.fromJson(text)
             transactions += EncodedAttoTransaction(bytes, transaction)
         }

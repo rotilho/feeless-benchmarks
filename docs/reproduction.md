@@ -6,9 +6,11 @@
 - Java 8 or newer to start the Gradle wrapper; the build provisions Java 21 when needed
 - Docker Engine, or a Docker-compatible Podman API reachable by Testcontainers
 - Network access for Gradle, Java 21, Maven dependencies, and the configured public container images
-- Enough durable local storage for fresh node/database data and output artifacts
+- Enough disk-backed storage on the container engine for fresh node/database volumes, and local storage for output artifacts
 
 The Gradle 9.2.1 wrapper resolves all dependencies. Its checked-in daemon criteria and toolchain resolver download Java 21 into the Gradle user home when no matching local JDK is available, so Gradle, Kotlin, and Java 21 do not need to be installed separately.
+
+MySQL, Nano, and RSNano each use a fresh anonymous data volume created by the container engine. Configure the engine's volume storage on disk. Normal environment cleanup removes the container and its anonymous volume. Configuration files are copied through the container API; no shared checkout or host data-directory bind mount is required. This works with a remote engine whose filesystem differs from the runner's. Use the manifest's runner revision to identify storage setup changes when comparing runs.
 
 ## Verify the runner
 

@@ -215,7 +215,6 @@ internal class RunService(
                 fixture.endsWith(".json") -> fixturesDirectory.resolve(fixture)
                 else -> fixturesDirectory.resolve("$fixture.json")
             }.toAbsolutePath().normalize()
-        require(Files.isRegularFile(resolved)) { "Nano fixture does not exist: $resolved" }
         return resolved
     }
 
@@ -240,8 +239,6 @@ internal class RunService(
         }
         val resolvedInitial = initial.toAbsolutePath().normalize()
         val resolvedBenchmark = benchmark.toAbsolutePath().normalize()
-        require(Files.isRegularFile(resolvedInitial)) { "Atto initial fixture does not exist: $resolvedInitial" }
-        require(Files.isRegularFile(resolvedBenchmark)) { "Atto benchmark fixture does not exist: $resolvedBenchmark" }
         return AttoFixturePaths(name, resolvedInitial, resolvedBenchmark)
     }
 

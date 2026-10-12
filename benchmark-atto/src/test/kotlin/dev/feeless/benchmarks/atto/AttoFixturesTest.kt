@@ -167,6 +167,8 @@ class AttoFixturesTest {
                 "wrong-suffix" to mapOf("transactions.json" to "{}\n".encodeToByteArray()),
                 "missing-lf" to mapOf("transactions.jsonl" to "{}".encodeToByteArray()),
                 "invalid-utf8" to mapOf("transactions.jsonl" to byteArrayOf(0xff.toByte(), '\n'.code.toByte())),
+                "scalar" to mapOf("transactions.jsonl" to "\"not-an-object\"\n".encodeToByteArray()),
+                "array" to mapOf("transactions.jsonl" to "[]\n".encodeToByteArray()),
             )
 
         for ((name, entries) in cases) {

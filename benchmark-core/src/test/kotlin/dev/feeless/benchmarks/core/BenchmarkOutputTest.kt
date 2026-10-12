@@ -19,9 +19,10 @@ class BenchmarkOutputTest {
         // Given
         val samples = listOf(sample())
         val manifest = manifest()
+        val summary = BenchmarkStatistics.summarize(samples)
 
         // When
-        val files = writeBenchmarkResult(directory, "nano-serial", samples, manifest)
+        val files = writeBenchmarkResult(directory, "nano-serial", samples, summary, manifest)
 
         // Then
         assertEquals(directory.resolve("nano-serial-samples.csv"), files.samples)
@@ -29,7 +30,7 @@ class BenchmarkOutputTest {
         assertEquals(directory.resolve("nano-serial-manifest.json"), files.manifest)
         val manifestPath = requireNotNull(files.manifest)
         assertEquals(samples, readSamplesCsv(files.samples))
-        assertEquals(BenchmarkStatistics.summarize(samples), readSummaryJson(files.summary))
+        assertEquals(summary, readSummaryJson(files.summary))
         assertEquals(manifest, readRunManifestJson(manifestPath))
         assertEquals("nano-genesis", readSamplesCsv(files.samples).single().fixture)
         assertEquals("nano-genesis", readRunManifestJson(manifestPath).runtimeConfiguration["fixture"])
@@ -39,12 +40,14 @@ class BenchmarkOutputTest {
     fun `result writer refuses all output when any requested target already exists`() {
         // Given
         val existingSummary = directory.resolve("nano-serial-summary.json")
+        val samples = listOf(sample())
+        val summary = BenchmarkStatistics.summarize(samples)
         Files.writeString(existingSummary, "existing")
 
         // When
         val failure =
             assertFailsWith<FileAlreadyExistsException> {
-                writeBenchmarkResult(directory, "nano-serial", listOf(sample()), manifest())
+                writeBenchmarkResult(directory, "nano-serial", samples, summary, manifest())
             }
 
         // Then
@@ -79,13 +82,15 @@ class BenchmarkOutputTest {
     @Test
     fun `result writer rejects stems that can escape the output directory`() {
         // Given
+        val samples = listOf(sample())
+        val summary = BenchmarkStatistics.summarize(samples)
         val invalidStems = listOf("", " ", ".", "..", "../outside", "sub/path", "sub\\path")
 
         // When
         val failures =
             invalidStems.map { stem ->
                 assertFailsWith<IllegalArgumentException> {
-                    writeBenchmarkResult(directory, stem, listOf(sample()))
+                    writeBenchmarkResult(directory, stem, samples, summary)
                 }
             }
 

@@ -17,19 +17,17 @@ internal object RunResultFinalizer {
         canonicalExpectedCount: Int?,
         report: (String) -> Unit,
     ) {
-        val summary =
-            if (canonicalExpectedCount != null) {
-                RunAcceptance.requireClean(
-                    scenario = stem,
-                    expectedCount = expectedCount,
-                    samples = samples,
-                    canonicalExpectedCount = canonicalExpectedCount,
-                )
-            } else {
-                BenchmarkStatistics.summarize(samples)
-            }
+        val summary = BenchmarkStatistics.summarize(samples)
+        if (canonicalExpectedCount != null) {
+            RunAcceptance.requireClean(
+                scenario = stem,
+                expectedCount = expectedCount,
+                summary = summary,
+                canonicalExpectedCount = canonicalExpectedCount,
+            )
+        }
 
-        val files = writeBenchmarkResult(outputDirectory, stem, samples, manifest)
+        val files = writeBenchmarkResult(outputDirectory, stem, samples, summary, manifest)
         report(encodeSummaryJson(summary).trimEnd())
         report("samples: ${files.samples}")
         report("summary: ${files.summary}")
@@ -39,7 +37,7 @@ internal object RunResultFinalizer {
             RunAcceptance.requireClean(
                 scenario = stem,
                 expectedCount = expectedCount,
-                samples = samples,
+                summary = summary,
             )
         }
     }

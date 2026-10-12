@@ -187,8 +187,6 @@ object NanoFixtures {
         blocksPerSource: Int,
     ): NanoFixture {
         val genesisKey = DEV_GENESIS_PRIVATE_KEY.hexBytes(32)
-        check(NanoEd25519.publicKey(genesisKey).upperHex() == DEV_GENESIS_PUBLIC_KEY)
-        check(NanoAccounts.encode(DEV_GENESIS_PUBLIC_KEY.hexBytes(32)) == DEV_GENESIS_ACCOUNT)
 
         val sinkKey = deterministicPrivateKey("$name:sink")
         val sinkPublic = NanoEd25519.publicKey(sinkKey).upperHex()

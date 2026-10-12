@@ -1,17 +1,14 @@
 package dev.feeless.benchmarks.app
 
-import dev.feeless.benchmarks.core.BenchmarkSample
-import dev.feeless.benchmarks.core.BenchmarkStatistics
 import dev.feeless.benchmarks.core.BenchmarkSummary
 
 internal object RunAcceptance {
     fun requireClean(
         scenario: String,
         expectedCount: Int,
-        samples: List<BenchmarkSample>,
+        summary: BenchmarkSummary,
         canonicalExpectedCount: Int? = null,
-    ): BenchmarkSummary {
-        val summary = BenchmarkStatistics.summarize(samples)
+    ) {
         check(
             summary.sampleCount == expectedCount &&
                 summary.successCount == expectedCount &&
@@ -26,6 +23,5 @@ internal object RunAcceptance {
                 "suite scenario $scenario has $expectedCount measured items; expected $canonicalExpectedCount"
             }
         }
-        return summary
     }
 }

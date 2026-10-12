@@ -3,17 +3,14 @@ package dev.feeless.benchmarks.atto
 import cash.atto.commons.AttoNetwork
 import cash.atto.commons.AttoOpenBlock
 import cash.atto.commons.toHex
-import org.testcontainers.containers.BindMode
+import com.github.dockerjava.api.model.Volume
 import org.testcontainers.containers.GenericContainer
 import org.testcontainers.containers.Network
-import org.testcontainers.containers.SelinuxContext
 import org.testcontainers.containers.wait.strategy.Wait
 import org.testcontainers.images.PullPolicy
 import org.testcontainers.mysql.MySQLContainer
 import org.testcontainers.utility.DockerImageName
-import java.nio.file.Files
 import java.nio.file.Path
-import java.nio.file.attribute.PosixFilePermission
 import java.util.UUID
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.minutes
@@ -22,7 +19,6 @@ import java.time.Duration as JavaDuration
 class AttoNodeSpec(
     val pullImages: Boolean = true,
     val startupTimeout: Duration = 5.minutes,
-    val storageRoot: Path = Path.of("build", "testcontainers-storage").toAbsolutePath(),
 ) {
     val nodeImage: String = ATTO_NODE_IMAGE
     val mysqlImage: String = ATTO_MYSQL_IMAGE
@@ -35,14 +31,6 @@ class AttoNodeSpec(
         require(genesis.block.publicKey.toString() == GENESIS_PUBLIC_KEY) {
             "Atto genesis does not match the canonical voter private key"
         }
-
-        Files.createDirectories(storageRoot)
-        val fileStoreType = Files.getFileStore(storageRoot).type().lowercase()
-        require("tmpfs" !in fileStoreType && "ramfs" !in fileStoreType) {
-            "Atto durable storage root $storageRoot is backed by $fileStoreType"
-        }
-        val dataDirectory = Files.createTempDirectory(storageRoot, "feeless-atto-mysql-")
-        runCatching { Files.setPosixFilePermissions(dataDirectory, PosixFilePermission.entries.toSet()) }
 
         val timeout = JavaDuration.ofMillis(startupTimeout.inWholeMilliseconds)
         var allocatedNetwork: Network? = null
@@ -58,14 +46,8 @@ class AttoNodeSpec(
                     .withUsername(DATABASE_USER)
                     .withPassword(databasePassword)
                     .withStartupTimeout(timeout)
-                    .withCreateContainerCmdModifier { it.withUser("mysql") }
+                    .withCreateContainerCmdModifier { it.withVolumes(Volume(MYSQL_DATA_PATH)) }
                     .apply {
-                        addFileSystemBind(
-                            dataDirectory.toString(),
-                            MYSQL_DATA_PATH,
-                            BindMode.READ_WRITE,
-                            SelinuxContext.SHARED,
-                        )
                         if (pullImages) withImagePullPolicy(PullPolicy.alwaysPull())
                     }.also { allocatedDatabase = it }
 
@@ -128,7 +110,6 @@ class AttoNodeSpec(
                     database = database,
                     node = node,
                     publisher = AttoPublisher(baseUrl),
-                    storageDirectory = dataDirectory,
                 )
             } catch (error: Throwable) {
                 runCatching { node.close() }
@@ -136,11 +117,9 @@ class AttoNodeSpec(
             }
         } catch (error: Throwable) {
             allocatedDatabase?.let { database ->
-                runCatching { database.makeStorageHostDeletable() }
                 runCatching { database.close() }
             }
             allocatedNetwork?.let { network -> runCatching { network.close() } }
-            runCatching { dataDirectory.toFile().deleteRecursively() }
             throw error
         }
     }
@@ -170,29 +149,6 @@ private val ATTO_LOGGING_ENVIRONMENT =
         "LOGGING_LEVEL_CASH_ATTO_NODE_TRANSACTION_VALIDATION" to "INFO",
         "LOGGING_LEVEL_CASH_ATTO_NODE_RECEIVABLE" to "INFO",
     )
-
-internal fun MySQLContainer.makeStorageHostDeletable() {
-    if (!isRunning) return
-
-    // The bind root belongs to the host; MySQL owns only its descendants.
-    val result =
-        execInContainer(
-            "find",
-            MYSQL_DATA_PATH,
-            "-mindepth",
-            "1",
-            "-type",
-            "d",
-            "-exec",
-            "chmod",
-            "a+rwx",
-            "{}",
-            "+",
-        )
-    check(result.exitCode == 0) {
-        "failed to make Atto MySQL storage host-deletable: ${result.stderr.trim()}"
-    }
-}
 
 private fun GenericContainer<*>.resolvedImageDigest(): String {
     val imageId = containerInfo.imageId

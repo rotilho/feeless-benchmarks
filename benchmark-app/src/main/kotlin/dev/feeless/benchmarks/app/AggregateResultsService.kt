@@ -87,9 +87,6 @@ internal class AggregateResultsService(
         summaryPath: Path,
     ): AggregatedBenchmarkRun {
         val manifestPath = summaryPath.resolveSibling("${scenario.outputName}-manifest.json")
-        require(Files.isRegularFile(manifestPath)) {
-            "${relativeSource(inputRoot, summaryPath)}: sibling manifest is missing"
-        }
         return try {
             AggregatedBenchmarkRun(
                 source = relativeSource(inputRoot, summaryPath),

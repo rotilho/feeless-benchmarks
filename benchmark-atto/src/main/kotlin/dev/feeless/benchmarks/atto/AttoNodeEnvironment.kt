@@ -4,8 +4,6 @@ import dev.feeless.benchmarks.core.PublishAdapter
 import org.testcontainers.containers.GenericContainer
 import org.testcontainers.containers.Network
 import org.testcontainers.mysql.MySQLContainer
-import java.nio.file.Files
-import java.nio.file.Path
 
 class AttoNodeEnvironment internal constructor(
     val baseUrl: String,
@@ -15,22 +13,19 @@ class AttoNodeEnvironment internal constructor(
     private val database: MySQLContainer,
     private val node: GenericContainer<Nothing>,
     private val publisher: AttoPublisher,
-    val storageDirectory: Path,
 ) : AutoCloseable {
     val adapter: PublishAdapter<AttoPublication> = publisher
+    val storageVolumeName: String
+        get() =
+            database.containerInfo.mounts!!
+                .first { it.destination?.path == MYSQL_DATA_PATH }
+                .name!!
 
     fun nodeLogs(): String = node.logs
 
     override fun close() {
         var failure: Throwable? = null
-        val storageCleanup =
-            AutoCloseable {
-                check(storageDirectory.toFile().deleteRecursively() || Files.notExists(storageDirectory)) {
-                    "failed to delete Atto MySQL data directory $storageDirectory"
-                }
-            }
-        val storagePermissionCleanup = AutoCloseable { database.makeStorageHostDeletable() }
-        listOf<AutoCloseable>(publisher, node, storagePermissionCleanup, database, network, storageCleanup).forEach { resource ->
+        listOf<AutoCloseable>(publisher, node, database, network).forEach { resource ->
             try {
                 resource.close()
             } catch (error: Throwable) {

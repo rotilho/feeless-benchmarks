@@ -1,17 +1,19 @@
 package dev.feeless.benchmarks.atto
 
+import com.github.dockerjava.api.exception.NotFoundException
 import kotlinx.coroutines.runBlocking
-import java.nio.file.Files
+import org.testcontainers.DockerClientFactory
 import kotlin.io.path.createTempDirectory
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 import kotlin.test.assertTrue
 import kotlin.time.Duration.Companion.minutes
 
 class AttoContainerSmokeTest {
     @Test
     fun `official node cements the exact generated transaction on durable MySQL`() =
-        runBlocking {
+        runBlocking<Unit> {
             // Given
             val spec =
                 AttoFixtureSpec(
@@ -37,7 +39,8 @@ class AttoContainerSmokeTest {
 
             // When
             val environment = AttoNodeSpec().start(directory.resolve(spec.initialFileName))
-            val storageDirectory = environment.storageDirectory
+            val storageVolumeName = environment.storageVolumeName
+            val dockerClient = DockerClientFactory.instance().client()
             environment.use {
                 environment.adapter.publish(item, 2.minutes)
 
@@ -48,6 +51,6 @@ class AttoContainerSmokeTest {
                 assertEquals("mysql-defaults", environment.runtimeConfiguration["database.durability"])
                 assertEquals("<redacted>", environment.runtimeConfiguration["database.password"])
             }
-            assertTrue(Files.notExists(storageDirectory))
+            assertFailsWith<NotFoundException> { dockerClient.inspectVolumeCmd(storageVolumeName).exec() }
         }
 }

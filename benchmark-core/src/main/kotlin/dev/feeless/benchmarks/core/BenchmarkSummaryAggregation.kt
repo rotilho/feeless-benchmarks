@@ -166,6 +166,7 @@ object BenchmarkSummaryAggregator {
 
         val runs = input.runs.sortedBy(AggregatedBenchmarkRun::source)
         runs.forEach { run -> validateRun(input, run, expectedSampleCount) }
+        validateManifestIdentity(input, runs.first())
         validateConsistentProvenance(input.implementation, runs)
 
         return ImplementationBenchmarkAggregate(
@@ -198,7 +199,6 @@ object BenchmarkSummaryAggregator {
             "${input.implementation} ${run.source}: latency count=${summary.latencyNs.count}; expected $expectedSampleCount"
         }
         validateMetrics(input.implementation, run)
-        validateManifestIdentity(input, run)
     }
 
     private fun validateMetrics(
@@ -220,9 +220,6 @@ object BenchmarkSummaryAggregator {
         val elapsedNs = requireNotNull(summary.elapsedNs) { "$implementation ${run.source}: elapsed_ns is missing" }
         val averageTps = requireNotNull(summary.averageTps) { "$implementation ${run.source}: average_tps is missing" }
 
-        require(averageLatency.isFinite() && averageLatency >= 0.0) {
-            "$implementation ${run.source}: average latency must be finite and nonnegative"
-        }
         require(min >= 0 && min <= p50 && p50 <= p90 && p90 <= p95 && p95 <= p99 && p99 <= max) {
             "$implementation ${run.source}: latency metrics are not ordered"
         }

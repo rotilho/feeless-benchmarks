@@ -15,10 +15,10 @@ fun writeBenchmarkResult(
     outputDirectory: Path,
     stem: String,
     samples: Iterable<BenchmarkSample>,
+    summary: BenchmarkSummary,
     manifest: RunManifest? = null,
 ): BenchmarkResultFiles {
     requireValidOutputStem(stem)
-    val materialized = samples.toList()
     val files =
         BenchmarkResultFiles(
             samples = outputDirectory.resolve("$stem-samples.csv"),
@@ -30,8 +30,8 @@ fun writeBenchmarkResult(
         throw FileAlreadyExistsException(existing.toString())
     }
 
-    writeSamplesCsv(files.samples, materialized)
-    writeSummaryJson(files.summary, materialized)
+    writeSamplesCsv(files.samples, samples)
+    writeSummaryJson(files.summary, summary)
     if (manifest != null) {
         writeRunManifestJson(requireNotNull(files.manifest), manifest)
     }

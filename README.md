@@ -154,6 +154,8 @@ The results above retain the image identities used for those accepted runs. The 
 
 Atto `:live` and RSNano `:latest` are moving tags, and the runner pulls them by default for each scenario. Manifests record the configured image reference and resolved image digest. Published runs use durable storage only: no tmpfs and no durability-reducing database flags.
 
+Each scenario uses a fresh engine-managed anonymous volume for MySQL, Nano, and RSNano data. The engine creates the volume during startup, and normal environment cleanup removes it with its container. Node configuration is copied through the container API, so the checkout does not need to be shared with a remote Docker or Podman engine. The engine's volume storage must be disk-backed. Storage backend changes can affect timings; use the manifest's runner revision when comparing these runs with earlier bind-mounted results.
+
 Further documentation:
 
 - [Methodology and timing](docs/methodology.md)

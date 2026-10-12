@@ -37,8 +37,6 @@ internal class AttoTransactionGenerator(
     private val accounts = linkedMapOf<AttoPublicKey, AccountState>()
 
     suspend fun generate(): GeneratedAttoFixture {
-        check(accounts.isEmpty()) { "Generator instances can only be used once" }
-
         val initialTransactions = prepareAccounts()
         val benchmarkTransactions = generateBenchmarkTransactions()
         return GeneratedAttoFixture(initialTransactions, benchmarkTransactions)

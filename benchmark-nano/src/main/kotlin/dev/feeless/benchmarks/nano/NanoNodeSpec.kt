@@ -1,5 +1,6 @@
 package dev.feeless.benchmarks.nano
 
+import com.github.dockerjava.api.model.Volume
 import dev.feeless.benchmarks.core.VIRTUAL
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
@@ -11,16 +12,13 @@ import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
-import org.testcontainers.containers.BindMode
 import org.testcontainers.containers.GenericContainer
-import org.testcontainers.containers.SelinuxContext
-import org.testcontainers.containers.startupcheck.OneShotStartupCheckStrategy
 import org.testcontainers.containers.wait.strategy.Wait
 import org.testcontainers.images.PullPolicy
 import org.testcontainers.utility.DockerImageName
+import org.testcontainers.utility.MountableFile
 import java.nio.file.Files
 import java.nio.file.Path
-import java.nio.file.attribute.PosixFilePermission
 import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
@@ -30,7 +28,6 @@ import kotlin.time.toJavaDuration
 data class NanoNodeSpec(
     val implementation: String,
     val startupTimeout: Duration = 60.seconds,
-    val storageRoot: Path = Path.of("build", "testcontainers-storage").toAbsolutePath(),
 ) {
     init {
         require(implementation == "nano" || implementation == "rsnano") {
@@ -44,29 +41,22 @@ data class NanoNodeSpec(
 
     suspend fun start(): NanoNodeEnvironment {
         val definition = definition()
-        Files.createDirectories(storageRoot)
-        val fileStoreType = Files.getFileStore(storageRoot).type().lowercase()
-        require("tmpfs" !in fileStoreType && "ramfs" !in fileStoreType) {
-            "Nano durable storage root $storageRoot is backed by $fileStoreType"
-        }
-        val dataDirectory = Files.createTempDirectory(storageRoot, "feeless-$implementation-")
-        prepareDataDirectory(dataDirectory, definition)
-        val container =
-            NanoContainer(DockerImageName.parse(image)).apply {
+        val configDirectory = prepareConfigurationDirectory()
+        val container = NanoContainer(DockerImageName.parse(image))
+
+        try {
+            container.apply {
                 withExposedPorts(definition.rpcPort, definition.websocketPort)
-                addFileSystemBind(
-                    dataDirectory.toAbsolutePath().toString(),
-                    definition.dataPath,
-                    BindMode.READ_WRITE,
-                    SelinuxContext.SHARED,
-                )
+                withCreateContainerCmdModifier { command -> command.withVolumes(Volume(definition.dataPath)) }
+                configDirectory?.let { directory ->
+                    withCopyFileToContainer(MountableFile.forHostPath(directory, 511), definition.dataPath)
+                }
                 withCommand(*definition.command.toTypedArray())
                 waitingFor(Wait.forListeningPorts(definition.rpcPort, definition.websocketPort))
                 withStartupTimeout(startupTimeout.toJavaDuration())
                 if (implementation == "rsnano") withImagePullPolicy(PullPolicy.alwaysPull())
             }
 
-        try {
             withContext(Dispatchers.VIRTUAL) { container.start() }
             val rpcUrl = "http://${container.host}:${container.getMappedPort(definition.rpcPort)}"
             val websocketUrl = "ws://${container.host}:${container.getMappedPort(definition.websocketPort)}"
@@ -91,15 +81,28 @@ data class NanoNodeSpec(
                 websocketUrl = websocketUrl,
                 adapter = adapter,
                 container = container,
-                dataDirectory = dataDirectory,
                 containerDataPath = definition.dataPath,
             )
         } catch (error: Throwable) {
             val logs = runCatching { container.logs.takeLast(8_000) }.getOrDefault("")
             runCatching { withContext(Dispatchers.VIRTUAL) { container.stop() } }
-            runCatching { dataDirectory.toFile().deleteRecursively() }
             if (error is CancellationException) throw error
             throw IllegalStateException("$implementation node startup failed: ${error.message}\n$logs", error)
+        } finally {
+            configDirectory?.toFile()?.deleteRecursively()
+        }
+    }
+
+    private fun prepareConfigurationDirectory(): Path? {
+        if (implementation != "rsnano") return null
+        val directory = Files.createTempDirectory("feeless-rsnano-config-")
+        try {
+            Files.writeString(directory.resolve("config-node.toml"), RSNANO_NODE_CONFIG)
+            Files.writeString(directory.resolve("config-rpc.toml"), RSNANO_RPC_CONFIG)
+            return directory
+        } catch (error: Throwable) {
+            directory.toFile().deleteRecursively()
+            throw error
         }
     }
 
@@ -246,23 +249,6 @@ data class NanoNodeSpec(
             )
         }
 
-    private fun prepareDataDirectory(
-        directory: Path,
-        definition: NanoNodeDefinition,
-    ) {
-        runCatching {
-            Files.setPosixFilePermissions(directory, PosixFilePermission.entries.toSet())
-        }
-        if (implementation != "rsnano") return
-        Files.writeString(directory.resolve("config-node.toml"), RSNANO_NODE_CONFIG)
-        Files.writeString(directory.resolve("config-rpc.toml"), RSNANO_RPC_CONFIG)
-        directory
-            .toFile()
-            .listFiles()
-            .orEmpty()
-            .forEach { file -> file.setReadable(true, false) }
-    }
-
     private data class NanoNodeDefinition(
         val dataPath: String,
         val rpcPort: Int,
@@ -315,10 +301,15 @@ class NanoNodeEnvironment internal constructor(
     val websocketUrl: String,
     val adapter: NanoPostCementAdapter,
     private val container: GenericContainer<*>,
-    private val dataDirectory: Path,
     private val containerDataPath: String,
 ) : AutoCloseable {
     private val closed = AtomicBoolean()
+
+    val storageVolumeName: String
+        get() =
+            container.containerInfo.mounts!!
+                .first { it.destination?.path == containerDataPath }
+                .name!!
 
     override fun close() {
         if (!closed.compareAndSet(false, true)) return
@@ -334,61 +325,7 @@ class NanoNodeEnvironment internal constructor(
         }
 
         attempt(adapter::close)
-        runCatching { makeDataDirectoryHostAccessible() }
         attempt(container::stop)
-        attempt {
-            NanoDataDirectoryCleanup.delete(dataDirectory) { inaccessibleDirectory ->
-                repairDataDirectoryPermissions(inaccessibleDirectory)
-            }
-        }
         failure?.let { throw it }
-    }
-
-    private fun makeDataDirectoryHostAccessible() {
-        val result = container.execInContainer("chmod", "-R", "a+rwX", containerDataPath)
-        check(result.exitCode == 0) {
-            "failed to make Nano data directory host-accessible: ${result.stderr}"
-        }
-    }
-
-    private fun repairDataDirectoryPermissions(directory: Path) {
-        val cleanupContainer =
-            NanoCleanupContainer(DockerImageName.parse(imageReference)).apply {
-                addFileSystemBind(
-                    directory.toAbsolutePath().toString(),
-                    CLEANUP_MOUNT_PATH,
-                    BindMode.READ_WRITE,
-                    SelinuxContext.SHARED,
-                )
-                withCreateContainerCmdModifier { command ->
-                    command.withEntrypoint("/bin/sh")
-                    command.withUser("0:0")
-                }
-                withCommand("-c", "chmod -R a+rwX $CLEANUP_MOUNT_PATH")
-                withStartupCheckStrategy(OneShotStartupCheckStrategy())
-                withStartupTimeout(java.time.Duration.ofSeconds(30))
-            }
-        var failure: Throwable? = null
-        try {
-            cleanupContainer.start()
-        } catch (error: Throwable) {
-            failure = IllegalStateException("failed to repair Nano data directory permissions for $directory", error)
-        } finally {
-            try {
-                cleanupContainer.stop()
-            } catch (stopError: Throwable) {
-                val previous = failure
-                if (previous == null) failure = stopError else previous.addSuppressed(stopError)
-            }
-        }
-        failure?.let { throw it }
-    }
-
-    private class NanoCleanupContainer(
-        image: DockerImageName,
-    ) : GenericContainer<NanoCleanupContainer>(image)
-
-    private companion object {
-        const val CLEANUP_MOUNT_PATH = "/nano-data-cleanup"
     }
 }

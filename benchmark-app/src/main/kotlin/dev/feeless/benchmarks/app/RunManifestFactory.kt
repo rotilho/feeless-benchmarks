@@ -66,54 +66,51 @@ internal object RunManifestFactory {
             ) ?: return "unknown"
         val dirty = status.isNotEmpty()
         if (!dirty) return revision
-        val worktreeHash = worktreeHash(repositoryRoot)
-        return if (worktreeHash == null) "$revision-dirty" else "$revision-dirty-$worktreeHash"
+        return "$revision-dirty-${worktreeHash(repositoryRoot)}"
     }
 
-    private fun worktreeHash(repositoryRoot: Path): String? =
-        runCatching {
-            val command =
-                listOf("git", "ls-files", "--cached", "--others", "--exclude-standard", "-z", "--") +
-                    RUNNER_PATHS
-            val process =
-                ProcessBuilder(command)
-                    .directory(repositoryRoot.toFile())
-                    .redirectErrorStream(true)
-                    .start()
-            val listed = process.inputStream.use { it.readAllBytes() }
-            if (process.waitFor() != 0) return@runCatching null
+    private fun worktreeHash(repositoryRoot: Path): String {
+        val command =
+            listOf("git", "ls-files", "--cached", "--others", "--exclude-standard", "-z", "--") +
+                RUNNER_PATHS
+        val process =
+            ProcessBuilder(command)
+                .directory(repositoryRoot.toFile())
+                .redirectErrorStream(true)
+                .start()
+        val listed = process.inputStream.use { it.readAllBytes() }
+        check(process.waitFor() == 0) { "git ls-files failed: ${listed.decodeToString()}" }
 
-            val digest = MessageDigest.getInstance("SHA-256")
-            listed
-                .decodeToString()
-                .split('\u0000')
-                .filter(String::isNotEmpty)
-                .sorted()
-                .forEach { relative ->
-                    val path = repositoryRoot.resolve(relative).normalize()
-                    require(path.startsWith(repositoryRoot)) { "Git path escapes repository: $relative" }
-                    digest.update(relative.encodeToByteArray())
-                    digest.update(0.toByte())
-                    if (Files.isSymbolicLink(path)) {
-                        digest.update("<symlink>".encodeToByteArray())
-                        digest.update(Files.readSymbolicLink(path).toString().encodeToByteArray())
-                    } else if (Files.isRegularFile(path)) {
-                        digest.update(if (Files.isExecutable(path)) "<file:x>".encodeToByteArray() else "<file>".encodeToByteArray())
-                        Files.newInputStream(path).use { input ->
-                            val buffer = ByteArray(DEFAULT_BUFFER_SIZE)
-                            while (true) {
-                                val read = input.read(buffer)
-                                if (read < 0) break
-                                digest.update(buffer, 0, read)
-                            }
+        val digest = MessageDigest.getInstance("SHA-256")
+        listed
+            .decodeToString()
+            .split('\u0000')
+            .filter(String::isNotEmpty)
+            .sorted()
+            .forEach { relative ->
+                val path = repositoryRoot.resolve(relative).normalize()
+                digest.update(relative.encodeToByteArray())
+                digest.update(0.toByte())
+                if (Files.isSymbolicLink(path)) {
+                    digest.update("<symlink>".encodeToByteArray())
+                    digest.update(Files.readSymbolicLink(path).toString().encodeToByteArray())
+                } else if (Files.isRegularFile(path)) {
+                    digest.update(if (Files.isExecutable(path)) "<file:x>".encodeToByteArray() else "<file>".encodeToByteArray())
+                    Files.newInputStream(path).use { input ->
+                        val buffer = ByteArray(DEFAULT_BUFFER_SIZE)
+                        while (true) {
+                            val read = input.read(buffer)
+                            if (read < 0) break
+                            digest.update(buffer, 0, read)
                         }
-                    } else {
-                        digest.update("<missing>".encodeToByteArray())
                     }
-                    digest.update(0.toByte())
+                } else {
+                    digest.update("<missing>".encodeToByteArray())
                 }
-            digest.digest().joinToString("") { byte -> "%02x".format(byte) }
-        }.getOrNull()
+                digest.update(0.toByte())
+            }
+        return digest.digest().joinToString("") { byte -> "%02x".format(byte) }
+    }
 
     private fun git(
         repositoryRoot: Path,
